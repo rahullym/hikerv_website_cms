@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -34,10 +35,13 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	</head>
-	<body class="bg-black">
+	<body class="bg-black text-white">
 		<div id="cursor-dot"></div>
 		<div id="cursor-ring"></div>
+		
 		<slot />
+		
+		<Footer />
 
 		<script>
 			const dot = document.getElementById('cursor-dot');
@@ -166,6 +170,7 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		border-color: rgba(255, 255, 255, 0.4) !important;
 		background-color: rgba(255, 255, 255, 0.1) !important;
 		border-width: 1px !important;
+		z-index: 9998 !important;
 	}
 
 	/* Prevent cursor duplication on specific elements or for accessibility */
