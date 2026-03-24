@@ -1,0 +1,286 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout title="Wild Drifter | Hike RV Caravans" description="A symphony of elegance on wheels. The Wild Drifter is a masterpiece tailored caravan for couples, where style meets freedom.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 1. HERO SECTION                               -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="wild-drifter-hero" class="relative z-10 w-full min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="/drifter/wilddrifter/wilddrifterbg.png" alt="Wild Drifter" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black"></div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="relative z-10 flex flex-col items-center px-6 md:px-14 max-w-5xl mx-auto">
+                
+                <div class="flex items-center justify-center gap-4 sm:gap-6 mb-6 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                    <div class="w-8 sm:w-16 h-px bg-white/30"></div>
+                    <span class="text-white/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                        Drifter Series
+                    </span>
+                    <div class="w-8 sm:w-16 h-px bg-white/30"></div>
+                </div>
+
+                <h1 class="text-white text-5xl md:text-7xl lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] mb-4 animate-fade-up drop-shadow-2xl" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    Wild<br/>
+                    <span class="text-[#E50000]">Drifter.</span>
+                </h1>
+
+                <p class="text-white/50 font-medium text-xs md:text-sm uppercase tracking-[0.3em] mb-8 animate-fade-up" style="animation-delay: 500ms; animation-fill-mode: both;">A Symphony of Elegance on Wheels</p>
+
+                <p class="text-white/70 font-medium text-sm md:text-lg tracking-wide max-w-3xl mb-12 leading-relaxed animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    Enter a realm where elegance finds its home on wheels, and adventure is an art form. The Wild Drifter, a masterpiece tailored caravan for couples, beckons you to embark on an odyssey where style meets freedom.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
+                    <a href="#contact" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)] hover:shadow-[0_10px_40px_rgba(255,255,255,0.2)]">
+                        Get a Quote!
+                    </a>
+                    <a href="#" class="px-10 py-4 border border-white/30 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm flex items-center gap-3">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                        Download Brochure
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-fade-up" style="animation-delay: 1200ms; animation-fill-mode: both;">
+                <span class="text-white/40 text-[9px] uppercase tracking-[0.3em] font-bold">Scroll</span>
+                <div class="w-px h-10 bg-gradient-to-b from-white/40 to-transparent animate-pulse"></div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 2. MODELS / VARIANTS SECTION                  -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="variants" class="relative z-10 w-full py-24 md:py-36 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                
+                <div class="text-center mb-20">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.5em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Wild Drifter Range</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-none animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Choose Your<br/><span class="text-[#E50000]">Configuration.</span>
+                    </h2>
+                </div>
+
+                <!-- Variant Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto">
+                    
+                    <!-- Wild Drifter 19.6 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
+                            <img src="/drifter/wilddrifter/196/196.png" alt="Wild Drifter 19.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3 text-black">Wild Drifter <span class="text-[#E50000]">19.6</span></h3>
+                            <p class="text-black/50 text-sm font-medium mb-8 leading-relaxed">Your grand family fiesta.</p>
+                            <a href="/wild-drifter-196" class="w-fit px-8 py-3.5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] transition-all duration-500 rounded-full shadow-md">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Wild Drifter 20.6 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
+                            <img src="/drifter/206/206main.png" alt="Wild Drifter 20.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3 text-black">Wild Drifter <span class="text-[#E50000]">20.6</span></h3>
+                            <p class="text-black/50 text-sm font-medium mb-8 leading-relaxed">Your grand family fiesta.</p>
+                            <a href="/wild-drifter-206" class="w-fit px-8 py-3.5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] transition-all duration-500 rounded-full shadow-md">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 3. PERSONAL OASIS — Interior Features         -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-black text-white overflow-hidden">
+            <!-- Subtle glow -->
+            <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+
+                <div class="text-center mb-20">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Onboard Experience</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Designed For<br/><span class="text-[#E50000]">Couples.</span>
+                    </h2>
+                </div>
+
+                <!-- Feature Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+
+                    <!-- Personal Oasis -->
+                    <div class="group p-8 md:p-10 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-sm hover:border-[#E50000]/40 hover:-translate-y-2 transition-all duration-700">
+                        <div class="w-14 h-14 rounded-2xl bg-[#E50000]/10 flex items-center justify-center mb-6 group-hover:bg-[#E50000] transition-colors duration-500">
+                            <svg class="w-7 h-7 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-4">Personal <span class="text-[#E50000]">Oasis</span></h3>
+                        <p class="text-white/50 font-medium text-sm leading-relaxed">
+                            Experience a world of luxury with a private ensuite area, concealed by a sliding door. Here privacy takes centre stage. It's not just convenience; it's a touch of extravagance.
+                        </p>
+                    </div>
+
+                    <!-- Spacious Splendour -->
+                    <div class="group p-8 md:p-10 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-sm hover:border-[#E50000]/40 hover:-translate-y-2 transition-all duration-700">
+                        <div class="w-14 h-14 rounded-2xl bg-[#E50000]/10 flex items-center justify-center mb-6 group-hover:bg-[#E50000] transition-colors duration-500">
+                            <svg class="w-7 h-7 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-4">Spacious <span class="text-[#E50000]">Splendour</span></h3>
+                        <p class="text-white/50 font-medium text-sm leading-relaxed">
+                            The Wild Drifter isn't a mere caravan; it's a cathedral of space designed for couples to craft their tales. A sanctuary where comfort and room to breathe are woven into the very fabric of your journey.
+                        </p>
+                    </div>
+
+                    <!-- Culinary Elegance -->
+                    <div class="group p-8 md:p-10 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-sm hover:border-[#E50000]/40 hover:-translate-y-2 transition-all duration-700">
+                        <div class="w-14 h-14 rounded-2xl bg-[#E50000]/10 flex items-center justify-center mb-6 group-hover:bg-[#E50000] transition-colors duration-500">
+                            <svg class="w-7 h-7 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m18-4.5H3"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-4">Culinary <span class="text-[#E50000]">Elegance</span></h3>
+                        <p class="text-white/50 font-medium text-sm leading-relaxed">
+                            The caravan boasts a gourmet haven with a Dometic refrigerator and large pull-out pantry for your culinary escapades. Your kitchen is a spacious canvas; let your gastronomic adventures begin.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. ELEGANCE IN PRIVACY — Feature Section      -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black overflow-hidden">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14 flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
+
+                <!-- Left: Text -->
+                <div class="w-full lg:w-1/2 flex flex-col">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Ensuite</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-10 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Elegance In<br/><span class="text-[#E50000]">Privacy.</span>
+                    </h2>
+                    
+                    <div class="flex flex-col gap-6 animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                        <div class="flex items-start gap-4">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] mt-2 shrink-0"></span>
+                            <p class="text-black/60 font-medium md:text-lg leading-relaxed">
+                                Immerse yourself in a realm of luxury with a private ensuite area, complete with a sliding door, an expansive shower, and a roomy cassette toilet.
+                            </p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] mt-2 shrink-0"></span>
+                            <p class="text-black/60 font-medium md:text-lg leading-relaxed">
+                                It's a space where comfort and privacy intersect.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature chips -->
+                    <div class="flex flex-wrap gap-3 mt-10 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
+                        <span class="px-5 py-2.5 bg-black/5 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-black/60 hover:text-black hover:border-[#E50000]/40 transition-all duration-300">Sliding Door</span>
+                        <span class="px-5 py-2.5 bg-black/5 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-black/60 hover:text-black hover:border-[#E50000]/40 transition-all duration-300">Expansive Shower</span>
+                        <span class="px-5 py-2.5 bg-black/5 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-black/60 hover:text-black hover:border-[#E50000]/40 transition-all duration-300">Cassette Toilet</span>
+                        <span class="px-5 py-2.5 bg-black/5 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-black/60 hover:text-black hover:border-[#E50000]/40 transition-all duration-300">Private Ensuite</span>
+                    </div>
+                </div>
+
+                <!-- Right: Image -->
+                <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    <div class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] group">
+                        <img src="/drifter1.png" alt="Wild Drifter Interior" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 rounded-[2rem] border border-black/5 pointer-events-none"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. CRAFT YOUR DREAM — Full Banner             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-28 md:py-40 bg-black text-white overflow-hidden">
+            <!-- Dramatic background -->
+            <div class="absolute inset-0 z-0">
+                <img src="/drifterbg.png" alt="Wild Drifter Experience" class="w-full h-full object-cover opacity-20" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60"></div>
+            </div>
+
+            <!-- Accent lines -->
+            <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#E50000]/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#E50000]/30 to-transparent"></div>
+
+            <div class="max-w-4xl mx-auto px-6 md:px-14 text-center relative z-10">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.5em] text-[10px] md:text-xs mb-6 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Craft Your Dream</span>
+                
+                <h2 class="text-4xl md:text-5xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-10 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    Your Journey,<br/><span class="text-[#E50000]">Your Canvas.</span>
+                </h2>
+                
+                <p class="text-white/60 font-medium md:text-xl leading-relaxed mb-8 max-w-3xl mx-auto animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    The Wild Drifter is more than a caravan; it's a canvas for your dreams. Tailor your journey and embark on adventures beyond your imagination. Our friendly team is here to bring your vision to life.
+                </p>
+                <p class="text-white/50 font-medium md:text-lg leading-relaxed max-w-3xl mx-auto animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
+                    To commence your wild drifting journey and to learn more about customization options, connect with us today.
+                </p>
+
+                <!-- Decorative separator -->
+                <div class="flex items-center justify-center gap-4 mt-14 animate-fade-up" style="animation-delay: 1000ms; animation-fill-mode: both;">
+                    <div class="w-16 h-px bg-white/20"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#E50000]"></div>
+                    <div class="w-16 h-px bg-white/20"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 6. CTA SECTION                                -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block">Your Adventure Starts Here</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-8">
+                    Start Your<br/>Wild <span class="text-[#E50000]">Drift.</span>
+                </h2>
+                <p class="text-black/60 font-medium md:text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+                    Contact our team to explore the Wild Drifter range and find the perfect configuration for your couple's dream escapade.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                    <a href="/#contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-[#E50000] transition-colors duration-500 rounded-full shadow-xl">
+                        Get a Quote
+                    </a>
+                    <a href="/drifter" class="px-12 py-5 border border-black/20 text-black font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-black hover:text-white transition-all duration-500 rounded-full">
+                        Back to Drifter Series
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

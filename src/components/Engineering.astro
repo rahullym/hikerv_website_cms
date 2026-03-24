@@ -1,0 +1,64 @@
+---
+const specs = [
+    {
+        title: "Precision",
+        value: "0.01mm Tolerance",
+        desc: "Every component is fitted with extreme precision.",
+    },
+    {
+        title: "Autonomy",
+        value: "Off-Grid Ready",
+        desc: "Advanced water filtration and energy storage.",
+    },
+    {
+        title: "Comfort",
+        value: "Climate Control",
+        desc: "Adaptive heating and cooling for any weather.",
+    },
+    {
+        title: "Safety",
+        value: "Roll-Cage Frame",
+        desc: "Integrated safety structure for peace of mind.",
+    },
+];
+---
+
+<section id="engineering" class="bg-black py-24 px-5 sm:px-9 xl:px-[52px]">
+    <div class="max-w-6xl mx-auto">
+        <h2
+            class="text-brand-grey text-xs font-bold uppercase tracking-[0.3em] mb-12 text-center"
+        >
+            The Engineering
+        </h2>
+        <div
+            class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[800px] md:h-[600px]"
+        >
+            <div
+                class="md:col-span-2 md:row-span-2 glass rounded-3xl p-8 flex flex-col justify-end"
+            >
+                <h3 class="text-brand-gold text-3xl mb-2">{specs[0].title}</h3>
+                <p class="text-white font-bold text-xl mb-4">
+                    {specs[0].value}
+                </p>
+                <p class="text-white/40">{specs[0].desc}</p>
+            </div>
+
+            <div
+                class="md:col-span-2 glass rounded-3xl p-8 flex flex-col justify-center"
+            >
+                <h3 class="text-brand-gold text-2xl mb-2">{specs[1].title}</h3>
+                <p class="text-white font-bold">{specs[1].value}</p>
+            </div>
+
+            <div class="glass rounded-3xl p-8 flex flex-col justify-center">
+                <h3 class="text-brand-gold text-2xl mb-2">{specs[2].title}</h3>
+                <p class="text-white font-bold">{specs[2].value}</p>
+            </div>
+
+            <div class="glass rounded-3xl p-8 flex flex-col justify-center">
+                <h3 class="text-brand-gold text-2xl mb-2">{specs[3].title}</h3>
+                <p class="text-white font-bold">{specs[3].value}</p>
+            </div>
+        </div>
+    </div>
+</section>

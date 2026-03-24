@@ -1,0 +1,118 @@
+---
+---
+
+<div id="global-loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a0a0a] transition-transform duration-[1.5s] ease-[cubic-bezier(0.85,0,0.15,1)]">
+    
+    <!-- Large background watermark -->
+    <h2 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[15rem] md:text-[25rem] lg:text-[40rem] font-black text-white/[0.02] tracking-tighter mix-blend-overlay pointer-events-none select-none w-full text-center">
+        HIKE
+    </h2>
+
+    <div class="flex flex-col items-center justify-center z-10 w-full max-w-sm px-6">
+        
+        <!-- Percentage Counter -->
+        <div class="flex items-baseline mb-6">
+            <span id="load-progress" class="text-white text-7xl md:text-8xl font-black tracking-tighter leading-none">0</span>
+            <span class="text-[#E50000] text-3xl md:text-4xl font-black ml-1">%</span>
+        </div>
+        
+        <!-- Loading Bar -->
+        <div class="w-full h-[2px] bg-white/10 overflow-hidden mb-6 relative">
+            <div id="load-bar" class="absolute top-0 left-0 h-full bg-[#E50000] w-0 transition-all duration-300 ease-out"></div>
+        </div>
+        
+        <!-- Status Text -->
+        <div class="flex w-full justify-between text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-white/40">
+            <span id="load-text">Initializing Engine</span>
+            <span>Hike RV</span>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const loader = document.getElementById('global-loader') as HTMLElement;
+        const progressNum = document.getElementById('load-progress') as HTMLElement;
+        const progressBar = document.getElementById('load-bar') as HTMLElement;
+        const loadText = document.getElementById('load-text') as HTMLElement;
+        
+        if (!loader || !progressNum || !progressBar || !loadText) return;
+
+        // Check if loader has already been shown in this session
+        const hasShown = sessionStorage.getItem('hike-rv-loader-shown');
+        if (hasShown) {
+            loader.style.display = 'none';
+            document.body.style.overflow = '';
+            window.dispatchEvent(new Event('loaderFinished'));
+            return;
+        }
+
+        // Set flag so it doesn't show again this session
+        sessionStorage.setItem('hike-rv-loader-shown', 'true');
+
+        // Immediately lock scrolling while the sequence runs.
+        document.body.style.overflow = 'hidden';
+
+        let progress = 0;
+        
+        // Dynamic loading stages corresponding to intervals
+        const states = [
+            "Initializing Engine",
+            "Loading Textures",
+            "Mounting Layout",
+            "Preparing Journey"
+        ];
+
+        // Decelerating bezier to make the final percentages feel impactful
+        function easeOutQuart(x: number): number {
+            return 1 - Math.pow(1 - x, 4);
+        }
+
+        const duration = 2500; // 2.5 second premium load interval
+        const start = performance.now();
+
+        function animateLoad(time: number) {
+            const elapsed = time - start;
+            const normalizedTime = Math.min(elapsed / duration, 1);
+            
+            progress = Math.floor(easeOutQuart(normalizedTime) * 100);
+            
+            // Sync values to UI
+            progressNum.textContent = progress.toString();
+            progressBar.style.width = `${progress}%`;
+
+            // State changes matching timeline distribution
+            if (progress < 30) loadText.textContent = states[0];
+            else if (progress < 60) loadText.textContent = states[1];
+            else if (progress < 90) loadText.textContent = states[2];
+            else loadText.textContent = states[3];
+
+            if (normalizedTime < 1) {
+                requestAnimationFrame(animateLoad);
+            } else {
+                // Pin mathematically to 100 exactly on closeout
+                progressNum.textContent = "100";
+                progressBar.style.width = "100%";
+                
+                // Allow user a fraction of a second to observe completion
+                setTimeout(() => {
+                    // Hardware accelerated transform sweeping the block out of the view
+                    loader.style.transform = 'translateY(-100vh)';
+                    
+                    // Signal downstream components that the DOM is visible
+                    window.dispatchEvent(new Event('loaderFinished'));
+                    
+                    // Await transition phase logic terminating to unlock background stream
+                    setTimeout(() => {
+                        document.body.style.overflow = '';
+                        loader.style.display = 'none';
+                    }, 1500); 
+
+                }, 400); 
+            }
+        }
+
+        requestAnimationFrame(animateLoad);
+    });
+</script>

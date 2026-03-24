@@ -1,0 +1,259 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import { Image } from "astro:assets";
+import roverSeries from "../assets/rover-series.png";
+---
+
+<Layout title="Rover Series | Hike RV Caravans" description="Experience the perfect blend of comfort and practicality with our Rover Series. Designed for families who love to explore.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 1. HERO SECTION                               -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="rover-hero" class="relative z-10 w-full min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="/roverbg.png" alt="Rover Series Hero" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black"></div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="relative z-10 flex flex-col items-center px-6 md:px-14 max-w-5xl mx-auto">
+                
+                <div class="flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                    <div class="w-8 sm:w-16 h-px bg-white/30"></div>
+                    <span class="text-white/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                        Family Adventure Range
+                    </span>
+                    <div class="w-8 sm:w-16 h-px bg-white/30"></div>
+                </div>
+
+                <h1 class="text-white text-5xl md:text-7xl lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up drop-shadow-2xl" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    Rover <br/>
+                    <span class="text-[#E50000]">Series.</span>
+                </h1>
+
+                <p class="text-white/70 font-medium text-sm md:text-lg tracking-wide max-w-3xl mb-12 leading-relaxed animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    Experience the perfect blend of comfort and practicality with our Rover Series. Designed for families who love to explore, these caravans offer spacious living areas, clever storage solutions, and kid-friendly features.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
+                    <a href="#contact" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)] hover:shadow-[0_10px_40px_rgba(255,255,255,0.2)]">
+                        Get a Quote
+                    </a>
+                    <a href="#models" class="px-10 py-4 border border-white/30 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm">
+                        Explore Models
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-fade-up" style="animation-delay: 1200ms; animation-fill-mode: both;">
+                <span class="text-white/40 text-[9px] uppercase tracking-[0.3em] font-bold">Scroll</span>
+                <div class="w-px h-10 bg-gradient-to-b from-white/40 to-transparent animate-pulse"></div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 2. DESCRIPTION + KEY FEATURES                 -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14 flex flex-col lg:flex-row gap-20">
+                
+                <!-- Left: Description -->
+                <div class="w-full lg:w-1/2 flex flex-col">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Built for Families</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-10 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Adventure<br/>Awaits.
+                    </h2>
+                    
+                    <p class="text-black/60 font-medium md:text-xl leading-relaxed mb-12 animate-fade-up border-l-4 border-[#E50000] pl-6 md:pl-10" style="animation-delay: 600ms; animation-fill-mode: both;">
+                        From bunk bed configurations to entertainment zones, every detail is crafted to make family adventures memorable. Built tough for Australian conditions while maintaining the comforts of home, the Rover Series is your ideal family basecamp.
+                    </p>
+
+                    <div class="w-full h-px bg-black/10 mb-10 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;"></div>
+
+                    <!-- Caravan Image -->
+                    <div class="w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up" style="animation-delay: 900ms; animation-fill-mode: both;">
+                        <Image src={roverSeries} alt="Rover Series Caravan" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                    </div>
+                </div>
+
+                <!-- Right: Key Features -->
+                <div class="w-full lg:w-1/2 flex flex-col justify-center animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    <h3 class="font-black uppercase tracking-widest text-[#E50000] mb-10 md:text-lg">Key Features</h3>
+                    
+                    <div class="flex flex-col gap-5">
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Flexible Sleeping</span>
+                                <span class="text-black/50 text-sm">Arrangements for up to 6 family members</span>
+                            </div>
+                        </div>
+
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m18-4.5H3"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Family Kitchen</span>
+                                <span class="text-black/50 text-sm">Family-sized kitchen and dining area</span>
+                            </div>
+                        </div>
+
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Enhanced Storage</span>
+                                <span class="text-black/50 text-sm">Clever storage solutions throughout</span>
+                            </div>
+                        </div>
+
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Child-Safe Design</span>
+                                <span class="text-black/50 text-sm">Built with family safety in mind</span>
+                            </div>
+                        </div>
+
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Durable Surfaces</span>
+                                <span class="text-black/50 text-sm">Easy-clean, hardwearing materials</span>
+                            </div>
+                        </div>
+
+                        <div class="group flex items-start gap-6 bg-white p-7 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <div class="w-12 h-12 rounded-xl bg-[#E50000]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E50000] transition-colors duration-500">
+                                <svg class="w-6 h-6 text-[#E50000] group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-sm md:text-base font-black uppercase tracking-wide text-black block mb-1">Entertainment Package</span>
+                                <span class="text-black/50 text-sm">Family entertainment system included</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 3. MODELS SECTION                             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="models" class="relative z-10 w-full py-24 md:py-40 bg-black text-white">
+            <!-- Background Accent -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14 relative z-10">
+                
+                <div class="text-center mb-20">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.5em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Rover Collection</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-none animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Choose Your<br/><span class="text-[#E50000]">Rover.</span>
+                    </h2>
+                </div>
+
+                <!-- Model Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+                    
+                    <!-- Grand Rover -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
+                        <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
+                            <img src="/rover/grandrover.png" alt="Grand Rover" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <span class="text-[#E50000] text-[9px] font-black uppercase tracking-[0.3em] mb-2">Flagship</span>
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">Grand Rover</h3>
+                            <p class="text-white/50 text-sm font-medium mb-8 leading-relaxed">Your grand family fiesta.</p>
+                            <a href="/grand-rover" class="w-fit px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] hover:border-[#E50000] transition-all duration-500 rounded-full group-hover:border-[#E50000]/60">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Eco -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
+                        <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
+                            <img src="/rover/ecorover.png" alt="Eco" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <span class="text-[#E50000]/60 text-[9px] font-black uppercase tracking-[0.3em] mb-2">Eco Friendly</span>
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">Eco</h3>
+                            <p class="text-white/50 text-sm font-medium mb-8 leading-relaxed">Your grand family fiesta.</p>
+                            <a href="/eco" class="w-fit px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] hover:border-[#E50000] transition-all duration-500 rounded-full group-hover:border-[#E50000]/60">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ATom -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
+                        <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
+                            <img src="/rover/atomrover.png" alt="ATom" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <span class="text-[#E50000]/60 text-[9px] font-black uppercase tracking-[0.3em] mb-2">Compact</span>
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">ATom</h3>
+                            <p class="text-white/50 text-sm font-medium mb-8 leading-relaxed">Your grand family fiesta.</p>
+                            <a href="/atom" class="w-fit px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] hover:border-[#E50000] transition-all duration-500 rounded-full group-hover:border-[#E50000]/60">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. CTA SECTION                                -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block">Ready to Go?</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-8">
+                    Start Your<br/>Family Adventure.
+                </h2>
+                <p class="text-black/60 font-medium md:text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+                    Contact our team to discuss which Rover model is perfect for your family. We're here to help you find the ideal caravan for your adventures.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                    <a href="/#contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-[#E50000] transition-colors duration-500 rounded-full shadow-xl">
+                        Get a Quote
+                    </a>
+                    <a href="/" class="px-12 py-5 border border-black/20 text-black font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-black hover:text-white transition-all duration-500 rounded-full">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

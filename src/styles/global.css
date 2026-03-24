@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+    --color-brand-red: #B30000;
+    --color-brand-grey: #6E7B8B;
+    --color-brand-gold: #D4AF37;
+    --color-brand-black: #000000;
+
+    --font-title: "Verdana", sans-serif;
+    --font-body: "Geneva", sans-serif;
+}
+
+@layer base {
+    body {
+        @apply bg-brand-black text-white font-body m-0 p-0 text-[10.5pt];
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-title uppercase font-bold;
+    }
+}
+
+@layer utilities {
+    .glass {
+        @apply bg-white/5 backdrop-blur-md border border-white/10;
+    }
+
+    .text-brand-red {
+        color: var(--color-brand-red);
+    }
+
+    .text-brand-grey {
+        color: var(--color-brand-grey);
+    }
+
+    .text-brand-gold {
+        color: var(--color-brand-gold);
+    }
+
+    .bg-brand-gold {
+        background-color: var(--color-brand-gold);
+    }
+}

@@ -1,0 +1,222 @@
+---
+const stats = [
+    { 
+        number: 1000, display: "1,000", suffix: "+", label: "Happy Customers",
+        icon: `<svg class="w-10 h-10 text-[#E50000] mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`
+    },
+    { 
+        number: 25, display: "25", suffix: "+", label: "Years of experience",
+        icon: `<svg class="w-10 h-10 text-[#E50000] mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>`
+    },
+    { 
+        number: 10, display: "10", suffix: "+", label: "Models",
+        icon: `<svg class="w-10 h-10 text-[#E50000] mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>`
+    },
+    { 
+        number: 1, display: "1", suffix: "K+", label: "Customer reviews",
+        icon: `<svg class="w-10 h-10 text-[#E50000] mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>`
+    }
+];
+
+const pillars = [
+    { 
+        title: "Warranty", 
+        desc: "We offer 2 years of manufacturers’ warranty on any model you choose.",
+        icon: `<svg class="w-7 h-7 text-[#E50000] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>`
+    },
+    { 
+        title: "Quality", 
+        desc: "All our custom-built caravan models are the best in quality.",
+        icon: `<svg class="w-7 h-7 text-[#E50000] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09l2.846.813-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>`
+    },
+    { 
+        title: "Experience", 
+        desc: "We are an experienced custom caravan builder situated in Campbellfield.",
+        icon: `<svg class="w-7 h-7 text-[#E50000] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852z" /><path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008z" /></svg>`
+    }
+];
+---
+
+<section id="why-choose-scroll" class="relative z-10 w-full h-[300vh] bg-[#fcfcfc] border-t border-black/5">
+    
+    <!-- Sticky Full Viewport Block -->
+    <div class="sticky top-0 h-screen w-full flex items-center overflow-hidden">
+        <div class="max-w-[1500px] mx-auto w-full flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 lg:px-14 relative z-10">
+            
+            <!-- Left Header -->
+            <div class="md:w-[40%] flex flex-col justify-center pb-12 md:pb-0 z-20 relative">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-6 block">The Hike RV Difference</span>
+                <h2 class="text-black text-5xl md:text-6xl lg:text-[6rem] font-black uppercase tracking-tighter leading-[0.9] mb-8">
+                    Why<br />
+                    <span class="text-[#E50000]">Choose Us?</span>
+                </h2>
+                <p class="text-black/60 font-semibold text-sm md:text-base leading-relaxed max-w-sm border-l-2 border-[#E50000] pl-6 py-2">
+                    Hike RV Caravans enhancing your travels. Elevate your journey with us!
+                </p>
+            </div>
+
+            <!-- Right Scrub Swap Container -->
+            <div class="md:w-[50%] relative h-[400px] md:h-[600px] flex items-center w-full z-10">
+                
+                <!-- View 1: Stats Grid -->
+                <div class="absolute inset-x-0 w-full will-change-transform will-change-opacity" id="wcu-stats-slide" style="opacity: 1; transform: translateY(0);">
+                    <div class="grid grid-cols-2 gap-x-8 md:gap-x-16 gap-y-16 md:gap-y-24">
+                        {stats.map((stat) => (
+                            <div class="flex flex-col items-start">
+                                <Fragment set:html={stat.icon} />
+                                <div class="flex items-center text-black mb-3">
+                                    <span class="text-6xl lg:text-[5.5rem] font-black tracking-tighter leading-none wcu-number drop-shadow-sm" data-target={stat.number} data-format={stat.display}>0</span>
+                                    {stat.suffix && <span class="text-[#E50000] text-6xl lg:text-[5.5rem] font-black tracking-tighter leading-none drop-shadow-sm ml-1">{stat.suffix}</span>}
+                                </div>
+                                <span class="text-black/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">{stat.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- View 2: Trust Factors -->
+                <div class="absolute inset-x-0 w-full will-change-transform will-change-opacity pointer-events-none" id="wcu-trust-slide" style="opacity: 0; transform: translateY(40px);">
+                    <div class="flex flex-col gap-12 lg:gap-16 relative">
+                        
+                        <!-- Timeline track -->
+                        <div class="absolute left-[-2px] md:left-[3px] top-4 bottom-8 w-[2px] bg-black/5"></div>
+
+                        {pillars.map((pillar, i) => (
+                            <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 relative z-10 pl-6 md:pl-10">
+                                
+                                <!-- Dot Marker -->
+                                <div class="absolute left-[-7px] md:left-[-2px] top-2 w-3 h-3 rounded-full bg-[#E50000] shadow-[0_0_0_6px_#fcfcfc]"></div>
+                                
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-4 mb-2 md:mb-4">
+                                        <Fragment set:html={pillar.icon} />
+                                        <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-black">
+                                            {pillar.title}
+                                        </h3>
+                                    </div>
+                                    <p class="text-black/50 text-sm md:text-base font-medium leading-relaxed max-w-sm">
+                                        {pillar.desc}
+                                    </p>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Subtle Scroll Indicator -->
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-3 opacity-30 select-none hidden md:flex">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-black">Keep Scrolling</span>
+            <div class="w-[1px] h-12 bg-black/50 overflow-hidden relative">
+                <div class="absolute top-0 left-0 w-full h-1/2 bg-black animate-slideDown"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const section = document.getElementById('why-choose-scroll');
+        const statsSlide = document.getElementById('wcu-stats-slide');
+        const trustSlide = document.getElementById('wcu-trust-slide');
+        const counters = document.querySelectorAll('.wcu-number');
+        
+        let countersFired = false;
+
+        function fireCounters() {
+            counters.forEach((num) => {
+                const targetVal = parseFloat(num.getAttribute('data-target') || '0');
+                const targetStr = num.getAttribute('data-format') || '';
+                const duration = 800; // Dramatically faster spin-up
+                let start: number | null = null;
+                
+                function animate(time: number) {
+                    if (start === null) start = time;
+                    const elapsed = time - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Snappy easeOutQuad
+                    const easeOut = 1 - (1 - progress) * (1 - progress);
+                    const current = Math.floor(targetVal * easeOut);
+                    
+                    if (targetStr.includes(',')) num.textContent = current.toLocaleString();
+                    else num.textContent = current.toString();
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        num.textContent = targetStr;
+                    }
+                }
+                requestAnimationFrame(animate);
+            });
+        }
+
+        function updateWCU() {
+            if (!section || !statsSlide || !trustSlide) return;
+            const rect = section.getBoundingClientRect();
+            const start = rect.top;
+            const totalScroll = section.offsetHeight - window.innerHeight;
+            
+            if (start <= 0 && start >= -totalScroll) {
+                const progress = Math.abs(start) / totalScroll;
+                
+                // Fire counters precisely when they lock into the screen
+                if (progress > 0.05 && !countersFired) {
+                    countersFired = true;
+                    fireCounters();
+                }
+
+                // Scrubbing logic: 
+                // 0.0 -> 0.4: Hold Stats
+                // 0.4 -> 0.6: Crossfade Transform
+                // 0.6 -> 1.0: Hold Trust Factors
+                if (progress <= 0.4) {
+                    statsSlide.style.opacity = '1';
+                    statsSlide.style.transform = 'translateY(0)';
+                    statsSlide.style.pointerEvents = 'auto';
+
+                    trustSlide.style.opacity = '0';
+                    trustSlide.style.transform = 'translateY(40px)';
+                    trustSlide.style.pointerEvents = 'none';
+                } else if (progress >= 0.6) {
+                    statsSlide.style.opacity = '0';
+                    statsSlide.style.transform = 'translateY(-40px)';
+                    statsSlide.style.pointerEvents = 'none';
+
+                    trustSlide.style.opacity = '1';
+                    trustSlide.style.transform = 'translateY(0)';
+                    trustSlide.style.pointerEvents = 'auto';
+                } else {
+                    const localProg = (progress - 0.4) / 0.2; // mapping 0.4->0.6 into 0.0->1.0
+                    
+                    statsSlide.style.opacity = `${parseFloat((1 - localProg).toFixed(4))}`;
+                    statsSlide.style.transform = `translateY(${-(localProg * 60)}px)`; // aggressive drift up
+                    statsSlide.style.pointerEvents = 'none';
+
+                    trustSlide.style.opacity = `${parseFloat(localProg.toFixed(4))}`;
+                    trustSlide.style.transform = `translateY(${60 - (localProg * 60)}px)`; // aggressive drift up from bottom
+                    trustSlide.style.pointerEvents = 'none';
+                }
+            } else if (start > 0) {
+                // Before mapping
+                statsSlide.style.opacity = '1';
+                statsSlide.style.transform = 'translateY(0)';
+                trustSlide.style.opacity = '0';
+                trustSlide.style.transform = 'translateY(40px)';
+            } else if (start < -totalScroll) {
+                // After mapping
+                statsSlide.style.opacity = '0';
+                statsSlide.style.transform = 'translateY(-40px)';
+                trustSlide.style.opacity = '1';
+                trustSlide.style.transform = 'translateY(0)';
+            }
+        }
+
+        window.addEventListener('scroll', () => requestAnimationFrame(updateWCU), { passive: true });
+        updateWCU(); // trigger immediately on mount
+    });
+</script>

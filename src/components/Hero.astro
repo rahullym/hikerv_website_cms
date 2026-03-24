@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import heroImage from "../assets/heroimage.png";
+---
+
+<section class="relative w-full h-[100svh] min-h-[600px] flex items-center justify-center overflow-hidden bg-black" id="hero">
+    
+    <!-- ░░ Background ░░ -->
+    <div class="absolute inset-0 z-0">
+        <Image
+            src={heroImage}
+            alt="Hike RV — Engineered for the Wild"
+            class="w-full h-full object-cover object-center scale-105 animate-slow-zoom"
+            loading="eager"
+        />
+        <!-- Clean Modern Vignette -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90"></div>
+    </div>
+
+    <!-- ░░ Content ░░ -->
+    <div class="relative z-10 flex flex-col items-center text-center px-6 mb-12 md:mb-16 lg:mb-20 mt-16 md:mt-0">
+        
+        <div class="flex items-center justify-center gap-4 sm:gap-6 mb-6 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+            <div class="w-8 sm:w-16 h-px bg-white"></div>
+            <span class="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                The Pinnacle of Mobile Living
+            </span>
+            <div class="w-8 sm:w-16 h-px bg-white"></div>
+        </div>
+        
+        <h1 class="text-white text-5xl md:text-8xl lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+            Engineered <br/>
+            <span class="text-white/40">for the</span> <span class="text-[#E50000]">Wild.</span>
+        </h1>
+        
+        <p class="text-white/70 font-semibold text-sm md:text-lg tracking-wide max-w-xl animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+            Where uncompromising engineering meets untamed terrain.
+        </p>
+
+    </div>
+
+    <!-- ░░ Bottom Strip (Logos) ░░ -->
+    <div class="absolute bottom-10 left-0 w-full z-10 flex flex-col items-center px-6 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
+        <span class="text-white/30 text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] mb-6">Featured Across</span>
+        
+        <div class="w-full max-w-[1200px] flex flex-wrap justify-between items-center gap-6 opacity-40 hover:opacity-100 transition-opacity duration-1000" style="filter: invert(1) brightness(1.5);">
+            <img src="/featuredlogos/logo1.png" alt="Featured Publication" class="h-5 sm:h-6 md:h-7 object-contain" />
+            <img src="/featuredlogos/logo12.png" alt="Featured Publication" class="h-5 sm:h-6 md:h-7 object-contain" />
+            <img src="/featuredlogos/logo13.png" alt="Featured Publication" class="h-5 sm:h-6 md:h-7 object-contain" />
+            <img src="/featuredlogos/logo15.png" alt="Featured Publication" class="h-5 sm:h-6 md:h-7 object-contain hidden sm:block" />
+            <img src="/featuredlogos/logo189.png" alt="Featured Publication" class="h-5 sm:h-6 md:h-7 object-contain hidden lg:block" />
+        </div>
+    </div>
+
+</section>
+
+<style>
+    /* Simplistic but incredibly premium animations natively hooked into CSS */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slowZoom {
+        from { transform: scale(1.1); }
+        to { transform: scale(1); }
+    }
+
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .animate-slow-zoom {
+        animation: slowZoom 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

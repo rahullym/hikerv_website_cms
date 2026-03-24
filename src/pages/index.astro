@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Loader from "../components/Loader.astro";
+import Hero from "../components/Hero.astro";
+import Philosophy from "../components/Philosophy.astro";
+import Machine from "../components/Machine.astro";
+import Collection from "../components/Collection.astro";
+import WhyChooseUs from "../components/WhyChooseUs.astro";
+import Invitation from "../components/Invitation.astro";
+---
+<Layout title="Hike RV Caravan | Precision Engineered Luxury">
+	<Loader />
+	<Navbar />
+	<main class="relative bg-black w-full" id="stack-container">
+		<div class="stack-section relative z-[1] origin-bottom">
+			<Hero />
+		</div>
+		<div class="stack-section relative z-[2] origin-bottom shadow-[0_-40px_100px_rgba(0,0,0,0.8)]">
+			<Philosophy />
+		</div>
+		<div class="stack-section relative z-[3] origin-bottom shadow-[0_-40px_100px_rgba(0,0,0,0.8)]">
+			<Machine />
+		</div>
+		<div class="stack-section relative z-[4] origin-bottom shadow-[0_-40px_100px_rgba(0,0,0,0.8)]">
+			<Collection />
+		</div>
+		<div class="stack-section relative z-[5] origin-bottom shadow-[0_-40px_100px_rgba(0,0,0,0.8)]">
+			<WhyChooseUs />
+		</div>
+		<div class="stack-section relative z-[7] origin-bottom shadow-[0_-40px_100px_rgba(0,0,0,0.8)]">
+			<Invitation />
+		</div>
+	</main>
+</Layout>
+
+<script>
+	function initStacking() {
+		const sections = Array.from(document.querySelectorAll('.stack-section'));
+		let ticking = false;
+		
+		function updateStacking() {
+			const winHeight = window.innerHeight;
+
+            // Phase 1: Read all rects rapidly (Prevent Layout Thrashing)
+            const rects = sections.map(sec => sec.getBoundingClientRect());
+
+            // Phase 2: Write all styles smoothly
+			sections.forEach((sec, index) => {
+				const nextSec = sections[index + 1];
+				if (!nextSec) return;
+
+				const rect = rects[index];
+				const nextRect = rects[index + 1];
+
+				if (rect.bottom < winHeight) {
+					const overlap = winHeight - nextRect.top;
+					
+					if (overlap > 0 && nextRect.top > 0) {
+						const progress = Math.min(1, overlap / winHeight);
+						
+						const yParallax = overlap * 0.6;
+						const scale = 1 - (progress * 0.04);
+						const opacity = 1 - (progress * 0.5);
+
+						(sec as HTMLElement).style.transform = `translate3d(0, ${yParallax}px, 0) scale(${scale})`;
+						(sec as HTMLElement).style.opacity = `${opacity}`;
+					} else if (nextRect.top <= 0) {
+						(sec as HTMLElement).style.transform = `translate3d(0, ${winHeight * 0.6}px, 0) scale(0.96)`;
+						(sec as HTMLElement).style.opacity = `0.5`;
+					}
+				} else {
+					(sec as HTMLElement).style.transform = `translate3d(0, 0, 0) scale(1)`;
+					(sec as HTMLElement).style.opacity = `1`;
+				}
+			});
+
+            ticking = false;
+		}
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateStacking);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Trigger on load
+        updateStacking();
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initStacking);
+	} else {
+		initStacking();
+	}
+</script>
+
+<style>
+	.stack-section {
+		background-color: #050505; 
+        will-change: transform, opacity;
+	}
+</style>

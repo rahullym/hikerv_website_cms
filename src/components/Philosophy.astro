@@ -1,0 +1,156 @@
+---
+const text1 = "Where the untamed wilderness meets".split('');
+const text2 = "absolute refinement.".split('');
+---
+
+<section id="philosophy" class="relative bg-[#050505] h-[250vh]">
+    <!-- Sticky Container -->
+    <div class="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-5 sm:px-9 xl:px-[52px] text-center">
+        
+        <!-- Background Image -->
+        <div class="absolute inset-0 w-full h-full z-0">
+            <img src="/philosophybg.png" alt="" class="w-full h-full object-cover" />
+            
+            <!-- Mild darkening to keep white text readable -->
+            <div class="absolute inset-0 bg-black/40"></div>
+            
+            <!-- Fade edges into the black background seamlessly -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
+        </div>
+
+        <!-- Ambient glow -->
+        <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+            <div class="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-[#E50000]/10 rounded-full blur-[120px] absolute"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center justify-center w-full mb-16 md:mb-24 lg:mb-32">
+            
+            <!-- Label -->
+            <div class="flex items-center justify-center gap-4 sm:gap-6 mb-12">
+                <div class="w-8 sm:w-16 h-px bg-white"></div>
+                <span class="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                    The Philosophy
+                </span>
+                <div class="w-8 sm:w-16 h-px bg-white"></div>
+            </div>
+
+            <!-- Letters rendered server-side by Astro -->
+            <h2 id="phil-text-container" class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.3] tracking-tight max-w-4xl mx-auto w-full">
+                {text1.map((char) => 
+                     char === ' ' 
+                     ? " " 
+                     : <span class="phil-char phil-dim font-black transition-all duration-100">{char}</span>
+                )}
+                <br class="hidden sm:block" />
+                {" "}
+                {text2.map((char) => 
+                     char === ' ' 
+                     ? " " 
+                     : <span class="phil-char-accent phil-accent-dim font-black transition-colors duration-100">{char}</span>
+                )}
+            </h2>
+
+            <div class="absolute top-full w-full flex flex-col items-center left-0 mt-8 sm:mt-12 pointer-events-none">
+                <!-- Sub text -->
+                <p id="phil-sub" class="text-white/50 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl transition-opacity duration-1000 opacity-0 px-4">
+                    An architectural masterpiece in motion.<br class="hidden sm:block"/>
+                    Designed to carry you seamlessly beyond the edge of the map.
+                </p>
+                
+                <div id="phil-divider" class="w-px h-16 sm:h-24 bg-gradient-to-b from-[#E50000]/60 to-transparent mt-12 opacity-0 transition-opacity duration-1000"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* 
+      We use inline blocks only for the letters, and normal text spaces for spaces,
+      allowing the browser to natively word-wrap the sentence on mobile!
+    */
+    .phil-dim {
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    }
+    .phil-filled {
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+    
+    .phil-accent-dim {
+        color: rgba(229, 0, 0, 0.15); /* #E50000 */
+    }
+    .phil-accent-filled {
+        color: rgba(229, 0, 0, 1);
+        text-shadow: 0 0 30px rgba(229, 0, 0, 0.6);
+    }
+</style>
+
+<script>
+    function initScrollAnimation() {
+        const section = document.getElementById('philosophy');
+        const subText = document.getElementById('phil-sub');
+        const div = document.getElementById('phil-divider');
+        
+        const allChars = document.querySelectorAll('.phil-char, .phil-char-accent');
+        const charCount = allChars.length;
+
+        if (!section || charCount === 0) return;
+
+        function updateScroll() {
+            if (!section) return;
+            const rect = section.getBoundingClientRect();
+            const scrollPx = -rect.top; 
+            const maxScroll = section.offsetHeight - window.innerHeight;
+            
+            let progress = scrollPx / maxScroll;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // Letters scrub fill over the first 75% of the scroll
+            const targetIndex = Math.floor((progress / 0.75) * charCount);
+            
+            allChars.forEach((el, index) => {
+                const isAccent = el.classList.contains('phil-char-accent');
+                if (index < targetIndex) {
+                    if (isAccent) {
+                        el.classList.add('phil-accent-filled');
+                        el.classList.remove('phil-accent-dim');
+                    } else {
+                        el.classList.add('phil-filled');
+                        el.classList.remove('phil-dim');
+                    }
+                } else {
+                    if (isAccent) {
+                        el.classList.remove('phil-accent-filled');
+                        el.classList.add('phil-accent-dim');
+                    } else {
+                        el.classList.remove('phil-filled');
+                        el.classList.add('phil-dim');
+                    }
+                }
+            });
+            
+            // Sub description and divider fade in over the last 15%
+            if (subText && div) {
+                if (progress > 0.85) {
+                    subText.style.opacity = '1';
+                    div.style.opacity = '1';
+                } else {
+                    subText.style.opacity = '0';
+                    div.style.opacity = '0';
+                }
+            }
+        }
+
+        window.addEventListener('scroll', updateScroll);
+        // Force calculation on mount
+        updateScroll();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimation);
+    } else {
+        initScrollAnimation();
+    }
+</script>
