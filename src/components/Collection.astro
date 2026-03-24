@@ -49,8 +49,10 @@ const models = [
                     <p class="text-white/80 font-semibold max-w-lg text-sm md:text-lg leading-relaxed drop-shadow-lg mb-10">
                         {model.desc}
                     </p>
-                    <a href={model.link} class="group relative px-10 py-4 bg-transparent border border-white/50 text-white font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-white hover:border-white hover:text-black transition-all duration-500 rounded-full">
-                        <span>Explore Series</span>
+                    <a href={model.link} class="group relative px-10 py-5 bg-transparent border border-white/30 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs overflow-hidden transition-all duration-500 hover:border-white hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] rounded-full flex items-center gap-3">
+                        <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"></div>
+                        <span class="relative z-10 group-hover:text-black transition-colors duration-500">Explore Series</span>
+                        <svg class="relative z-10 w-4 h-4 text-white group-hover:text-black transform -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                     </a>
                 </div>
             </div>
@@ -93,76 +95,101 @@ const models = [
                     if (intro) {
                         intro.style.opacity = `${1 - localProg}`;
                         intro.style.transform = `scale(${1 + localProg * 0.1})`;
+                        intro.style.pointerEvents = localProg > 0.9 ? 'none' : 'auto';
                     }
                     
-                    if (slides[0]) slides[0].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                    if (slides[0]) slides[0].style.opacity = `${localProg}`;
+                    if (slides[0]) {
+                        slides[0].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
+                        slides[0].style.opacity = `${localProg}`;
+                        slides[0].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
+                    }
                     if (texts[0]) texts[0].style.transform = `translateY(${(1 - localProg) * 80}px)`;
 
-                    if (slides[1]) slides[1].style.opacity = '0';
-                    if (slides[2]) slides[2].style.opacity = '0';
+                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
+                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
                 } 
                 // Phase 1: Hold Slide 0 (0.166 -> 0.333) [Exactly 1 Scroll]
                 else if (progress > 0.166 && progress <= 0.333) {
-                    if (intro) intro.style.opacity = '0';
+                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
 
-                    if (slides[0]) slides[0].style.transform = `scale(1.0)`;
-                    if (slides[0]) slides[0].style.opacity = `1`;
+                    if (slides[0]) {
+                        slides[0].style.transform = `scale(1.0)`;
+                        slides[0].style.opacity = `1`;
+                        slides[0].style.pointerEvents = 'auto';
+                    }
                     if (texts[0]) texts[0].style.transform = `translateY(0px)`;
 
-                    if (slides[1]) slides[1].style.opacity = '0';
-                    if (slides[2]) slides[2].style.opacity = '0';
+                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
+                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
                 }
                 // Phase 2: Slide 0 leaves, Slide 1 enters (0.333 -> 0.500) [Slow Transition]
                 else if (progress > 0.333 && progress <= 0.500) {
                     const localProg = (progress - 0.333) / 0.166; 
                     
-                    if (intro) intro.style.opacity = '0';
+                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
 
-                    if (slides[0]) slides[0].style.transform = `scale(${1 - (localProg * 0.2)})`;
-                    if (slides[0]) slides[0].style.opacity = `${1 - localProg}`;
+                    if (slides[0]) {
+                        slides[0].style.transform = `scale(${1 - (localProg * 0.2)})`;
+                        slides[0].style.opacity = `${1 - localProg}`;
+                        slides[0].style.pointerEvents = localProg < 0.5 ? 'auto' : 'none';
+                    }
                     if (texts[0]) texts[0].style.transform = `translateY(${localProg * -80}px)`;
 
-                    if (slides[1]) slides[1].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                    if (slides[1]) slides[1].style.opacity = `${localProg}`;
+                    if (slides[1]) {
+                        slides[1].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
+                        slides[1].style.opacity = `${localProg}`;
+                        slides[1].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
+                    }
                     if (texts[1]) texts[1].style.transform = `translateY(${(1 - localProg) * 80}px)`;
                     
-                    if (slides[2]) slides[2].style.opacity = '0';
+                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
                 } 
                 // Phase 3: Hold Slide 1 (0.500 -> 0.666) [Exactly 1 Scroll]
                 else if (progress > 0.500 && progress <= 0.666) {
-                    if (intro) intro.style.opacity = '0';
-                    if (slides[0]) slides[0].style.opacity = '0';
+                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
+                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
 
-                    if (slides[1]) slides[1].style.transform = `scale(1.0)`;
-                    if (slides[1]) slides[1].style.opacity = `1`;
+                    if (slides[1]) {
+                        slides[1].style.transform = `scale(1.0)`;
+                        slides[1].style.opacity = `1`;
+                        slides[1].style.pointerEvents = 'auto';
+                    }
                     if (texts[1]) texts[1].style.transform = `translateY(0px)`;
 
-                    if (slides[2]) slides[2].style.opacity = '0';
+                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
                 }
                 // Phase 4: Slide 1 leaves, Slide 2 enters (0.666 -> 0.833) [Slow Transition]
                 else if (progress > 0.666 && progress <= 0.833) {
                     const localProg = (progress - 0.666) / 0.166; 
                     
-                    if (intro) intro.style.opacity = '0';
-                    if (slides[0]) slides[0].style.opacity = '0';
+                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
+                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
 
-                    if (slides[1]) slides[1].style.transform = `scale(${1 - (localProg * 0.2)})`;
-                    if (slides[1]) slides[1].style.opacity = `${1 - localProg}`;
+                    if (slides[1]) {
+                        slides[1].style.transform = `scale(${1 - (localProg * 0.2)})`;
+                        slides[1].style.opacity = `${1 - localProg}`;
+                        slides[1].style.pointerEvents = localProg < 0.5 ? 'auto' : 'none';
+                    }
                     if (texts[1]) texts[1].style.transform = `translateY(${localProg * -80}px)`;
 
-                    if (slides[2]) slides[2].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                    if (slides[2]) slides[2].style.opacity = `${localProg}`;
+                    if (slides[2]) {
+                        slides[2].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
+                        slides[2].style.opacity = `${localProg}`;
+                        slides[2].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
+                    }
                     if (texts[2]) texts[2].style.transform = `translateY(${(1 - localProg) * 80}px)`;
                 } 
                 // Phase 5: Hold Slide 2 (0.833 -> 1.000) [Exactly 1 Scroll]
                 else {
-                    if (intro) intro.style.opacity = '0';
-                    if (slides[0]) slides[0].style.opacity = '0';
-                    if (slides[1]) slides[1].style.opacity = '0';
+                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
+                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
+                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
 
-                    if (slides[2]) slides[2].style.transform = `scale(1.0)`;
-                    if (slides[2]) slides[2].style.opacity = `1`;
+                    if (slides[2]) {
+                        slides[2].style.transform = `scale(1.0)`;
+                        slides[2].style.opacity = `1`;
+                        slides[2].style.pointerEvents = 'auto';
+                    }
                     if (texts[2]) texts[2].style.transform = `translateY(0px)`;
                 }
 
