@@ -35,7 +35,67 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	</head>
 	<body class="bg-black">
+		<div id="cursor-dot"></div>
+		<div id="cursor-ring"></div>
 		<slot />
+
+		<script>
+			const dot = document.getElementById('cursor-dot');
+			const ring = document.getElementById('cursor-ring');
+			
+			let mouseX = 0;
+			let mouseY = 0;
+			let ringX = 0;
+			let ringY = 0;
+
+			window.addEventListener('mousemove', (e) => {
+				mouseX = e.clientX;
+				mouseY = e.clientY;
+				
+				if (dot) {
+					dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+				}
+			});
+
+			function animate() {
+				// Smooth lag effect for the ring
+				ringX += (mouseX - ringX) * 0.15;
+				ringY += (mouseY - ringY) * 0.15;
+				
+				if (ring) {
+					ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+				}
+				
+				requestAnimationFrame(animate);
+			}
+			animate();
+
+			// Hover states
+			const interactables = 'a, button, .group, [role="button"], input, select, textarea';
+			
+			const onMouseEnter = () => {
+				dot?.classList.add('cursor-hover');
+				ring?.classList.add('ring-hover');
+			};
+			
+			const onMouseLeave = () => {
+				dot?.classList.remove('cursor-hover');
+				ring?.classList.remove('ring-hover');
+			};
+
+			function updateInteractables() {
+				document.querySelectorAll(interactables).forEach(el => {
+					el.addEventListener('mouseenter', onMouseEnter);
+					el.addEventListener('mouseleave', onMouseLeave);
+				});
+			}
+
+			updateInteractables();
+			
+			// Re-run for dynamic content
+			const observer = new MutationObserver(updateInteractables);
+			observer.observe(document.body, { childList: true, subtree: true });
+		</script>
 	</body>
 </html>
 
@@ -54,5 +114,67 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 	html {
 		font-family: 'Geneva', sans-serif;
 		background: #000000;
+		cursor: none;
+	}
+
+	body {
+		cursor: none;
+	}
+
+	#cursor-dot {
+		width: 8px;
+		height: 8px;
+		background-color: #E50000;
+		border-radius: 50%;
+		position: fixed;
+		top: -4px;
+		left: -4px;
+		pointer-events: none;
+		z-index: 9999;
+		transition: width 0.3s, height 0.3s, background-color 0.3s;
+		box-shadow: 0 0 10px rgba(229, 0, 0, 0.4);
+	}
+
+	#cursor-ring {
+		width: 50px;
+		height: 50px;
+		border: 1.5px solid rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+		position: fixed;
+		top: -25px;
+		left: -25px;
+		pointer-events: none;
+		z-index: 9998;
+		transition: border 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s, width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+		backdrop-filter: blur(1px);
+	}
+
+	.cursor-hover {
+		width: 16px !important;
+		height: 16px !important;
+		top: -8px !important;
+		left: -8px !important;
+		background-color: White !important;
+		box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
+	}
+
+	.ring-hover {
+		width: 90px !important;
+		height: 90px !important;
+		top: -45px !important;
+		left: -45px !important;
+		border-color: rgba(255, 255, 255, 0.4) !important;
+		background-color: rgba(255, 255, 255, 0.1) !important;
+		border-width: 1px !important;
+	}
+
+	/* Prevent cursor duplication on specific elements or for accessibility */
+	@media (hover: none) and (pointer: coarse) {
+		#cursor-dot, #cursor-ring {
+			display: none;
+		}
+		html, body {
+			cursor: auto;
+		}
 	}
 </style>

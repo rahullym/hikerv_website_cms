@@ -7,18 +7,23 @@ import heroImage from "../assets/heroimage.png";
     
     <!-- ░░ Background ░░ -->
     <div class="absolute inset-0 z-0">
-        <Image
-            src={heroImage}
-            alt="Hike RV — Engineered for the Wild"
-            class="w-full h-full object-cover object-center scale-105 animate-slow-zoom"
-            loading="eager"
-        />
+        <video 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            class="w-full h-full object-cover object-center translate-z-0 filter contrast-[1.15] brightness-[0.85] saturate-[1.1]"
+        >
+            <source src="/herobgvideo.mp4" type="video/mp4" />
+        </video>
+        <!-- Pixelation Correction: Grain & Soft Blur Overlay -->
+        <div class="absolute inset-0 z-10 opacity-60 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%),url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay backdrop-blur-[1px] pointer-events-none"></div>
         <!-- Clean Modern Vignette -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90"></div>
     </div>
 
     <!-- ░░ Content ░░ -->
-    <div class="relative z-10 flex flex-col items-center text-center px-6 mb-12 md:mb-16 lg:mb-20 mt-16 md:mt-0">
+    <div class="relative z-10 flex flex-col items-center text-center px-6 mb-12 md:mb-16 lg:mb-20 mt-16 md:mt-0 translate-y-12">
         
         <div class="flex items-center justify-center gap-4 sm:gap-6 mb-6 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
             <div class="w-8 sm:w-16 h-px bg-white"></div>
@@ -36,6 +41,12 @@ import heroImage from "../assets/heroimage.png";
         <p class="text-white/70 font-semibold text-sm md:text-lg tracking-wide max-w-xl animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
             Where uncompromising engineering meets untamed terrain.
         </p>
+
+        <!-- Minimal Luxury Scroll Anchor -->
+        <div class="mt-12 mb-6 flex flex-col items-center gap-6 opacity-40 animate-fade-up" style="animation-delay: 1200ms; animation-fill-mode: both;">
+            <span class="text-white text-[9px] uppercase tracking-[0.8em] font-light">Explore</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent animate-pulse-slow"></div>
+        </div>
 
     </div>
 
@@ -76,7 +87,12 @@ import heroImage from "../assets/heroimage.png";
         animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .animate-slow-zoom {
-        animation: slowZoom 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    @keyframes pulse-slow {
+        0%, 100% { opacity: 0.2; transform: translateY(0); }
+        50% { opacity: 1; transform: translateY(10px); }
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 3s ease-in-out infinite;
     }
 </style>
