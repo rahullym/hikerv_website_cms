@@ -1,0 +1,148 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+
+const title = "The Ultimate Guide to RV Maintenance";
+const description = "Owning an RV is about freedom, adventure, and responsibility. Proper maintenance ensures your RV stays safe, reliable, and comfortable for every journey.";
+---
+
+<Layout title={`${title} | Hike RV Blogs`} description={description}>
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans">
+        
+        <!-- Luxury Article Header -->
+        <header class="relative w-full bg-black pt-40 pb-20 md:pt-56 md:pb-32 px-6 md:px-14 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-[#111] z-0"></div>
+            <div class="absolute inset-0 opacity-40 bg-[url('/blogs/rv-maintenance.png')] bg-cover bg-center mix-blend-overlay z-0"></div>
+
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="flex items-center gap-4 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                   <a href="/blogs" class="text-[#E50000] text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors">Blogs</a>
+                   <div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+                   <span class="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Maintenance & Care</span>
+                </div>
+
+                <h1 class="text-white text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-12 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    Maintaining <br/>
+                    <span class="text-[#E50000]">your Investment.</span>
+                </h1>
+
+                <div class="flex items-center gap-8 animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#E50000] flex items-center justify-center text-white font-black text-[10px]">RV</div>
+                        <span class="text-white font-black uppercase tracking-widest text-[10px]">Hike RV Team</span>
+                    </div>
+                    <div class="w-px h-6 bg-white/10"></div>
+                    <span class="text-white/40 text-[10px] font-black uppercase tracking-widest">15 Min Read</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Content -->
+        <article class="relative z-10 w-full py-20 bg-white">
+            <div class="max-w-3xl mx-auto px-6 md:px-10">
+                
+                <div class="prose prose-lg prose-black max-w-none">
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-black/70 mb-12 italic border-l-4 border-[#E50000] pl-8">
+                        Owning an RV is not just about freedom and adventure—it’s also about responsibility. Proper maintenance ensures your RV stays safe, reliable, and comfortable for every journey.
+                    </p>
+
+                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black mt-20 mb-8">Why RV Maintenance Matters</h2>
+                    <p class="mb-8">Neglecting routine care can lead to unexpected breakdowns, costly repairs, and even safety hazards on the road. Here's why regular upkeep should be at the top of your list:</p>
+                    
+                    <div class="w-full my-16 rounded-[2.5rem] overflow-hidden shadow-2xl border border-black/5">
+                        <img src="/blogs/rv-maintenance.png" alt="RV Technical Support" class="w-full h-auto" />
+                        <div class="p-6 bg-[#f9f9f9] text-center text-[10px] font-black uppercase tracking-[0.3em] text-black/30">Hike RV Precision Engineering & Maintenance</div>
+                    </div>
+
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 list-none p-0 mb-16">
+                        <li class="flex flex-col gap-2 p-6 rounded-3xl bg-[#f9f9f9] border border-black/5">
+                             <span class="text-[10px] font-black text-[#E50000] tracking-widest uppercase">Safety First</span>
+                             <p class="text-sm text-black font-semibold m-0">Faulty brakes, worn tyres, or electrical failures can be avoided.</p>
+                        </li>
+                        <li class="flex flex-col gap-2 p-6 rounded-3xl bg-[#f9f9f9] border border-black/5">
+                             <span class="text-[10px] font-black text-[#E50000] tracking-widest uppercase">Longevity</span>
+                             <p class="text-sm text-black font-semibold m-0">Protect your chassis, suspension, roof, and interior from premature wear.</p>
+                        </li>
+                        <li class="flex flex-col gap-2 p-6 rounded-3xl bg-[#f9f9f9] border border-black/5">
+                             <span class="text-[10px] font-black text-[#E50000] tracking-widest uppercase">Cost Savings</span>
+                             <p class="text-sm text-black font-semibold m-0">Prevent expensive repairs due to water damage or rust.</p>
+                        </li>
+                        <li class="flex flex-col gap-2 p-6 rounded-3xl bg-[#f9f9f9] border border-black/5">
+                             <span class="text-[10px] font-black text-[#E50000] tracking-widest uppercase">Resale Value</span>
+                             <p class="text-sm text-black font-semibold m-0">A well-maintained RV holds its value significantly better.</p>
+                        </li>
+                    </ul>
+
+                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black mt-24 mb-8">The Essential Maintenance Checklist</h2>
+                    <p class="mb-12">Maintaining an RV involves inspecting multiple systems regularly. Divide your maintenance into these critical areas:</p>
+
+                    <div class="space-y-12">
+                         <div class="p-8 md:p-12 bg-black text-white rounded-[3rem] relative overflow-hidden group">
+                             <div class="absolute inset-0 opacity-10 bg-[url('/roverbg.png')] group-hover:scale-110 transition-transform duration-[2s]"></div>
+                             <div class="relative z-10">
+                                 <h4 class="text-2xl font-black uppercase tracking-tight mb-8 drop-shadow-xl">Exterior & Foundation</h4>
+                                 <ul class="space-y-4 list-none p-0 text-white/70 text-sm font-medium">
+                                     <li class="flex gap-4"><span>—</span> Inspect roof, walls, and undercarriage for cracks/rust.</li>
+                                     <li class="flex gap-4"><span>—</span> Check seals around windows, doors, and skylights.</li>
+                                     <li class="flex gap-4"><span>—</span> Check tyre pressure, tread depth, and rotate periodically.</li>
+                                     <li class="flex gap-4"><span>—</span> Inspect brakes, pads, and fluid levels.</li>
+                                 </ul>
+                             </div>
+                         </div>
+
+                         <div class="p-8 md:p-12 bg-[#f9f9f9] border border-black/5 rounded-[3rem]">
+                              <h4 class="text-2xl font-black uppercase tracking-tight mb-8">Internal Systems</h4>
+                              <ul class="space-y-4 list-none p-0 text-black/50 text-sm font-medium">
+                                  <li class="flex gap-4"><span class="text-[#E50000]">01</span> Electrical: Check battery voltage, solar clean and clean wiring.</li>
+                                  <li class="flex gap-4"><span class="text-[#E50000]">02</span> Plumbing: Sanitize freshwater tanks regularly and inspect for leaks.</li>
+                                  <li class="flex gap-4"><span class="text-[#E50000]">03</span> Appliances: Service fridge, stove, heater, and air conditioner.</li>
+                                  <li class="flex gap-4"><span class="text-[#E50000]">04</span> Safety: Test smoke detectors, CO detectors, and LPG alarms.</li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black mt-24 mb-8">Seasonal Tips & DIY Hacks</h2>
+                    <p class="mb-8"><strong>Summer:</strong> Service AC systems, flush water systems, and monitor tyre pressure on hot roads.</p>
+                    <p class="mb-8"><strong>Winter:</strong> Service heaters/LPG, insulate batteries, and winterize plumbing to prevent pipe bursts.</p>
+                    <p class="mb-12"><strong>Off-Season Storage:</strong> Store under cover, disconnect batteries, use moisture absorbers, and inspect periodically.</p>
+
+                    <div class="mt-24 p-10 md:p-14 bg-white rounded-[3rem] border border-black/10 shadow-2xl relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <span class="text-[#E50000] text-[10px] font-black uppercase tracking-[0.4em] mb-6 block text-center">Peace of Mind</span>
+                            <h3 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-10 text-center">Professional Servicing</h3>
+                            <p class="text-black/50 font-medium mb-10 text-center max-w-2xl mx-auto">While DIY helps, professional servicing every 6–12 months ensures access to genuine parts and expert inspection of hidden issues.</p>
+                            <div class="flex justify-center">
+                                <a href="/contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-colors duration-500 shadow-xl">Book a Service</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+
+        <!-- Related Footer -->
+        <footer class="py-20 bg-black text-white px-6 md:px-14">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+                <a href="/blogs" class="flex items-center gap-3 text-white font-black uppercase tracking-widest text-[10px] group transition-all">
+                    <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                    Back to Articles
+                </a>
+                <span class="text-white/20 text-[10px] font-black uppercase tracking-widest">Hike RV Care Guide</span>
+            </div>
+        </footer>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

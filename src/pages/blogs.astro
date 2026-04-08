@@ -1,0 +1,131 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const blogPosts = [
+  {
+    title: "Off-Road vs Semi Off-Road Caravans",
+    subtitle: "Which One is Right for You?",
+    description: "Australia offers diverse landscapes. Choosing between extreme terrain and light gravel touring is your first big decision.",
+    image: "/blogs/off-road-vs-semi.png",
+    link: "/blogs/off-road-vs-semi-off-road",
+    category: "Comparison Guide",
+    readTime: "8 Min Read"
+  },
+  {
+    title: "The Ultimate Guide to Caravan Travel",
+    subtitle: "Exploring Australia",
+    description: "From the East Coast to the Red Centre, discover the essentials of route planning, gear, and safe travel.",
+    image: "/blogs/ultimate-guide-australia.png",
+    link: "/blogs/ultimate-guide-australia",
+    category: "Ultimate Guide",
+    readTime: "12 Min Read"
+  },
+  {
+    title: "The Ultimate Guide to RV Maintenance",
+    subtitle: "Maintaining your Investment",
+    description: "Protect your freedom and adventure by following our expert checklist for chassis, electrical, and plumbing care.",
+    image: "/blogs/rv-maintenance.png",
+    link: "/blogs/rv-maintenance",
+    category: "Care & Support",
+    readTime: "15 Min Read"
+  }
+];
+---
+
+<Layout title="Blogs | Hike RV Caravans" description="Stay up to date with the latest from Hike RV. From product announcements to off-grid travel tips and guide articles.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+        
+        <!-- Luxury Gradient Backdrop -->
+        <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[90vw] h-[90vw] max-w-[1000px] bg-[#E50000]/3 rounded-full blur-[120px] opacity-40 z-0 pointer-events-none"></div>
+
+        <!-- 1. HERO SECTION -->
+        <section class="relative z-10 w-full bg-black pt-40 pb-24 md:pt-52 md:pb-36 px-6 md:px-14 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0"></div>
+            
+            <div class="relative z-10 flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                <div class="w-8 sm:w-16 h-px bg-[#E50000]/40"></div>
+                <span class="text-[#E50000] text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                    Journey Log
+                </span>
+                <div class="w-8 sm:w-16 h-px bg-[#E50000]/40"></div>
+            </div>
+
+            <h1 class="relative z-10 text-white text-5xl md:text-7xl lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                Insights & <br/>
+                <span class="text-[#E50000]">Adventures.</span>
+            </h1>
+
+            <p class="relative z-10 text-white/50 font-medium text-sm md:text-lg tracking-wide max-w-2xl animate-fade-up mb-12" style="animation-delay: 600ms; animation-fill-mode: both;">
+                Stories, technical guides, and travel inspiration from the heart of caravan craftsmanship.
+            </p>
+        </section>
+
+        <!-- 2. BLOG LISTING GRID -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-white">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+                    {blogPosts.map((post, i) => (
+                        <a href={post.link} class="group block relative animate-fade-up" style={`animation-delay: ${200 + (i * 100)}ms; animation-fill-mode: both;`}>
+                            
+                            <!-- Card Image -->
+                            <div class="relative w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden mb-10 shadow-[0_30px_80px_rgba(0,0,0,0.06)] border border-black/5 transform group-hover:-translate-y-2 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                                <img src={post.image} alt={post.title} class="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                                
+                                <div class="absolute top-8 left-8">
+                                    <span class="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-[9px] font-black uppercase tracking-widest border border-white/20">{post.category}</span>
+                                </div>
+                                
+                                <div class="absolute bottom-8 left-8 right-8">
+                                    <span class="text-[#E50000] text-[9px] font-black uppercase tracking-[0.4em] mb-3 block">{post.readTime}</span>
+                                    <h3 class="text-white text-2xl lg:text-3xl font-black uppercase tracking-tight leading-[0.95] mb-2">{post.title}</h3>
+                                    <p class="text-white/60 text-xs font-bold uppercase tracking-widest">{post.subtitle}</p>
+                                </div>
+                            </div>
+
+                            <!-- Card Excerpt -->
+                            <div class="px-4">
+                                <p class="text-black/50 font-medium text-sm md:text-base leading-relaxed mb-8 line-clamp-3">
+                                    {post.description}
+                                </p>
+                                <span class="text-black font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-3 transition-all duration-500 group-hover:gap-5 group-hover:text-[#E50000]">
+                                    Read Article
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"/></svg>
+                                </span>
+                            </div>
+
+                            <!-- Hover Overlay Element -->
+                            <div class="absolute inset-0 border-2 border-transparent group-hover:border-[#E50000]/10 rounded-[3rem] -m-4 transition-all duration-700 pointer-events-none"></div>
+                        </a>
+                    ))}
+                </div>
+
+                <!-- Bottom CTA -->
+                <div class="mt-40 p-12 md:p-24 bg-[#f9f9f9] border border-black/5 rounded-[4rem] text-center relative overflow-hidden group">
+                     <div class="absolute inset-0 bg-[url('/roverbg.png')] opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-1000 bg-cover bg-center"></div>
+                     <div class="relative z-10 flex flex-col items-center">
+                        <span class="text-[#E50000] font-black uppercase tracking-[0.5em] text-[10px] sm:text-xs mb-8">Ready for the road?</span>
+                        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mb-12 max-w-2xl text-black">Start Your Journey with Hike RV Today.</h2>
+                        <a href="/contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-colors duration-500 shadow-xl">Contact An Advisor</a>
+                     </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

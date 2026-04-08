@@ -1,7 +1,57 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+
+const exteriorImages = [
+    "/Wild Drifter/Images/External/Copy of IMG_4171.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4170.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4175.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4177.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4176.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0073.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0072.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0076.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0077.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0075.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0079.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0078.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0080.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0081.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG_4169.JPG"
+];
+
+const interiorImages = [
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0064.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0058.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0059.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0065.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0071.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0067.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0066.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0062.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0063.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0061.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0060.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of WhatsApp Image 2025-04-02 at 06.22.29_227850d9.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0051.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0045.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0044.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0046.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0043.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0057.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0056.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0068.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0054.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0055.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0069.jpg"
+];
+
+const layoutImages = [
+    { title: "Wild Drifter 20.6 Layout", desc: "Spacious Premium Oasis", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-19.6.jpg" }
+];
 ---
+
 
 <Layout title="Wild Drifter 20.6 | Hike RV Caravans" description="Strong chassis and refined finishes make the 20.6 your perfect partner in remote and refined journeys.">
     <Navbar />
@@ -32,7 +82,7 @@ import Navbar from "../components/Navbar.astro";
                 </p>
                 <div class="flex flex-col sm:flex-row items-start gap-4 animate-fade-up" style="animation-delay:600ms;animation-fill-mode:both;">
                     <a href="#contact" class="px-8 py-3.5 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Get a Quote</a>
-                    <a href="#" class="px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-2">
+                    <a href="/brochures/GTH WILD DRIFTER (4 Pages).pdf" target="_blank" download class="px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-2">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Brochure
                     </a>
@@ -47,7 +97,7 @@ import Navbar from "../components/Navbar.astro";
             </div>
             <!-- Right: Image -->
             <div class="relative w-full lg:w-[55%] min-h-[50vh] lg:min-h-full">
-                <img src="/drifter/206/206main.png" alt="Wild Drifter 20.6" class="w-full h-full object-cover" />
+                <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg" alt="Wild Drifter 20.6" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-black via-black/30 to-transparent lg:block hidden"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
                 <div class="absolute bottom-8 right-8 hidden lg:flex flex-col items-end gap-2 animate-fade-up" style="animation-delay:1000ms;animation-fill-mode:both;">
@@ -84,7 +134,7 @@ import Navbar from "../components/Navbar.astro";
                 </div>
                 <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay:400ms;animation-fill-mode:both;">
                     <div class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] group">
-                        <img src="/drifter/206/206main.png" alt="Wild Drifter 20.6 Overview" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0073.jpg" alt="Wild Drifter 20.6 Overview" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
                         <div class="absolute inset-0 rounded-[2rem] border border-black/5 pointer-events-none"></div>
                     </div>
                 </div>
@@ -102,18 +152,18 @@ import Navbar from "../components/Navbar.astro";
                     <!-- Main image -->
                     <div class="flex-[1.2]">
                         <div class="relative rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.4)] group aspect-[3/4]">
-                            <img src="/drifter/206/interior1.png" alt="Wild Drifter 20.6 Interior Main" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <img src={interiorImages[0]} alt="Wild Drifter 20.6 Interior Main" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                             <div class="absolute inset-0 border border-white/10 rounded-[1.5rem] md:rounded-[2.5rem] pointer-events-none"></div>
                         </div>
                     </div>
                     <!-- Secondary stacked images -->
                     <div class="flex-1 flex flex-col gap-4 md:gap-6 mt-8 md:mt-16">
                         <div class="relative rounded-[1.2rem] md:rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)] group aspect-square">
-                            <img src="/drifter/206/interior2.png" alt="Wild Drifter 20.6 Interior Detail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <img src={interiorImages[1]} alt="Wild Drifter 20.6 Interior Detail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                             <div class="absolute inset-0 border border-white/10 rounded-[1.2rem] md:rounded-[2rem] pointer-events-none"></div>
                         </div>
                         <div class="relative rounded-[1.2rem] md:rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)] group aspect-square">
-                            <img src="/drifter/206/interior3.png" alt="Wild Drifter 20.6 Interior Detail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <img src={interiorImages[2]} alt="Wild Drifter 20.6 Interior Detail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                             <div class="absolute inset-0 border border-white/10 rounded-[1.2rem] md:rounded-[2rem] pointer-events-none"></div>
                         </div>
                     </div>
@@ -140,8 +190,114 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. VISUAL GALLERY — The 20.6 Experience        -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-white">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-16 gap-6">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs block">Visual Experience</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">The <span class="text-[#E50000]">Gallery.</span></h2>
+                    <p class="text-black/50 font-medium md:text-lg">Step inside the Wild Drifter 20.6. {exteriorImages.length + interiorImages.length + layoutImages.length} snapshots of refined touring.</p>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
+                    <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
+                    <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
+                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
+                </div>
+
+                <!-- Gallery Grids -->
+                <div class="relative min-h-[800px]">
+                    <!-- EXTERIOR GRID -->
+                    <div id="gallery-exterior" class="gallery-content visible-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700">
+                        {exteriorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[2rem] bg-black/5 aspect-square ${i === 4 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Wild Drifter External ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- INTERIOR GRID -->
+                    <div id="gallery-interior" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700 absolute inset-0">
+                        {interiorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[1.5rem] bg-black/5 aspect-square ${i === 3 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Wild Drifter Internal ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- LAYOUT GRID -->
+                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 gap-8 transition-all duration-700 absolute inset-0">
+                        {layoutImages.map((item, i) => (
+                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+                                <div class="p-8 md:p-12 w-full max-w-5xl">
+                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
+                                </div>
+                                <div class="px-8 text-center text-black">
+                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[10px] uppercase">{item.title}</span>
+                                    <h4 class="text-3xl font-black mt-2 tracking-tight">{item.desc}</h4>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- Gallery CTA -->
+                <div class="mt-24 pt-20 border-t border-black/5 flex flex-col items-center">
+                    <p class="text-black/30 text-[10px] font-bold uppercase tracking-[0.3em] mb-10">Unmatched detail in every layout</p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <a href="/brochures/GTH WILD DRIFTER (4 Pages).pdf" target="_blank" download class="px-10 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-all duration-500 shadow-xl">Download Brochure</a>
+                        <a href="#contact" class="px-10 py-5 border border-black/20 text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-black hover:text-white transition-all duration-500">Book A Tour</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function initGallery() {
+                const tabs = document.querySelectorAll('.gallery-tab');
+                const contents = document.querySelectorAll('.gallery-content');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const target = tab.getAttribute('data-cat');
+
+                        tabs.forEach(t => t.classList.remove('active-gallery-tab', 'bg-black', 'text-white'));
+                        tab.classList.add('active-gallery-tab', 'bg-black', 'text-white');
+
+                        contents.forEach(content => {
+                            const id = content.getAttribute('id');
+                            if (id === `gallery-${target}`) {
+                                content.classList.remove('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute', 'translate-y-[30px]');
+                                content.classList.add('visible-gallery', 'opacity-100', 'z-10', 'relative', 'translate-y-0');
+                            } else {
+                                content.classList.add('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute', 'translate-y-[30px]');
+                                content.classList.remove('visible-gallery', 'opacity-100', 'z-10', 'relative', 'translate-y-0');
+                            }
+                        });
+                    });
+                });
+            }
+            initGallery();
+        </script>
+
+        <style>
+            .gallery-tab.active-gallery-tab { background: black; color: white; border-color: black; }
+            .gallery-tab.active-gallery-tab span { color: rgba(255, 255, 255, 0.5); }
+            .hidden-gallery { opacity: 0; transform: translateY(30px); pointer-events: none; }
+            .visible-gallery { opacity: 1; transform: translateY(0); }
+            .gallery-content { transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        </style>
+
+        <!-- ══════════════════════════════════════════════ -->
         <!-- 4. SPECIFICATIONS — Tabbed Comparison         -->
         <!-- ══════════════════════════════════════════════ -->
+
         <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
             <div class="max-w-[1600px] mx-auto px-6 md:px-14">
                 <div class="mb-16">
@@ -218,7 +374,7 @@ import Navbar from "../components/Navbar.astro";
                 <p class="text-white/50 font-medium md:text-lg leading-relaxed mb-12 max-w-xl mx-auto">Contact our team to configure the perfect Wild Drifter 20.6 for your touring lifestyle.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
                     <a href="/#contact" class="px-12 py-5 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Get a Quote</a>
-                    <a href="#" class="px-12 py-5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-3">
+                    <a href="/brochures/GTH WILD DRIFTER (4 Pages).pdf" target="_blank" download class="px-12 py-5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Download Brochure
                     </a>

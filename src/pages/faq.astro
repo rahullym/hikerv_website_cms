@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const faqs = [
+  {
+    q: "Why should I purchase a Hike RV Caravan?",
+    a: "The Hike RV Caravan is the brand for you if you want to start your adventure right away in a vehicle filled with all the luxury options you can imagine! We bridge the gap between custom craftsmanship and immediate freedom."
+  },
+  {
+    q: "What situations do Hike RV Caravans perform best?",
+    a: "Our caravans are tailored for individual needs with layouts perfect for both families and couples. There aren't many boxes our range doesn't check, offering specialized touring models for the highway and rugged off-road models for the path less traveled."
+  },
+  {
+    q: "Are Hike RV Caravans built in Australia?",
+    a: "Yes. All Hike RV Caravans are proudly manufactured in Victoria, Australia, using only high-quality local materials and world-class equipment to ensure they withstand the unique Australian climate."
+  },
+  {
+    q: "Is there a warranty on the Hike RV Caravans?",
+    a: "Every Hike RV Caravan comes with a comprehensive two-year factory warranty, giving you peace of mind as you explore the horizon."
+  }
+];
+---
+
+<Layout title="FAQ | Hike RV Caravans" description="Find answers to common questions about Hike RV caravans, construction, and warranties.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+        
+        <!-- Background Accents -->
+        <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-[#E50000]/3 rounded-full blur-[150px] opacity-40 z-0 pointer-events-none"></div>
+
+        <!-- 1. HERO SECTION -->
+        <section class="relative z-10 w-full bg-black pt-40 pb-24 md:pt-52 md:pb-36 px-6 md:px-14 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-[#0a0a0a] z-0"></div>
+            
+            <div class="relative z-10 flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+                <span class="text-white/60 text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">
+                    Knowledge Base
+                </span>
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+            </div>
+
+            <h1 class="relative z-10 text-white text-5xl md:text-7xl lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                Frequently <br/>
+                <span class="text-[#E50000]">Asked Q's.</span>
+            </h1>
+
+            <p class="relative z-10 text-white/50 font-medium text-sm md:text-lg tracking-wide max-w-2xl animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                Everything you need to know about the Hike RV experience, from craftsmanship to customer care.
+            </p>
+        </section>
+
+        <!-- 2. FAQ ACCORDION SECTION -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-white">
+            <div class="max-w-4xl mx-auto px-6 md:px-14">
+                
+                <div class="space-y-6">
+                    {faqs.map((faq, i) => (
+                        <div class="group border border-black/5 rounded-[2rem] bg-[#fdfdfd] overflow-hidden transition-all duration-500 hover:border-[#E50000]/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-up" style={`animation-delay: ${200 + (i * 100)}ms; animation-fill-mode: both;`}>
+                            <div class="p-8 md:p-10">
+                                <div class="flex items-start gap-6">
+                                    <span class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center font-black text-xs shrink-0 mt-1">
+                                        0{i+1}
+                                    </span>
+                                    <div class="flex flex-col">
+                                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-black mb-6 group-hover:text-[#E50000] transition-colors duration-500 leading-tight">
+                                            {faq.q}
+                                        </h3>
+                                        <p class="text-black/50 font-medium text-base md:text-lg leading-relaxed">
+                                            {faq.a}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+            </div>
+        </section>
+
+         <!-- 3. CRAFTSMANSHIP SECTION -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-[#f9f9f9] overflow-hidden border-y border-black/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                
+                <!-- Left: Content -->
+                <div class="w-full lg:w-1/2 flex flex-col animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-6 block">Our Construction</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mb-10 text-black">
+                        Built for the<br/><span class="text-[#E50000]">Road Ahead.</span>
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <p class="text-black/60 font-medium md:text-xl leading-relaxed border-l-4 border-[#E50000] pl-8">
+                            Our caravans are constructed from <span class="text-black font-black">Australian Meranti Timber</span>, which is resilient and strong. This is well-finished and sealed, allowing for movement and flex while you travel.
+                        </p>
+                        <p class="text-black/50 font-medium md:text-lg leading-relaxed">
+                            The fact that this hardwood is comparatively light, sturdy, and flexible makes it a preferred option and is chosen by leading Australian manufacturers for its unmatched durability in rugged terrains.
+                        </p>
+                    </div>
+
+                    <div class="mt-12 flex flex-wrap gap-10">
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-black text-black">Resilient</span>
+                            <span class="text-black/30 text-[10px] font-bold uppercase tracking-widest">Core Strength</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-black text-black">Flex-Seal</span>
+                            <span class="text-black/30 text-[10px] font-bold uppercase tracking-widest">Climate Proof</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-black text-black">Meranti</span>
+                            <span class="text-black/30 text-[10px] font-bold uppercase tracking-widest">Premium Timber</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Visual -->
+                <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                    <div class="relative rounded-[3rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.12)]">
+                        <img src="/warrantybg.png" alt="Hike RV Construction" class="w-full h-auto object-cover scale-105" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <span class="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] block mb-2">Internal Structure</span>
+                            <span class="text-white text-3xl font-black uppercase tracking-tight">Meranti Timber Frame</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. BOTTOM CTA -->
+        <section class="relative z-10 w-full py-24 md:py-32 bg-white">
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">
+                 <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Still have questions?</span>
+                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none text-black mb-12">Ask an Advisor.</h2>
+                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                      <a href="/contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-colors duration-500 shadow-xl">Contact Support</a>
+                      <a href="/testimonials" class="px-12 py-5 border border-black/10 text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-black hover:text-white transition-all duration-500">Owner Stories</a>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

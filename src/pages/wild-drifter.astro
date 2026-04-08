@@ -1,7 +1,58 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+
+const exteriorImages = [
+    "/Wild Drifter/Images/External/Copy of IMG_4171.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4170.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4175.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4177.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG_4176.JPG",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0073.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0072.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0076.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0077.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0075.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0079.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0078.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0080.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0081.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg",
+    "/Wild Drifter/Images/External/Copy of IMG_4169.JPG"
+];
+
+const interiorImages = [
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0064.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0058.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0059.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0065.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0071.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0067.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0066.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0062.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0063.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0061.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0060.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of WhatsApp Image 2025-04-02 at 06.22.29_227850d9.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0051.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0045.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0044.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0046.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0043.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0057.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0056.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0068.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0054.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0055.jpg",
+    "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0069.jpg"
+];
+
+const layoutImages = [
+    { title: "Wild Drifter 18.6", desc: "Premium Triple Bunk Oasis", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-18.6.jpg" },
+    { title: "Wild Drifter 19.6", desc: "The Ultimate Family Fiesta", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-19.6.jpg" }
+];
 ---
+
 
 <Layout title="Wild Drifter | Hike RV Caravans" description="A symphony of elegance on wheels. The Wild Drifter is a masterpiece tailored caravan for couples, where style meets freedom.">
     <Navbar />
@@ -14,7 +65,7 @@ import Navbar from "../components/Navbar.astro";
         <section id="wild-drifter-hero" class="relative z-10 w-full min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0">
-                <img src="/drifter/wilddrifter/wilddrifterbg.png" alt="Wild Drifter" class="w-full h-full object-cover" />
+                <img src="/Wild Drifter/Images/External/Copy of IMG_4170.JPG" alt="Wild Drifter" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black"></div>
             </div>
 
@@ -44,7 +95,7 @@ import Navbar from "../components/Navbar.astro";
                     <a href="#contact" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)] hover:shadow-[0_10px_40px_rgba(255,255,255,0.2)]">
                         Get a Quote!
                     </a>
-                    <a href="#" class="px-10 py-4 border border-white/30 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm flex items-center gap-3">
+                    <a href="/brochures/GTH WILD DRIFTER (4 Pages).pdf" target="_blank" download class="px-10 py-4 border border-white/30 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Download Brochure
                     </a>
@@ -72,12 +123,12 @@ import Navbar from "../components/Navbar.astro";
                 </div>
 
                 <!-- Variant Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
                     
                     <!-- Wild Drifter 19.6 -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
                         <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
-                            <img src="/drifter/wilddrifter/196/196.png" alt="Wild Drifter 19.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/Wild Drifter/Images/External/Copy of IMG_4171.JPG" alt="Wild Drifter 19.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -92,7 +143,7 @@ import Navbar from "../components/Navbar.astro";
                     <!-- Wild Drifter 20.6 -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
                         <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
-                            <img src="/drifter/206/206main.png" alt="Wild Drifter 20.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg" alt="Wild Drifter 20.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -104,13 +155,193 @@ import Navbar from "../components/Navbar.astro";
                         </div>
                     </div>
 
+                    <!-- Wild Drifter CD -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase font-black uppercase">CD</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">Wild Drifter <span class="text-[#E50000]">CD</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">Redefining couple's comfort with central door access.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[9px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
+                    <!-- Wild Drifter Rear club -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase font-black uppercase text-xs">Rear Club</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">Wild Drifter <span class="text-[#E50000]">Rear Club</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">Ultimate relaxation with a spacious rear club lounge.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[9px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
+                    <!-- Wild Drifter 2.0 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase font-black uppercase">2.0</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">Wild Drifter <span class="text-[#E50000]">2.0</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">The next evolution of the Wild Drifter series.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[10px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
+                    <!-- Wild Drifter Recliners -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase font-black uppercase text-xs">Recliners</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">Wild Drifter <span class="text-[#E50000]">Recliners</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">Cinema-style comfort on the road with luxury recliners.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[10px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 3. PERSONAL OASIS — Interior Features         -->
+        <!-- 3. VISUAL GALLERY — The Wild Experience         -->
         <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-white">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-16 gap-6">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs block">Wild Visuals</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">The <span class="text-[#E50000]">Gallery.</span></h2>
+                    <p class="text-black/50 font-medium md:text-lg">Experience the Wild Drifter in detail. {exteriorImages.length + interiorImages.length + layoutImages.length} snapshots of couple's luxury.</p>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
+                    <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
+                    <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
+                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
+                </div>
+
+                <!-- Gallery Grids -->
+                <div class="relative min-h-[800px]">
+                    <!-- EXTERIOR GRID -->
+                    <div id="gallery-exterior" class="gallery-content visible-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700">
+                        {exteriorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[2rem] bg-black/5 aspect-square ${i === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Wild Drifter External ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- INTERIOR GRID -->
+                    <div id="gallery-interior" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700 absolute inset-0">
+                        {interiorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[1.5rem] bg-black/5 aspect-square ${i === 2 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Wild Drifter Internal ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- LAYOUT GRID -->
+                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 lg:grid-cols-2 gap-8 transition-all duration-700 absolute inset-0">
+                        {layoutImages.map((item, i) => (
+                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+                                <div class="p-8 md:p-12 w-full">
+                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
+                                </div>
+                                <div class="px-8 text-center text-black">
+                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[12px] uppercase">{item.title}</span>
+                                    <h4 class="text-3xl font-black mt-2 tracking-tight">{item.desc}</h4>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- Gallery CTA -->
+                <div class="mt-24 pt-20 border-t border-black/5 flex flex-col items-center">
+                    <p class="text-black/30 text-[10px] font-bold uppercase tracking-[0.3em] mb-10">Unmatched Quality in Every Detail</p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                         <a href="/brochures/GTH WILD DRIFTER (4 Pages).pdf" target="_blank" download class="group relative px-10 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full overflow-hidden transition-all duration-300">
+                             <div class="absolute inset-0 bg-[#E50000] translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                             <span class="relative z-10 flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                                Save Series PDF
+                             </span>
+                         </a>
+                        <a href="#contact" class="px-10 py-5 border border-black/20 text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-black hover:text-white transition-all duration-500">Book A Tour</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function initGallery() {
+                const tabs = document.querySelectorAll('.gallery-tab');
+                const contents = document.querySelectorAll('.gallery-content');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const target = tab.getAttribute('data-cat');
+
+                        tabs.forEach(t => t.classList.remove('active-gallery-tab', 'bg-black', 'text-white'));
+                        tab.classList.add('active-gallery-tab', 'bg-black', 'text-white');
+
+                        contents.forEach(content => {
+                            const id = content.getAttribute('id');
+                            if (id === `gallery-${target}`) {
+                                content.classList.remove('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute', 'translate-y-[30px]');
+                                content.classList.add('visible-gallery', 'opacity-100', 'z-10', 'relative', 'translate-y-0');
+                            } else {
+                                content.classList.add('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute', 'translate-y-[30px]');
+                                content.classList.remove('visible-gallery', 'opacity-100', 'z-10', 'relative', 'translate-y-0');
+                            }
+                        });
+                    });
+                });
+            }
+            initGallery();
+        </script>
+
+        <style>
+            .gallery-tab.active-gallery-tab { background: black; color: white; border-color: black; }
+            .gallery-tab.active-gallery-tab span { color: rgba(255, 255, 255, 0.5); }
+            .hidden-gallery { opacity: 0; transform: translateY(30px); pointer-events: none; }
+            .visible-gallery { opacity: 1; transform: translateY(0); }
+            .gallery-content { transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        </style>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. PERSONAL OASIS — Interior Features         -->
+        <!-- ══════════════════════════════════════════════ -->
+
         <section class="relative z-10 w-full py-24 md:py-40 bg-black text-white overflow-hidden">
             <!-- Subtle glow -->
             <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>
@@ -204,7 +435,7 @@ import Navbar from "../components/Navbar.astro";
                 <!-- Right: Image -->
                 <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
                     <div class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] group">
-                        <img src="/drifter1.png" alt="Wild Drifter Interior" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0079.jpg" alt="Wild Drifter Interior" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
                         <div class="absolute inset-0 rounded-[2rem] border border-black/5 pointer-events-none"></div>
                     </div>
                 </div>

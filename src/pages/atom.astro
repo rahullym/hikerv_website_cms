@@ -1,13 +1,40 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+
+const exteriorImages = [
+    "Copy of IMG_0006.jpg", "Copy of IMG_0008.jpg", "Copy of IMG_0010.jpg", "Copy of IMG_0013.jpg", 
+    "Copy of IMG_0015.jpg", "Copy of IMG_0020.jpg", "Copy of IMG_0022.jpg", "Copy of IMG_0025.jpg", 
+    "Copy of IMG_0029.jpg", "Copy of IMG_0031.jpg", "Copy of IMG_0036.jpg", "Copy of IMG_0039.jpg", 
+    "Copy of IMG_0731.jpg", "Copy of IMG_0735.jpg", "Copy of IMG_0738.jpg", "Copy of IMG_0742.jpg", 
+    "Copy of IMG_0746.jpg", "Copy of IMG_0749.jpg"
+].map(img => `/Atom/Images/External/${img}`);
+
+const interiorImages = [
+    // Highlighted Internal shots
+    "Copy of IMG_0069.jpg", "Copy of IMG_0750.jpg", "Copy of IMG_0757.jpg", "Copy of IMG_0759.jpg", 
+    "Copy of IMG_0766.jpg", "Copy of IMG_0769.jpg", "Copy of IMG_0775.jpg", "Copy of IMG_0781.jpg", 
+    "Copy of IMG_0783.jpg", "Copy of IMG_0785.jpg", "Copy of IMG_0787.jpg",
+    // Selected Internal 2 details
+    "Copy of IMG_0044.jpg", "Copy of IMG_0048.jpg", "Copy of IMG_0051.jpg", "Copy of IMG_0054.jpg", 
+    "Copy of IMG_0058.jpg", "Copy of IMG_0063.jpg", "Copy of IMG_0067.jpg", "Copy of IMG_0071.jpg", 
+    "Copy of IMG_0074.jpg", "Copy of IMG_0077.jpg", "Copy of IMG_0081.jpg", "Copy of IMG_0085.jpg", 
+    "Copy of IMG_0091.jpg", "Copy of IMG_0096.jpg", "Copy of IMG_0101.jpg", "Copy of IMG_0110.jpg", 
+    "Copy of IMG_0115.jpg", "Copy of IMG_0119.jpg"
+].map(img => img.includes("07") || img === "Copy of IMG_0069.jpg" ? `/Atom/Images/Internal/${img}` : `/Atom/Images/Internal 2/${img}`);
+
+const layoutImages = [
+    { title: "Atom 17.2", desc: "Single Axle Compact", src: "/Atom/Layouts Atom/ATOM 17.2.jpg" },
+    { title: "Atom 17.6", desc: "Touring Perfection", src: "/Atom/Layouts Atom/GTH ATOM 17.6.jpg" },
+    { title: "Atom 17.8", desc: "The Ultra Layout", src: "/Atom/Layouts Atom/GTH ATOM 17.8.jpg" }
+];
 ---
 
 <Layout title="Atom Caravan | Hike RV Caravans" description="A caravan with sleek design and rugged off-road capability; tailored for couples seeking adventure without compromise.">
     <Navbar />
 
     <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
-
+        
         <!-- ══════════════════════════════════════════════ -->
         <!-- 1. HERO — Split Editorial Layout              -->
         <!-- ══════════════════════════════════════════════ -->
@@ -23,7 +50,7 @@ import Navbar from "../components/Navbar.astro";
                     <span class="text-[#E50000] text-[10px] font-black uppercase tracking-[0.4em]">Compact Range</span>
                 </div>
                 <h1 class="text-white text-[3.5rem] md:text-[5rem] lg:text-[6rem] font-black uppercase tracking-tighter leading-[0.85] mb-3 animate-fade-up" style="animation-delay:300ms;animation-fill-mode:both;">Compact.</h1>
-                <h2 class="text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-black uppercase tracking-tighter leading-[0.9] mb-8 animate-fade-up" style="animation-delay:400ms;animation-fill-mode:both;">
+                <h2 class="text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-black uppercase tracking-tighter leading-none mb-8 animate-fade-up" style="animation-delay:400ms;animation-fill-mode:both;">
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-white/80 to-white/40">Atom</span> <span class="text-[#E50000]">Caravan</span>
                 </h2>
                 <p class="text-white/50 font-medium text-sm md:text-base leading-relaxed max-w-md mb-10 animate-fade-up" style="animation-delay:500ms;animation-fill-mode:both;">
@@ -31,7 +58,7 @@ import Navbar from "../components/Navbar.astro";
                 </p>
                 <div class="flex flex-col sm:flex-row items-start gap-4 animate-fade-up" style="animation-delay:600ms;animation-fill-mode:both;">
                     <a href="#contact" class="px-8 py-3.5 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Get a Quote</a>
-                    <a href="#" class="px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-2">
+                    <a href="/brochures/gtaatom.pdf" target="_blank" download class="px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-2">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Brochure
                     </a>
@@ -56,9 +83,75 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 2. COMPACT LUXURY REDEFINED                   -->
+        <!-- 2. MODELS / VARIANTS SECTION                  -->
         <!-- ══════════════════════════════════════════════ -->
-        <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
+        <section id="variants" class="relative z-10 w-full py-24 md:py-36 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                
+                <div class="text-center mb-20">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.5em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">ATom Range</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-none animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        Choose Your<br/><span class="text-[#E50000]">Configuration.</span>
+                    </h2>
+                </div>
+
+                <!-- Variant Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+                    
+                    <!-- ATom 17.6 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
+                            <img src="/rover/atom/exterior.png" alt="ATom 17.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">ATom <span class="text-[#E50000]">17.6</span></h3>
+                            <a href="/atom" class="w-fit px-8 py-3.5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] transition-all duration-500 rounded-full shadow-md">
+                                Know More
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ATom 17.2 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase text-white/20">17.2</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">ATom <span class="text-[#E50000]">17.2</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">The agile single-axle compact performer.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[10px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
+                    <!-- ATom 17.8 -->
+                    <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+                        <div class="w-full h-52 md:h-60 bg-black flex items-center justify-center overflow-hidden relative">
+                             <div class="absolute inset-0 opacity-20 bg-[url('/roverbg.png')] bg-cover bg-center"></div>
+                             <div class="relative z-10 flex flex-col items-center gap-3">
+                                <span class="text-white/20 font-black italic text-4xl tracking-tighter uppercase text-white/20">17.8</span>
+                                <span class="text-white/40 font-black uppercase tracking-[0.3em] text-[8px] border border-white/10 px-4 py-1.5 rounded-full">Coming Soon</span>
+                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6 text-black">ATom <span class="text-[#E50000]">17.8</span></h3>
+                            <p class="text-black/40 text-sm font-medium mb-8">The Ultra layout with maximum space efficiency.</p>
+                            <div class="w-fit px-8 py-3.5 bg-black/5 text-black/20 font-black uppercase tracking-[0.2em] text-[10px] rounded-full">Coming Soon</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </section>
+
             <div class="max-w-[1600px] mx-auto px-6 md:px-14 flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
                 <div class="w-full lg:w-1/2 flex flex-col">
                     <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay:200ms;animation-fill-mode:both;">Overview</span>
@@ -128,7 +221,127 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 4. SPECIFICATIONS — Ultra Pack Only           -->
+        <!-- 4. THE ATOM GALLERY — Comprehensive Visuals   -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-24 md:py-40 bg-white">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+                <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-16 gap-6">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs block">Visual Experience</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">The <span class="text-[#E50000]">Gallery.</span></h2>
+                    <p class="text-black/50 font-medium md:text-lg">Step into the collection. {exteriorImages.length + interiorImages.length + layoutImages.length} high-resolution snapshots of premium craftsmanship.</p>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
+                    <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
+                    <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
+                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
+                </div>
+
+                <!-- Gallery Grids -->
+                <div class="relative min-h-[800px]">
+                    <!-- EXTERIOR GRID -->
+                    <div id="gallery-exterior" class="gallery-content visible-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700">
+                        {exteriorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[2rem] bg-black/5 aspect-square ${i === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Atom External ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- INTERIOR GRID -->
+                    <div id="gallery-interior" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all duration-700 absolute inset-0">
+                        {interiorImages.map((src, i) => (
+                            <div class={`relative group overflow-hidden rounded-[1.5rem] bg-black/5 aspect-square ${i % 7 === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
+                                <img src={src} data-src={src} alt={`Atom Internal ${i + 1}`} loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <!-- LAYOUT GRID -->
+                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-700 absolute inset-0">
+                        {layoutImages.map((item, i) => (
+                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+                                <div class="p-8 md:p-12 w-full">
+                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
+                                </div>
+                                <div class="px-8 text-center text-black">
+                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[9px] uppercase">{item.title}</span>
+                                    <h4 class="text-2xl font-black mt-2 tracking-tight">{item.desc}</h4>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-24 pt-20 border-t border-black/5 flex flex-col items-center">
+                    <p class="text-black/30 text-[10px] font-bold uppercase tracking-[0.3em] mb-10">Handcrafted detail in every pixel</p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <a href="/brochures/gtaatom.pdf" download class="group relative px-10 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full overflow-hidden transition-all duration-300">
+                             <div class="absolute inset-0 bg-[#E50000] translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                             <span class="relative z-10 flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                                Save Collection PDF
+                             </span>
+                        </a>
+                        <a href="#contact" class="px-10 py-5 border border-black/20 text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-black hover:text-white transition-all duration-500">Book Private Viewing</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function initGalleryTabs() {
+                const tabs = document.querySelectorAll('.gallery-tab');
+                const contents = document.querySelectorAll('.gallery-content');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const target = tab.getAttribute('data-cat');
+
+                        // Reset tabs
+                        tabs.forEach(t => t.classList.remove('active-gallery-tab', 'bg-black', 'text-white'));
+                        tab.classList.add('active-gallery-tab', 'bg-black', 'text-white');
+
+                        // Switch content
+                        contents.forEach(content => {
+                            const id = content.getAttribute('id');
+                            if (id === `gallery-${target}`) {
+                                content.classList.remove('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute');
+                                content.classList.add('visible-gallery', 'opacity-100', 'z-10', 'relative');
+                            } else {
+                                content.classList.add('hidden-gallery', 'opacity-0', 'pointer-events-none', 'absolute');
+                                content.classList.remove('visible-gallery', 'opacity-100', 'z-10', 'relative');
+                            }
+                        });
+                        
+                        // Scroll slightly to ensure visibility if tab is at bottom
+                        // window.scrollTo({ top: document.querySelector('.gallery-tab').offsetTop - 100, behavior: 'smooth' });
+                    });
+                });
+            }
+            initGalleryTabs();
+        </script>
+
+        <style>
+            .gallery-tab.active-gallery-tab { background: black; color: white; border-color: black; }
+            .gallery-tab.active-gallery-tab span { color: rgba(255, 255, 255, 0.5); }
+            .hidden-gallery { opacity: 0; transform: translateY(30px); pointer-events: none; visibility: hidden; }
+            .visible-gallery { opacity: 1; transform: translateY(0); visibility: visible; }
+            .gallery-content { transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        </style>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. SPECIFICATIONS — Ultra Pack Only           -->
+        <!-- ══════════════════════════════════════════════ -->
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. SPECIFICATIONS — Ultra Pack Only           -->
         <!-- ══════════════════════════════════════════════ -->
         <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
             <div class="max-w-[1600px] mx-auto px-6 md:px-14">
@@ -197,7 +410,7 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 5. CTA                                        -->
+        <!-- 6. CTA                                        -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-black text-white overflow-hidden">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>
@@ -208,7 +421,7 @@ import Navbar from "../components/Navbar.astro";
                 <p class="text-white/50 font-medium md:text-lg leading-relaxed mb-12 max-w-xl mx-auto">Contact our team to configure the perfect Atom caravan for your couple's escape.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
                     <a href="/#contact" class="px-12 py-5 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Get a Quote</a>
-                    <a href="#" class="px-12 py-5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-3">
+                    <a href="/brochures/gtaatom.pdf" target="_blank" download class="px-12 py-5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Download Brochure
                     </a>

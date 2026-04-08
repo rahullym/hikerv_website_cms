@@ -8,7 +8,9 @@ const models = [
     { id: "01", name: "Rover Series", desc: "Rugged durability meets uncompromised internal luxury.", image: "/roverbg.png", link: "/rover" },
     { id: "02", name: "Drifter Series", desc: "The ultimate balance of agility, precision, and modern style.", image: "/drifterbg.png", link: "/drifter" },
     { id: "03", name: "Elite Series", desc: "The absolute pinnacle of mobile opulence and craftsmanship.", image: model03, link: "/elite" },
+    { id: "04", name: "Toy Haulers", desc: "Extreme gear capacity meets premium living spaces.", image: "/roverbg.png", link: "/toy-haulers" },
 ];
+
 ---
 
 <section id="collection-zoom" class="relative z-20 bg-black h-[800vh]">
@@ -66,17 +68,12 @@ const models = [
         const intro = document.getElementById('collection-intro');
         if (!section) return;
 
-        const slides = [
-            document.getElementById('zoom-slide-0'),
-            document.getElementById('zoom-slide-1'),
-            document.getElementById('zoom-slide-2')
-        ];
-
-        const texts = [
-            document.getElementById('zoom-text-0'),
-            document.getElementById('zoom-text-1'),
-            document.getElementById('zoom-text-2')
-        ];
+        // Get all slides and texts dynamically
+        const slideElements = section.querySelectorAll('[id^="zoom-slide-"]');
+        const textElements = section.querySelectorAll('[id^="zoom-text-"]');
+        const numModels = slideElements.length;
+        const totalPhases = numModels * 2;
+        const phaseSize = 1 / totalPhases;
 
         let ticking = false;
 
@@ -86,132 +83,83 @@ const models = [
             const totalScroll = section!.offsetHeight - window.innerHeight;
 
             if (start <= 0 && rect.bottom >= window.innerHeight) {
-                const progress = Math.abs(start) / totalScroll; // 0.0 to 1.0
+                const progress = Math.min(Math.max(Math.abs(start) / totalScroll, 0), 0.999);
+                const currentPhase = Math.floor(progress / phaseSize);
+                const localProg = (progress % phaseSize) / phaseSize;
 
-                // Phase 0: Intro leaves, Slide 0 enters (0.00 -> 0.166)
-                if (progress <= 0.166) {
-                    const localProg = progress / 0.166; 
-                    
+                // Handle Intro
+                if (currentPhase === 0) {
                     if (intro) {
                         intro.style.opacity = `${1 - localProg}`;
                         intro.style.transform = `scale(${1 + localProg * 0.1})`;
                         intro.style.pointerEvents = localProg > 0.9 ? 'none' : 'auto';
                     }
-                    
-                    if (slides[0]) {
-                        slides[0].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                        slides[0].style.opacity = `${localProg}`;
-                        slides[0].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
-                    }
-                    if (texts[0]) texts[0].style.transform = `translateY(${(1 - localProg) * 80}px)`;
-
-                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
-                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
-                } 
-                // Phase 1: Hold Slide 0 (0.166 -> 0.333) [Exactly 1 Scroll]
-                else if (progress > 0.166 && progress <= 0.333) {
-                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
-
-                    if (slides[0]) {
-                        slides[0].style.transform = `scale(1.0)`;
-                        slides[0].style.opacity = `1`;
-                        slides[0].style.pointerEvents = 'auto';
-                    }
-                    if (texts[0]) texts[0].style.transform = `translateY(0px)`;
-
-                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
-                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
+                } else if (intro) {
+                    intro.style.opacity = '0';
+                    intro.style.pointerEvents = 'none';
                 }
-                // Phase 2: Slide 0 leaves, Slide 1 enters (0.333 -> 0.500) [Slow Transition]
-                else if (progress > 0.333 && progress <= 0.500) {
-                    const localProg = (progress - 0.333) / 0.166; 
+
+                // Handle Slides
+                slideElements.forEach((slide: any, idx) => {
+                    const text = textElements[idx] as HTMLElement;
                     
-                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
-
-                    if (slides[0]) {
-                        slides[0].style.transform = `scale(${1 - (localProg * 0.2)})`;
-                        slides[0].style.opacity = `${1 - localProg}`;
-                        slides[0].style.pointerEvents = localProg < 0.5 ? 'auto' : 'none';
-                    }
-                    if (texts[0]) texts[0].style.transform = `translateY(${localProg * -80}px)`;
-
-                    if (slides[1]) {
-                        slides[1].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                        slides[1].style.opacity = `${localProg}`;
-                        slides[1].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
-                    }
-                    if (texts[1]) texts[1].style.transform = `translateY(${(1 - localProg) * 80}px)`;
+                    // Each model has two phases: Transition In (if not first), Hold, Transition Out (if not last)
+                    // Wait, let's simplify:
+                    // Phase 0: Intro -> S0 transition
+                    // Phase 1: S0 Hold
+                    // Phase 2: S0 -> S1 transition
+                    // Phase 3: S1 Hold
+                    // ...and so on
                     
-                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
-                } 
-                // Phase 3: Hold Slide 1 (0.500 -> 0.666) [Exactly 1 Scroll]
-                else if (progress > 0.500 && progress <= 0.666) {
-                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
-                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
+                    const enterPhase = idx * 2;
+                    const holdPhase = idx * 2 + 1;
+                    const exitPhase = idx * 2 + 2;
 
-                    if (slides[1]) {
-                        slides[1].style.transform = `scale(1.0)`;
-                        slides[1].style.opacity = `1`;
-                        slides[1].style.pointerEvents = 'auto';
+                    if (currentPhase === enterPhase) {
+                        // Transitions in
+                        slide.style.opacity = idx === 0 ? '1' : `${localProg}`;
+                        slide.style.transform = idx === 0 ? `scale(${1.2 - (localProg * 0.2)})` : `scale(${1.2 - (localProg * 0.2)})`;
+                        slide.style.pointerEvents = (idx === 0 || localProg > 0.5) ? 'auto' : 'none';
+                        if (text) text.style.transform = idx === 0 ? 'translateY(0)' : `translateY(${(1 - localProg) * 80}px)`;
+                    } 
+                    else if (currentPhase === holdPhase) {
+                        // Holds
+                        slide.style.opacity = '1';
+                        slide.style.transform = 'scale(1)';
+                        slide.style.pointerEvents = 'auto';
+                        if (text) text.style.transform = 'translateY(0)';
                     }
-                    if (texts[1]) texts[1].style.transform = `translateY(0px)`;
-
-                    if (slides[2]) { slides[2].style.opacity = '0'; slides[2].style.pointerEvents = 'none'; }
-                }
-                // Phase 4: Slide 1 leaves, Slide 2 enters (0.666 -> 0.833) [Slow Transition]
-                else if (progress > 0.666 && progress <= 0.833) {
-                    const localProg = (progress - 0.666) / 0.166; 
-                    
-                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
-                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
-
-                    if (slides[1]) {
-                        slides[1].style.transform = `scale(${1 - (localProg * 0.2)})`;
-                        slides[1].style.opacity = `${1 - localProg}`;
-                        slides[1].style.pointerEvents = localProg < 0.5 ? 'auto' : 'none';
+                    else if (currentPhase === exitPhase) {
+                        // Transitions out
+                        slide.style.opacity = `${1 - localProg}`;
+                        slide.style.transform = `scale(${1 - (localProg * 0.2)})`;
+                        slide.style.pointerEvents = localProg < 0.5 ? 'auto' : 'none';
+                        if (text) text.style.transform = `translateY(${localProg * -80}px)`;
                     }
-                    if (texts[1]) texts[1].style.transform = `translateY(${localProg * -80}px)`;
-
-                    if (slides[2]) {
-                        slides[2].style.transform = `scale(${1.2 - (localProg * 0.2)})`;
-                        slides[2].style.opacity = `${localProg}`;
-                        slides[2].style.pointerEvents = localProg > 0.5 ? 'auto' : 'none';
+                    else {
+                        // Hidden
+                        slide.style.opacity = '0';
+                        slide.style.pointerEvents = 'none';
                     }
-                    if (texts[2]) texts[2].style.transform = `translateY(${(1 - localProg) * 80}px)`;
-                } 
-                // Phase 5: Hold Slide 2 (0.833 -> 1.000) [Exactly 1 Scroll]
-                else {
-                    if (intro) { intro.style.opacity = '0'; intro.style.pointerEvents = 'none'; }
-                    if (slides[0]) { slides[0].style.opacity = '0'; slides[0].style.pointerEvents = 'none'; }
-                    if (slides[1]) { slides[1].style.opacity = '0'; slides[1].style.pointerEvents = 'none'; }
-
-                    if (slides[2]) {
-                        slides[2].style.transform = `scale(1.0)`;
-                        slides[2].style.opacity = `1`;
-                        slides[2].style.pointerEvents = 'auto';
-                    }
-                    if (texts[2]) texts[2].style.transform = `translateY(0px)`;
-                }
+                });
 
             } else if (start > 0) {
-                // Completely Before section
                 if (intro) {
                     intro.style.opacity = '1';
                     intro.style.transform = 'scale(1)';
+                    intro.style.pointerEvents = 'auto';
                 }
-                if (slides[0]) slides[0].style.opacity = '0';
-                if (slides[1]) slides[1].style.opacity = '0';
-                if (slides[2]) slides[2].style.opacity = '0';
+                slideElements.forEach((s: any) => s.style.opacity = '0');
             } else if (rect.bottom < window.innerHeight) {
-                // Completely After section
                 if (intro) intro.style.opacity = '0';
-                if (slides[0]) slides[0].style.opacity = '0';
-                if (slides[1]) slides[1].style.opacity = '0';
-                if (slides[2]) {
-                    slides[2].style.transform = `scale(1)`;
-                    slides[2].style.opacity = '1';
-                }
-                if (texts[2]) texts[2].style.transform = `translateY(0px)`;
+                slideElements.forEach((s: any, idx) => {
+                    if (idx === numModels - 1) {
+                        s.style.opacity = '1';
+                        s.style.transform = 'scale(1)';
+                    } else {
+                        s.style.opacity = '0';
+                    }
+                });
             }
 
             ticking = false;
