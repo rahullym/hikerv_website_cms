@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+import MoodBoardSection from "../components/MoodBoardSection.astro";
 
 const exteriorImages = [
     "Copy of IMG-20250603-WA0069.jpg", "Copy of IMG-20250603-WA0072.jpg", "Copy of IMG-20250603-WA0073.jpg", 
@@ -19,7 +21,7 @@ const interiorImages = [
 ].map(img => `/Amore/Images/Internal 2/${img}`);
 
 const layoutImages = [
-    { title: "Amore 18.6", desc: "Compact Luxury 3D", src: "/Amore/Layouts Amore/3D Layout Amore 18.6.jpg" },
+    { title: "Amore 18.6", desc: "Compact Luxury 3D", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/AMORE 18.6.png" },
     { title: "Amore 22.6", desc: "Spacious Club Lounge", src: "/Amore/Layouts Amore/Copy of AMORE 22.6FT STD.jpg" }
 ];
 ---
@@ -182,14 +184,13 @@ const layoutImages = [
                 <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-16 gap-6">
                     <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs block">Visual Experience</span>
                     <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">The <span class="text-[#E50000]">Gallery.</span></h2>
-                    <p class="text-black/50 font-medium md:text-lg">Step into the collection. {exteriorImages.length + interiorImages.length + layoutImages.length} high-resolution snapshots of premium craftsmanship.</p>
+                    <p class="text-black/50 font-medium md:text-lg">Step into the collection. {exteriorImages.length + interiorImages.length} high-resolution snapshots of premium craftsmanship.</p>
                 </div>
 
                 <!-- Tab Navigation -->
                 <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
                     <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
                     <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
-                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
                 </div>
 
                 <!-- Gallery Grids -->
@@ -214,20 +215,7 @@ const layoutImages = [
                         ))}
                     </div>
 
-                    <!-- LAYOUT GRID -->
-                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-700 absolute inset-0">
-                        {layoutImages.map((item, i) => (
-                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                                <div class="p-8 md:p-12 w-full">
-                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
-                                </div>
-                                <div class="px-8 text-center text-black">
-                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[9px] uppercase">{item.title}</span>
-                                    <h4 class="text-2xl font-black mt-2 tracking-tight">{item.desc}</h4>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+
                 </div>
 
                 <!-- CTA -->
@@ -288,7 +276,17 @@ const layoutImages = [
         </style>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 5. SPECIFICATIONS — Tabbed Comparison         -->
+        <!-- 5. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={layoutImages} title="Premium" subtitle="Space Mastery." />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 6. INTERIOR STYLING — Mood Boards             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <MoodBoardSection />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 7. SPECIFICATIONS — Tabbed Comparison         -->
         <!-- ══════════════════════════════════════════════ -->
 
         <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
@@ -358,7 +356,7 @@ const layoutImages = [
         </script>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 5. CTA                                        -->
+        <!-- 8. CTA                                        -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-black text-white overflow-hidden">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>

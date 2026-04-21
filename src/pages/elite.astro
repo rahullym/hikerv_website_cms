@@ -1,6 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+
+const eliteLayouts = [
+    { title: "Armadillo 16ft", desc: "Flagship Luxury Adventure", src: "/3D LAYOUTS 2024/ARMADILLO 16FT.jpg" }
+];
 import { Image } from "astro:assets";
 import eliteSeries from "../assets/elite-series.png";
 ---
@@ -16,7 +21,7 @@ import eliteSeries from "../assets/elite-series.png";
         <section id="elite-hero" class="relative z-10 w-full min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0">
-                <img src="/elite/armadillo.png" alt="Elite Series Hero" class="w-full h-full object-cover" />
+                <img src="/elite/armadillo.png" alt="Elite Series Hero" class="w-full h-full object-cover scale-[1.4] object-center" />
                 <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black"></div>
             </div>
 
@@ -81,7 +86,7 @@ import eliteSeries from "../assets/elite-series.png";
 
                     <!-- Caravan Image -->
                     <div class="w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up relative" style="animation-delay: 900ms; animation-fill-mode: both;">
-                        <Image src={eliteSeries} alt="Elite Series Caravan" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                        <Image src={eliteSeries} alt="Elite Series Caravan" class="w-full h-auto object-cover scale-[1.4] origin-center transition-transform duration-700" />
                         <!-- Gold accent border -->
                         <div class="absolute inset-0 rounded-3xl border-2 border-[#D4AF37]/20 pointer-events-none"></div>
                     </div>
@@ -197,7 +202,7 @@ import eliteSeries from "../assets/elite-series.png";
                     <!-- Armadillo -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#D4AF37]/40 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
                         <div class="w-full h-64 md:h-72 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
-                            <img src="/elite/armadillo.png" alt="Armadillo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/elite/armadillo.png" alt="Armadillo" class="w-full h-full object-cover scale-[1.4] object-center transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                             <!-- Gold Badge -->
                             <div class="absolute top-6 right-6 px-4 py-1.5 bg-[#D4AF37] text-black text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg">
@@ -258,9 +263,13 @@ import eliteSeries from "../assets/elite-series.png";
                     
                 </div>
                 
-                <div class="w-full h-px bg-black/5"></div>
             </div>
         </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={eliteLayouts} title="Flagship" subtitle="Spatial Engineering." />
 
         <!-- ══════════════════════════════════════════════ -->
         <!-- 5. CTA SECTION                                -->

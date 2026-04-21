@@ -1,6 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+
+const roverLayouts = [
+    { title: "Grand Rover 21.6 v1", desc: "Flagship Family Comfort", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v1.0.png" },
+    { title: "Grand Rover 19.6", desc: "Dual Bunk Configuration", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 19.6 2 BUNK.png" },
+    { title: "Grand Rover 24.6", desc: "Ultimate Infinity Space", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 24.6 INFINITY.png" }
+];
 import { Image } from "astro:assets";
 import roverSeries from "../assets/rover-series.png";
 ---
@@ -16,7 +23,7 @@ import roverSeries from "../assets/rover-series.png";
         <section id="rover-hero" class="relative z-10 w-full min-h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0">
-                <img src="/roverbg.png" alt="Rover Series Hero" class="w-full h-full object-cover" />
+                <img src="/roverbg.png" alt="Rover Series Hero" class="w-full h-full object-cover scale-[1.4] object-center" />
                 <div class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black"></div>
             </div>
 
@@ -78,7 +85,7 @@ import roverSeries from "../assets/rover-series.png";
 
                     <!-- Caravan Image -->
                     <div class="w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up" style="animation-delay: 900ms; animation-fill-mode: both;">
-                        <Image src={roverSeries} alt="Rover Series Caravan" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                        <Image src={roverSeries} alt="Rover Series Caravan" class="w-full h-auto object-cover scale-[1.4] origin-center transition-transform duration-700" />
                     </div>
                 </div>
 
@@ -169,12 +176,12 @@ import roverSeries from "../assets/rover-series.png";
 
                 <!-- Model Cards Grid core -->
                 <!-- Model Cards Grid core -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 pb-24">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pb-24 max-w-5xl mx-auto">
                     
                     <!-- Grand Rover -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
                         <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
-                            <img src="/rover/grandrover.png" alt="Grand Rover" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/rover/grandrover.png" alt="Grand Rover" class="w-full h-full object-cover scale-[1.4] object-center transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -190,7 +197,7 @@ import roverSeries from "../assets/rover-series.png";
                     <!-- Eco -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
                         <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
-                            <img src="/rover/ecorover.png" alt="Eco" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/rover/ecorover.png" alt="Eco" class="w-full h-full object-cover scale-[1.4] object-center transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -203,24 +210,14 @@ import roverSeries from "../assets/rover-series.png";
                         </div>
                     </div>
 
-                    <!-- ATom -->
-                    <div class="group relative rounded-[2rem] overflow-hidden border border-white/10 hover:border-[#E50000]/40 transition-all duration-700 hover:-translate-y-2 bg-white/5 backdrop-blur-sm">
-                        <div class="w-full h-56 md:h-64 bg-[#111] flex items-center justify-center overflow-hidden relative">
-                            <img src="/rover/atomrover.png" alt="ATom" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        </div>
-                        <div class="p-8 md:p-10 flex flex-col">
-                            <span class="text-[#E50000]/60 text-[9px] font-black uppercase tracking-[0.3em] mb-2">Compact Voyager</span>
-                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">ATom</h3>
-                            <p class="text-white/50 text-sm font-medium mb-8 leading-relaxed">Versatile performance in a streamlined footprint.</p>
-                            <a href="/atom" class="w-fit px-8 py-3.5 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] hover:border-[#E50000] transition-all duration-500 rounded-full group-hover:border-[#E50000]/60">
-                                View Series
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={roverLayouts} title="Expansive" subtitle="Family Living." />
         <!-- ══════════════════════════════════════════════ -->
         <!-- 4. CTA SECTION                                -->
         <!-- ══════════════════════════════════════════════ -->

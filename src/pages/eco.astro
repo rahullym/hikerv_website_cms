@@ -1,6 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+import MoodBoardSection from "../components/MoodBoardSection.astro";
+
+const layoutImages = [
+    { title: "Eco 18.6", desc: "Optimized Single Axle", src: "/3D LAYOUTS 2024/18.6 FT ECO.jpg" }
+];
 ---
 
 <Layout title="Eco 18.6 | Hike RV Caravans" description="Lightweight yet robust, the Eco 18.6 combines smart living space and off-road capabilities for truly memorable journeys.">
@@ -45,7 +51,7 @@ import Navbar from "../components/Navbar.astro";
                 </div>
             </div>
             <div class="relative w-full lg:w-[55%] min-h-[50vh] lg:min-h-full">
-                <img src="/rover/ecorover.png" alt="Eco 18.6" class="w-full h-full object-cover" />
+                <img src="/rover/ecorover.png" alt="Eco 18.6" class="w-full h-full object-cover scale-[1.4] object-center" />
                 <div class="absolute inset-0 bg-gradient-to-r from-black via-black/30 to-transparent lg:block hidden"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
                 <div class="absolute bottom-8 right-8 hidden lg:flex flex-col items-end gap-2 animate-fade-up" style="animation-delay:1000ms;animation-fill-mode:both;">
@@ -154,7 +160,7 @@ import Navbar from "../components/Navbar.astro";
                 </div>
                 <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay:400ms;animation-fill-mode:both;">
                     <div class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] group">
-                        <img src="/rover/eco/exterior.png" alt="Eco 18.6" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <img src="/rover/eco/exterior.png" alt="Eco 18.6" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 scale-[1.4] object-center" />
                         <div class="absolute inset-0 rounded-[2rem] border border-black/5 pointer-events-none"></div>
                     </div>
                 </div>
@@ -200,7 +206,17 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 4. SPECIFICATIONS — Tabbed Comparison         -->
+        <!-- 4. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={layoutImages} title="Optimized" subtitle="Architectural Flow." />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. INTERIOR STYLING — Mood Boards             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <MoodBoardSection />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 6. SPECIFICATIONS — Tabbed Comparison         -->
         <!-- ══════════════════════════════════════════════ -->
         <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
             <div class="max-w-[1600px] mx-auto px-6 md:px-14">
@@ -225,14 +241,73 @@ import Navbar from "../components/Navbar.astro";
         </section>
 
         <script>
-        const specData={ultra:{chassis:["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame',"Drop Legs x 4","2 X Battery Boxes"],furniture:["White stipple Furniture","Front robe port Holes","Postform Benchtops","Recessed Mini grill","Air conditioner Frame","Smoke detector"],electrical:["LED Internal Down lights","LED Boot Lights","External 240 Power point","HV Wingard sensor","Grey Anderson Plug","12 Pin Trailer Plug"],plumbing:["Water fillers X 2 Lockable","224L DOMETIC 3 way Fridge","Fridge/Freezer","Swift Mini grill","Water filter system","Thetford Cassette Toilet"]},terrain:{chassis:["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame',"Drop Step","Do-35 Coupling"],furniture:["White stipple Furniture","Front robe port Holes","Postform Benchtops","Queen Bed 1900 x 500mm","Smoke detector","Bottom Mount Rangehood"],electrical:["Belair 3400 air conditioner","LED Internal Down lights","LED Boot Lights","External 240 Power point","Bottom mount Rangehood","BM-pro Trail safe"],plumbing:["Water fillers X 2 Lockable","188L DOMETIC 3 way","Fridge/Freezer","Swift Mini grill","1 x Elec + 3 x gas","White Ceramic Basin"]},hiker:{chassis:["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame','2800KG 12" Brakes',"8\" Jockey Wheels"],furniture:["White stipple Furniture","Front robe port Holes","Postform Benchtops","Recessed Mini grill","20L Microwave","Smoke detector"],electrical:["Belair 3400 air conditioner","LED Internal Down lights","LED Boot Lights","External 240 Power point","BM-pro Trail safe","Grey Anderson Plug"],plumbing:["Water fillers X 2 Lockable","188L DOMETIC 12v","Fridge/Freezer","Swift Mini grill","1 x Elec + 3 x gas","Water filter system"]}};
-        function renderSpecs(tier){const d=specData[tier];['chassis','furniture','electrical','plumbing'].forEach(cat=>{const ul=document.getElementById('spec-'+cat);if(ul)ul.innerHTML=d[cat].map(item=>`<li class="flex items-start gap-3"><span class="w-4 h-4 shrink-0 mt-0.5 text-[#E50000]"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg></span><span class="text-sm text-black/60 font-medium">${item}</span></li>`).join('');});}
-        document.querySelectorAll('.tier-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.tier-tab').forEach(b=>b.classList.remove('active-tier'));btn.classList.add('active-tier');renderSpecs(btn.dataset.tier);});});
+        interface SpecCategory {
+            chassis: string[];
+            furniture: string[];
+            electrical: string[];
+            plumbing: string[];
+        }
+        
+        interface SpecData {
+            [key: string]: SpecCategory;
+        }
+
+        const specData: SpecData = {
+            ultra: {
+                chassis: ["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame',"Drop Legs x 4","2 X Battery Boxes"],
+                furniture: ["White stipple Furniture","Front robe port Holes","Postform Benchtops","Recessed Mini grill","Air conditioner Frame","Smoke detector"],
+                electrical: ["LED Internal Down lights","LED Boot Lights","External 240 Power point","HV Wingard sensor","Grey Anderson Plug","12 Pin Trailer Plug"],
+                plumbing: ["Water fillers X 2 Lockable","224L DOMETIC 3 way Fridge","Fridge/Freezer","Swift Mini grill","Water filter system","Thetford Cassette Toilet"]
+            },
+            terrain: {
+                chassis: ["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame',"Drop Step","Do-35 Coupling"],
+                furniture: ["White stipple Furniture","Front robe port Holes","Postform Benchtops","Queen Bed 1900 x 500mm","Smoke detector","Bottom Mount Rangehood"],
+                electrical: ["Belair 3400 air conditioner","LED Internal Down lights","LED Boot Lights","External 240 Power point","Bottom mount Rangehood","BM-pro Trail safe"],
+                plumbing: ["Water fillers X 2 Lockable","188L DOMETIC 3 way","Fridge/Freezer","Swift Mini grill","1 x Elec + 3 x gas","White Ceramic Basin"]
+            },
+            hiker: {
+                chassis: ["Silver shine chassis",'6" Chassis','2" Chassis Raiser','6" Extended A-frame','2800KG 12" Brakes',"8\" Jockey Wheels"],
+                furniture: ["White stipple Furniture","Front robe port Holes","Postform Benchtops","Recessed Mini grill","20L Microwave","Smoke detector"],
+                electrical: ["Belair 3400 air conditioner","LED Internal Down lights","LED Boot Lights","External 240 Power point","BM-pro Trail safe","Grey Anderson Plug"],
+                plumbing: ["Water fillers X 2 Lockable","188L DOMETIC 12v","Fridge/Freezer","Swift Mini grill","1 x Elec + 3 x gas","Water filter system"]
+            }
+        };
+
+        function renderSpecs(tier: string) {
+            const d = specData[tier];
+            if (!d) return;
+            
+            (['chassis','furniture','electrical','plumbing'] as const).forEach(cat => {
+                const ul = document.getElementById('spec-' + cat);
+                if (ul) {
+                    ul.innerHTML = d[cat].map((item: string) => `
+                        <li class="flex items-start gap-3">
+                            <span class="w-4 h-4 shrink-0 mt-0.5 text-[#E50000]">
+                                <svg viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+                                </svg>
+                            </span>
+                            <span class="text-sm text-black/60 font-medium">${item}</span>
+                        </li>
+                    `).join('');
+                }
+            });
+        }
+
+        document.querySelectorAll('.tier-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tier-tab').forEach(b => b.classList.remove('active-tier'));
+                btn.classList.add('active-tier');
+                const tier = (btn as HTMLElement).dataset.tier;
+                if (tier) renderSpecs(tier);
+            });
+        });
+        
         renderSpecs('ultra');
         </script>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 5. CTA                                        -->
+        <!-- 7. CTA                                        -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-black text-white overflow-hidden">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>

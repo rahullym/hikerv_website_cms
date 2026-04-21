@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import MoodBoardSection from "../components/MoodBoardSection.astro";
 
 const exteriorImages = [
     "/Wild Drifter/Images/External/Copy of IMG_4171.JPG",
@@ -295,7 +296,12 @@ const layoutImages = [
         </style>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 4. SPECIFICATIONS — Tabbed Comparison         -->
+        <!-- 5. INTERIOR STYLING — Mood Boards             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <MoodBoardSection />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 6. SPECIFICATIONS — Tabbed Comparison         -->
         <!-- ══════════════════════════════════════════════ -->
 
         <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
@@ -363,7 +369,7 @@ const layoutImages = [
         </script>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 5. CTA                                        -->
+        <!-- 7. CTA                                        -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-black text-white overflow-hidden">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#E50000]/5 rounded-full blur-[150px] pointer-events-none"></div>

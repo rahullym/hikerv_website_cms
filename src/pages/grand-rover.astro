@@ -1,6 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+import MoodBoardSection from "../components/MoodBoardSection.astro";
+
+const layoutImages = [
+    { title: "Grand Rover 20.6", desc: "Optimised Family Living", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 19.6 2 BUNK.png" },
+    { title: "Grand Rover 21.6", desc: "Extended Luxury Space", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v1.0.png" },
+    { title: "Grand Rover Infinity", desc: "The Ultimate 24.6ft Flagship", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 24.6 INFINITY.png" }
+];
 
 const exteriorImages = [
     "/rover/grandrover/Grand Rover 20.6.png",
@@ -28,11 +36,6 @@ const interiorImages = [
     "/rover/grandrover/infinity/interior3.png"
 ];
 
-const layoutImages = [
-    { title: "Grand Rover 20.6", desc: "Spacious Family Layout", src: "/rover/grandrover/20.6/206.png" },
-    { title: "Grand Rover 21.6", desc: "Extended Luxury Living", src: "/rover/grandrover/21.6/216.png" },
-    { title: "Grand Rover Infinity", desc: "Pinnacle of Series", src: "/rover/grandrover/infinity/infinity1.png" }
-];
 ---
 
 
@@ -325,7 +328,6 @@ const layoutImages = [
                 <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
                     <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
                     <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
-                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
                 </div>
 
                 <!-- Gallery Grids -->
@@ -350,19 +352,6 @@ const layoutImages = [
                         ))}
                     </div>
 
-                    <!-- LAYOUT GRID -->
-                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-700 absolute inset-0">
-                        {layoutImages.map((item, i) => (
-                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                                <div class="p-8 md:p-12 w-full">
-                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
-                                </div>
-                                <div class="px-8 text-center text-black">
-                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[9px] uppercase">{item.title}</span>
-                                    <h4 class="text-2xl font-black mt-2 tracking-tight">{item.desc}</h4>
-                                </div>
-                            </div>
-                        ))}
                     </div>
                 </div>
 
@@ -423,6 +412,11 @@ const layoutImages = [
         </style>
 
         <!-- ══════════════════════════════════════════════ -->
+        <!-- 6. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={layoutImages} title="Masterful" subtitle="Spatial Design." />
+
+        <!-- ══════════════════════════════════════════════ -->
         <!-- 6. THE GRAND ROVER EXPERIENCE — Full Banner   -->
         <!-- ══════════════════════════════════════════════ -->
 
@@ -461,7 +455,12 @@ const layoutImages = [
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 6. CTA SECTION                                -->
+        <!-- 6. INTERIOR STYLING — Mood Boards             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <MoodBoardSection />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 7. CTA SECTION                                -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] text-black border-t border-black/5">
             <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">

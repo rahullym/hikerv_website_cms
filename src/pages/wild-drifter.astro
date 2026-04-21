@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+import MoodBoardSection from "../components/MoodBoardSection.astro";
 
 const exteriorImages = [
     "/Wild Drifter/Images/External/Copy of IMG_4171.JPG",
@@ -48,8 +50,8 @@ const interiorImages = [
 ];
 
 const layoutImages = [
-    { title: "Wild Drifter 18.6", desc: "Premium Triple Bunk Oasis", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-18.6.jpg" },
-    { title: "Wild Drifter 19.6", desc: "The Ultimate Family Fiesta", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-19.6.jpg" }
+    { title: "Wild Drifter 18.6", desc: "Premium Triple Bunk Oasis", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/WILD DRIFTER 18.6.png" },
+    { title: "Wild Drifter 19.6", desc: "The Ultimate Family Fiesta", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/WILD DRIFTER 19.6.png" }
 ];
 ---
 
@@ -128,7 +130,7 @@ const layoutImages = [
                     <!-- Wild Drifter 19.6 -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
                         <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
-                            <img src="/Wild Drifter/Images/External/Copy of IMG_4171.JPG" alt="Wild Drifter 19.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/Wild Drifter/Images/External/Copy of IMG_4171.JPG" alt="Wild Drifter 19.6" class="w-full h-full object-cover scale-[1.4] object-center group-hover:scale-[1.5] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -143,7 +145,7 @@ const layoutImages = [
                     <!-- Wild Drifter 20.6 -->
                     <div class="group relative rounded-[2rem] overflow-hidden border border-black/5 hover:border-[#E50000]/30 transition-all duration-700 hover:-translate-y-2 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
                         <div class="w-full h-52 md:h-60 bg-[#f4f4f4] flex items-center justify-center overflow-hidden relative">
-                            <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg" alt="Wild Drifter 20.6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                            <img src="/Wild Drifter/Images/External/Copy of IMG-20250402-WA0082.jpg" alt="Wild Drifter 20.6" class="w-full h-full object-cover scale-[1.4] object-center group-hover:scale-[1.5] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                             <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                         </div>
                         <div class="p-8 md:p-10 flex flex-col">
@@ -235,14 +237,13 @@ const layoutImages = [
                 <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-16 gap-6">
                     <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs block">Wild Visuals</span>
                     <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">The <span class="text-[#E50000]">Gallery.</span></h2>
-                    <p class="text-black/50 font-medium md:text-lg">Experience the Wild Drifter in detail. {exteriorImages.length + interiorImages.length + layoutImages.length} snapshots of couple's luxury.</p>
+                    <p class="text-black/50 font-medium md:text-lg">Experience the Wild Drifter in detail. {exteriorImages.length + interiorImages.length} snapshots of couple's luxury.</p>
                 </div>
 
                 <!-- Tab Navigation -->
                 <div class="flex items-center justify-center gap-1 sm:gap-4 mb-20 overflow-x-auto no-scrollbar py-2">
                     <button data-cat="exterior" class="gallery-tab active-gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Exterior <span class="ml-2 text-black/50">({exteriorImages.length})</span></button>
                     <button data-cat="interior" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Interior <span class="ml-2 text-black/50">({interiorImages.length})</span></button>
-                    <button data-cat="layout" class="gallery-tab px-8 py-3.5 rounded-full font-black uppercase tracking-[0.2em] text-[9px] md:text-[11px] transition-all duration-500 border border-black/5">Layouts <span class="ml-2 text-black/50">({layoutImages.length})</span></button>
                 </div>
 
                 <!-- Gallery Grids -->
@@ -267,20 +268,7 @@ const layoutImages = [
                         ))}
                     </div>
 
-                    <!-- LAYOUT GRID -->
-                    <div id="gallery-layout" class="gallery-content hidden-gallery grid grid-cols-1 lg:grid-cols-2 gap-8 transition-all duration-700 absolute inset-0">
-                        {layoutImages.map((item, i) => (
-                            <div class="relative group overflow-hidden rounded-[2.5rem] bg-black/2 pb-12 border border-black/5 flex flex-col items-center justify-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                                <div class="p-8 md:p-12 w-full">
-                                    <img src={item.src} alt={item.title} class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105" />
-                                </div>
-                                <div class="px-8 text-center text-black">
-                                    <span class="text-[#E50000] font-black tracking-[0.4em] text-[12px] uppercase">{item.title}</span>
-                                    <h4 class="text-3xl font-black mt-2 tracking-tight">{item.desc}</h4>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+
                 </div>
 
                 <!-- Gallery CTA -->
@@ -439,9 +427,13 @@ const layoutImages = [
                         <div class="absolute inset-0 rounded-[2rem] border border-black/5 pointer-events-none"></div>
                     </div>
                 </div>
-
             </div>
         </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4. 3D LAYOUTS — Architectural View             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={layoutImages} title="Optimized" subtitle="Architectural Flow." />
 
         <!-- ══════════════════════════════════════════════ -->
         <!-- 5. CRAFT YOUR DREAM — Full Banner             -->
@@ -481,7 +473,12 @@ const layoutImages = [
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 6. CTA SECTION                                -->
+        <!-- 6. INTERIOR STYLING — Mood Boards             -->
+        <!-- ══════════════════════════════════════════════ -->
+        <MoodBoardSection />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 7. CTA SECTION                                -->
         <!-- ══════════════════════════════════════════════ -->
         <section id="contact" class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] text-black border-t border-black/5">
             <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">
