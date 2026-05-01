@@ -1,0 +1,212 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const centers = [
+    {
+        name: "Adelaide City Caravans",
+        state: "SA",
+        stateLong: "South Australia",
+        address: "7 Ferry Ave, Melrose Park SA 5039, Australia"
+    },
+    {
+        name: "Get Hitched Tasmania",
+        state: "TAS",
+        stateLong: "Tasmania",
+        address: "30 Charbooday Dr, Youngtown TAS 7249, Australia"
+    },
+    {
+        name: "Wired2Roam RV Solutions",
+        state: "NSW",
+        stateLong: "New South Wales",
+        address: "Unit 9/42 Turner Rd, Smeaton Grange NSW 2567, Australia"
+    },
+    {
+        name: "Leak Tight RV",
+        state: "VIC",
+        stateLong: "Victoria",
+        address: "Yarra Valley, Melbourne, VIC, Australia"
+    }
+];
+
+const states = Array.from(new Set(centers.map(c => c.state))).sort();
+---
+
+<Layout title="Service Centers | Hike RV Caravans" description="Find authorised Hike RV service centers across Australia for repairs, maintenance, and warranty work.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 1. HERO                                        -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full bg-black pt-40 pb-24 md:pt-48 md:pb-32 px-6 md:px-14 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-[#111] z-0"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] bg-[#E50000]/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div class="relative z-10 flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+                <span class="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.5em]">Authorised Network</span>
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+            </div>
+
+            <h1 class="relative z-10 text-white text-4xl md:text-6xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up drop-shadow-2xl" style="animation-delay: 400ms; animation-fill-mode: both;">
+                Service <br/><span class="text-[#E50000]">Centers.</span>
+            </h1>
+
+            <p class="relative z-10 text-white/60 font-medium text-sm md:text-lg max-w-2xl animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                Authorised Hike RV service partners across Australia — qualified for repairs, maintenance, and warranty work.
+            </p>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 2. SEARCH + RESULTS                           -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-20 md:py-28 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-14">
+
+                <!-- Search bar + state filters -->
+                <div class="flex flex-col gap-6 mb-14 md:mb-16">
+                    <div class="relative w-full max-w-2xl mx-auto">
+                        <span class="absolute left-6 top-1/2 -translate-y-1/2 text-black/40 pointer-events-none">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 105.6 5.6a7.5 7.5 0 0011.05 11.05z"/></svg>
+                        </span>
+                        <input
+                            id="sc-search"
+                            type="text"
+                            placeholder="Search by name, suburb, or state…"
+                            aria-label="Search service centers"
+                            class="w-full pl-14 pr-6 py-5 rounded-full bg-white border border-black/10 text-black placeholder-black/30 focus:outline-none focus:border-[#E50000] focus:shadow-[0_10px_40px_rgba(229,0,0,0.08)] transition-all duration-300 text-sm md:text-base font-medium"
+                        />
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-2">
+                        <button data-state="all" class="sc-tab active-sc-tab px-5 py-2 rounded-full font-black uppercase tracking-[0.18em] text-[10px] transition-all duration-300 border border-black/5">
+                            All <span class="ml-2 opacity-50">({centers.length})</span>
+                        </button>
+                        {states.map((s) => (
+                            <button data-state={s} class="sc-tab px-5 py-2 rounded-full font-black uppercase tracking-[0.18em] text-[10px] transition-all duration-300 border border-black/5">
+                                {s} <span class="ml-2 opacity-50">({centers.filter(c => c.state === s).length})</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- Results grid -->
+                <div id="sc-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    {centers.map((c) => (
+                        <article
+                            class="sc-card group relative bg-white rounded-[2rem] border border-black/5 p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-[#E50000]/30 hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)]"
+                            data-name={c.name.toLowerCase()}
+                            data-address={c.address.toLowerCase()}
+                            data-state={c.state}
+                            data-state-long={c.stateLong.toLowerCase()}
+                        >
+                            <div class="flex items-start justify-between gap-4 mb-5">
+                                <span class="text-[#E50000] font-black uppercase tracking-[0.3em] text-[9px]">{c.stateLong}</span>
+                                <span class="px-3 py-1 bg-black text-white rounded-full text-[10px] font-black tracking-[0.2em]">{c.state}</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight leading-tight mb-5 text-black">{c.name}</h3>
+                            <div class="flex items-start gap-3 text-black/60 mb-8 leading-relaxed">
+                                <svg class="w-4 h-4 mt-1 shrink-0 text-[#E50000]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s7-7.58 7-13a7 7 0 10-14 0c0 5.42 7 13 7 13z"/><circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/></svg>
+                                <span class="text-sm md:text-base font-medium">{c.address}</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#E50000] transition-colors duration-300 rounded-full"
+                                >
+                                    Get Directions
+                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                                </a>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+
+                <p id="sc-empty" class="hidden text-center text-black/40 font-medium md:text-lg py-20">
+                    No service centers match your search.
+                </p>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 3. CTA                                        -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-20 md:py-28 bg-black text-white border-t border-white/5 overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#E50000]/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center relative z-10">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block">Need Help?</span>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-8">
+                    Lodge a<br/><span class="text-[#E50000]">Warranty Claim.</span>
+                </h2>
+                <p class="text-white/50 font-medium md:text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+                    For repairs covered by your manufacturer warranty, lodge your claim online and our team will coordinate with the nearest authorised service center.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="/warranty" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Submit Warranty Claim</a>
+                    <a href="/contact" class="px-10 py-4 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full">Contact Hike RV</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<script>
+    function initServiceCenterSearch() {
+        const input = document.getElementById('sc-search') as HTMLInputElement | null;
+        const tabs = document.querySelectorAll<HTMLButtonElement>('.sc-tab');
+        const cards = document.querySelectorAll<HTMLElement>('.sc-card');
+        const empty = document.getElementById('sc-empty');
+        let activeState = 'all';
+
+        function applyFilter() {
+            const q = (input?.value || '').trim().toLowerCase();
+            let visible = 0;
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name') || '';
+                const addr = card.getAttribute('data-address') || '';
+                const stateAbbr = (card.getAttribute('data-state') || '').toLowerCase();
+                const stateLong = card.getAttribute('data-state-long') || '';
+                const matchesText = !q || name.includes(q) || addr.includes(q) || stateAbbr.includes(q) || stateLong.includes(q);
+                const matchesState = activeState === 'all' || card.getAttribute('data-state') === activeState;
+                const show = matchesText && matchesState;
+                card.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+            if (empty) empty.classList.toggle('hidden', visible > 0);
+        }
+
+        input?.addEventListener('input', applyFilter);
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active-sc-tab'));
+                tab.classList.add('active-sc-tab');
+                activeState = tab.getAttribute('data-state') || 'all';
+                applyFilter();
+            });
+        });
+    }
+
+    initServiceCenterSearch();
+    document.addEventListener('astro:after-swap', initServiceCenterSearch);
+</script>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    .sc-tab { background: white; color: rgba(0,0,0,0.55); }
+    .sc-tab:hover { border-color: rgba(229,0,0,0.4); color: #E50000; }
+    .sc-tab.active-sc-tab {
+        background: black; border-color: black; color: white;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+</style>
