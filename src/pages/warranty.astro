@@ -33,12 +33,12 @@ import Navbar from "../components/Navbar.astro";
             </p>
         </section>
 
-        <!-- 2. CONTENT & FORM SECTION -->
-        <section class="relative z-10 w-full py-24 md:py-40 bg-[#fdfdfd] text-black border-t border-black/5">
-            <div class="max-w-[1600px] mx-auto px-6 md:px-14 flex flex-col lg:flex-row gap-20">
-                
-                <!-- Left Side (Text content) -->
-                <div class="w-full lg:w-1/2 flex flex-col">
+        <!-- 2. CONTENT SECTION -->
+        <section class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1400px] mx-auto px-6 md:px-14 flex flex-col">
+
+                <!-- Text content -->
+                <div class="w-full flex flex-col">
                     <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Confidence Built In</span>
                     <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-10 animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
                         Comprehensive<br/>Warranty Promise.
@@ -57,69 +57,56 @@ import Navbar from "../components/Navbar.astro";
                     
                     <h3 class="font-black uppercase tracking-widest text-[#E50000] mb-8 md:text-lg animate-fade-up" style="animation-delay: 1100ms; animation-fill-mode: both;">Coverage Includes:</h3>
                     
-                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 text-black/70 font-black uppercase tracking-widest text-sm md:text-base animate-fade-up" style="animation-delay: 1200ms; animation-fill-mode: both;">
-                        <li class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
-                            <span class="w-2 h-2 rounded-full bg-[#E50000]"></span> Plumbing
+                    <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-black/70 font-black uppercase tracking-widest text-xs md:text-sm animate-fade-up" style="animation-delay: 1200ms; animation-fill-mode: both;">
+                        <li class="flex items-center gap-3 bg-white p-5 md:p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] shrink-0"></span> Plumbing
                         </li>
-                        <li class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
-                            <span class="w-2 h-2 rounded-full bg-[#E50000]"></span> Structural
+                        <li class="flex items-center gap-3 bg-white p-5 md:p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] shrink-0"></span> Structural
                         </li>
-                        <li class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
-                            <span class="w-2 h-2 rounded-full bg-[#E50000]"></span> Electrical
+                        <li class="flex items-center gap-3 bg-white p-5 md:p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] shrink-0"></span> Electrical
                         </li>
-                        <li class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
-                            <span class="w-2 h-2 rounded-full bg-[#E50000]"></span> General Construction
+                        <li class="flex items-center gap-3 bg-white p-5 md:p-6 rounded-2xl border border-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:-translate-y-1 hover:border-[#E50000]/30 transition-all duration-500">
+                            <span class="w-2 h-2 rounded-full bg-[#E50000] shrink-0"></span> General Construction
                         </li>
                     </ul>
                 </div>
 
-                <!-- Right Side (Form) -->
-                <div class="w-full lg:w-1/2 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;">
-                    <div class="flex flex-col gap-8 w-full max-w-xl bg-white p-10 md:p-14 rounded-[3rem] border border-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.05)] mx-auto lg:ml-auto lg:mr-0">
-                        
-                        <div class="flex flex-col gap-4 mb-4">
-                            <h3 class="text-3xl font-black uppercase tracking-tighter text-black">Warranty Claim Form</h3>
-                            <p class="text-black/50 text-xs md:text-sm font-medium leading-relaxed italic border-l-2 border-black/10 pl-4 py-1">
-                                “Thank you for choosing Hike Rv! We’re sorry to hear that you’re experiencing an issue with your product. Don’t worry, we’ve got you covered! Please fill out the warranty claim form below, and our team will jump into action to assist you. We’re here to make things right and ensure your satisfaction. Let’s get started!”
-                            </p>
-                            <p class="text-[#E50000] text-[10px] md:text-xs font-bold uppercase tracking-wider mt-2">
-                                Please fill out the form below with the required details, and we’ll be in touch with you shortly.
-                            </p>
-                        </div>
-                        
-                        <form class="flex flex-col gap-8">
-                            <div class="flex flex-col gap-2 relative group">
-                                <label for="name" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50 group-focus-within:text-[#E50000] transition-colors">Full Name *</label>
-                                <input type="text" id="name" required class="w-full bg-transparent border-b border-black/10 pb-2 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
-                            </div>
+            </div>
+        </section>
 
-                            <div class="flex flex-col gap-2 relative group">
-                                <label for="email" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50 group-focus-within:text-[#E50000] transition-colors">Email Address *</label>
-                                <input type="email" id="email" required class="w-full bg-transparent border-b border-black/10 pb-2 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
-                            </div>
+        <!-- 3. WARRANTY CLAIM FORM SECTION -->
+        <section id="claim-form" class="relative z-10 w-full pt-8 pb-24 md:pt-12 md:pb-32 bg-[#fdfdfd] text-black overflow-hidden">
+            <!-- Subtle accent glow -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60vw] h-[40vw] max-w-[800px] max-h-[500px] bg-[#E50000]/[0.06] rounded-full blur-[120px] pointer-events-none"></div>
 
-                            <div class="flex flex-col gap-2 relative group">
-                                <label for="phone" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50 group-focus-within:text-[#E50000] transition-colors">Phone Number *</label>
-                                <input type="tel" id="phone" required class="w-full bg-transparent border-b border-black/10 pb-2 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
-                            </div>
-
-                            <div class="flex flex-col gap-2 relative group">
-                                <label for="chassis" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50 group-focus-within:text-[#E50000] transition-colors">Chassis Number (VIN) *</label>
-                                <input type="text" id="chassis" required class="w-full bg-transparent border-b border-black/10 pb-2 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
-                            </div>
-                            
-                            <div class="flex flex-col gap-2 mb-4 relative group">
-                                <label for="issue" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50 group-focus-within:text-[#E50000] transition-colors">Issue Description *</label>
-                                <textarea id="issue" rows="4" required class="w-full bg-transparent border-b border-black/10 pb-2 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium resize-none"></textarea>
-                            </div>
-
-                            <button type="submit" class="w-fit px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-[#E50000] transition-colors duration-500 mt-2 rounded-full shadow-xl">
-                                Submit Claim
-                            </button>
-                        </form>
-                    </div>
+            <div class="max-w-[1100px] mx-auto px-6 md:px-14 relative">
+                <div class="text-center mb-12 md:mb-16">
+                    <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">Submit a Claim</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-6 animate-fade-up" style="animation-delay: 300ms; animation-fill-mode: both;">
+                        Warranty Claim<br/><span class="text-[#E50000]">Form.</span>
+                    </h2>
+                    <p class="text-black/55 font-medium md:text-lg leading-relaxed max-w-2xl mx-auto animate-fade-up" style="animation-delay: 400ms; animation-fill-mode: both;">
+                        We’re sorry to hear you’re experiencing an issue. Fill out the form below — our team will be in touch shortly to make things right.
+                    </p>
                 </div>
 
+                <div class="relative animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                    <!-- Decorative frame -->
+                    <div class="absolute -inset-3 md:-inset-4 rounded-[2.5rem] bg-gradient-to-br from-[#E50000]/30 via-black/5 to-transparent pointer-events-none"></div>
+                    <div class="relative bg-white rounded-[2rem] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.10)] overflow-hidden">
+                        <iframe
+                            src="https://hikecaravans.rework.com/workflows/a/webform/MzI1LndlYmZvcm1z?mode=iframe"
+                            title="Warranty Claim Form"
+                            loading="lazy"
+                            class="w-full h-[900px] md:h-[1100px] lg:h-[1200px] border-0 bg-white block"
+                        >Loading…</iframe>
+                    </div>
+                    <p class="text-center text-black/30 text-[10px] font-bold uppercase tracking-[0.3em] mt-6">
+                        Form unable to load? <a href="mailto:info@hikerv.com" class="text-[#E50000] hover:underline">Email us at info@hikerv.com</a>
+                    </p>
+                </div>
             </div>
         </section>
 
