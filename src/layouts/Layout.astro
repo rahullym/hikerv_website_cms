@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
+import GoogleRatingFloat from '../components/GoogleRatingFloat.astro';
+import RightSidebar from '../components/RightSidebar.astro';
 
 interface Props {
 	title: string;
@@ -40,7 +42,10 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		<div id="cursor-ring"></div>
 		
 		<slot />
-		
+
+		<GoogleRatingFloat />
+		<RightSidebar />
+
 		<Footer />
 
 		<script>

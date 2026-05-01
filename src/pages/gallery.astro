@@ -1,0 +1,385 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const ENCODE = (p: string) => p.split('/').map(encodeURIComponent).join('/');
+
+const categories = [
+    {
+        key: "grand-rover",
+        label: "Grand Rover Ultra",
+        images: [
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0100.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0104.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0107.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0108.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0110.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Ecternal/IMG-20250903-WA0113.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0040.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0041.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0043.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0046.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0049.jpg",
+            "/Grand Rover/Images Grand Rover Ultra /Internal 2/IMG-20250904-WA0058.jpg"
+        ]
+    },
+    {
+        key: "wild-drifter",
+        label: "Wild Drifter",
+        images: [
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0072.jpg",
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0073.jpg",
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0075.jpg",
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0076.jpg",
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0077.jpg",
+            "/Wild Drifter/Images/External/Copy of IMG-20250402-WA0078.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0043.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0044.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0045.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0046.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0051.jpg",
+            "/Wild Drifter/Images/Internal 4/Copy of IMG-20250402-WA0054.jpg"
+        ]
+    },
+    {
+        key: "atom",
+        label: "Atom",
+        images: [
+            "/Atom/Images/External/Copy of IMG_0006.jpg",
+            "/Atom/Images/External/Copy of IMG_0008.jpg",
+            "/Atom/Images/External/Copy of IMG_0010.jpg",
+            "/Atom/Images/External/Copy of IMG_0013.jpg",
+            "/Atom/Images/External/Copy of IMG_0015.jpg",
+            "/Atom/Images/External/Copy of IMG_0020.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0750.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0759.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0766.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0772.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0775.jpg",
+            "/Atom/Images/Internal/Copy of IMG_0785.jpg"
+        ]
+    },
+    {
+        key: "amore",
+        label: "Amore",
+        images: [
+            "/Amore/Images/External/Copy of IMG-20250603-WA0069.jpg",
+            "/Amore/Images/External/Copy of IMG-20250603-WA0072.jpg",
+            "/Amore/Images/External/Copy of IMG-20250603-WA0073.jpg",
+            "/Amore/Images/External/Copy of IMG-20250603-WA0075.jpg",
+            "/Amore/Images/External/Copy of IMG-20250603-WA0078.jpg",
+            "/Amore/Images/External/Copy of IMG-20250603-WA0079.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0049.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0051.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0052.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0053.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0054.jpg",
+            "/Amore/Images/Internal 2/Copy of IMG-20250603-WA0055.jpg"
+        ]
+    },
+    {
+        key: "tanzanite",
+        label: "Tanzanite",
+        images: [
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0090.jpg",
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0091.jpg",
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0092.jpg",
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0093.jpg",
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0094.jpg",
+            "/Tanzanite/Images/External/Copy of IMG-20250402-WA0095.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0088.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0089.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0097.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0098.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0100.jpg",
+            "/Tanzanite/Images/Internal 2/Copy of IMG-20250402-WA0101.jpg"
+        ]
+    },
+    {
+        key: "mood-boards",
+        label: "Mood Boards",
+        images: [
+            "/Hike RV Mood Boards/Hike RV Mood Board Billabong.jpg",
+            "/Hike RV Mood Boards/Hike RV Mood Board Outrider.jpg",
+            "/Hike RV Mood Boards/Hike RV Mood Board Roamer.jpg",
+            "/Hike RV Mood Boards/Hike RV Mood Board Sundown.jpg",
+            "/Hike RV Mood Boards/Hike RV Mood Board Trackside.jpg"
+        ]
+    },
+    {
+        key: "layouts",
+        label: "3D Layouts",
+        images: [
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 24.6 INFINITY.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 23.6 INFINITY.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v1.0.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 19.6 2 BUNK.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/WILD DRIFTER 18.6.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/WILD DRIFTER 19.6.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/AMORE 18.6.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GTH ATOM 17.6.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GTH ATOM 17.8.png",
+            "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GTH ULTRA OFF GRID 19.6.png"
+        ]
+    }
+];
+
+const totalImages = categories.reduce((n, c) => n + c.images.length, 0);
+---
+
+<Layout title="Gallery | Hike RV Caravans" description="Browse the Hike RV gallery — exterior, interior, mood boards, and 3D layouts across the entire caravan range.">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 1. HERO                                        -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full bg-black pt-40 pb-24 md:pt-48 md:pb-32 px-6 md:px-14 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-[#111] z-0"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] bg-[#E50000]/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <div class="relative z-10 flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay: 200ms; animation-fill-mode: both;">
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+                <span class="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.5em]">Visual Archive</span>
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+            </div>
+
+            <h1 class="relative z-10 text-white text-4xl md:text-6xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up drop-shadow-2xl" style="animation-delay: 400ms; animation-fill-mode: both;">
+                The <br/><span class="text-[#E50000]">Gallery.</span>
+            </h1>
+
+            <p class="relative z-10 text-white/60 font-medium text-sm md:text-lg max-w-2xl animate-fade-up" style="animation-delay: 600ms; animation-fill-mode: both;">
+                {totalImages}+ moments across exteriors, interiors, mood boards, and 3D layouts — every model, every detail.
+            </p>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 2. FILTER + GRID                              -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-20 md:py-28 bg-[#fdfdfd] text-black border-t border-black/5">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-14">
+
+                <!-- Tab Navigation -->
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-16 md:mb-20">
+                    <button data-cat="all" class="gallery-tab active-gallery-tab px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-black uppercase tracking-[0.18em] text-[10px] sm:text-[11px] transition-all duration-500 border border-black/5">
+                        All <span class="ml-2 opacity-50">({totalImages})</span>
+                    </button>
+                    {categories.map((cat) => (
+                        <button data-cat={cat.key} class="gallery-tab px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-black uppercase tracking-[0.18em] text-[10px] sm:text-[11px] transition-all duration-500 border border-black/5">
+                            {cat.label} <span class="ml-2 opacity-50">({cat.images.length})</span>
+                        </button>
+                    ))}
+                </div>
+
+                <!-- Image Grid -->
+                <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 scroll-mt-32">
+                    {categories.flatMap((cat) => cat.images.map((src, ii) => (
+                        <figure
+                            data-cat={cat.key}
+                            class="gallery-item group relative overflow-hidden rounded-[1.5rem] md:rounded-[2rem] bg-black/5 aspect-[4/3]"
+                        >
+                            <img
+                                src={ENCODE(src)}
+                                alt={`${cat.label} — ${ii + 1}`}
+                                loading="lazy"
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <figcaption class="absolute bottom-4 left-5 right-5 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 text-white">
+                                <span class="text-[#E50000] text-[9px] font-black uppercase tracking-[0.3em] block mb-1">{cat.label}</span>
+                                <span class="text-xs md:text-sm font-bold">View detail</span>
+                            </figcaption>
+                        </figure>
+                    )))}
+                </div>
+
+                <p id="gallery-empty" class="hidden text-center text-black/40 font-medium md:text-lg py-20">No images in this category yet.</p>
+
+                <!-- Pagination -->
+                <nav id="gallery-pagination" aria-label="Gallery pagination" class="hidden flex flex-wrap items-center justify-center gap-2 mt-14 md:mt-20"></nav>
+
+                <p id="gallery-meta" class="hidden text-center text-black/30 text-[10px] font-bold uppercase tracking-[0.3em] mt-6"></p>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 3. CTA                                        -->
+        <!-- ══════════════════════════════════════════════ -->
+        <section class="relative z-10 w-full py-20 md:py-28 bg-black text-white border-t border-white/5 overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#E50000]/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center relative z-10">
+                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block">See it in person</span>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-8">
+                    Visit the<br/><span class="text-[#E50000]">Showroom.</span>
+                </h2>
+                <p class="text-white/50 font-medium md:text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+                    Photos only do so much. Walk through one in person, see the build quality up close, and meet the team behind it.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="/dealers" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full shadow-[0_10px_40px_rgba(229,0,0,0.3)]">Find a Dealer</a>
+                    <a href="/contact" class="px-10 py-4 border border-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-white hover:text-black transition-all duration-500 rounded-full">Contact Us</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<script>
+    const PAGE_SIZE = 12;
+    const FEATURE_INDICES = new Set([0, 6]);
+
+    function initGallery() {
+        const tabs = document.querySelectorAll<HTMLButtonElement>('.gallery-tab');
+        const items = Array.from(document.querySelectorAll<HTMLElement>('.gallery-item'));
+        const empty = document.getElementById('gallery-empty');
+        const pagination = document.getElementById('gallery-pagination');
+        const meta = document.getElementById('gallery-meta');
+        const grid = document.getElementById('gallery-grid');
+        if (!pagination || !meta) return;
+
+        let activeCat = 'all';
+        let currentPage = 1;
+
+        function getMatching(cat: string) {
+            return cat === 'all' ? items : items.filter(it => it.getAttribute('data-cat') === cat);
+        }
+
+        function applyFeatureLayout(visibleOnPage: HTMLElement[]) {
+            items.forEach(it => it.classList.remove('gallery-item-feature'));
+            visibleOnPage.forEach((it, i) => {
+                if (FEATURE_INDICES.has(i)) it.classList.add('gallery-item-feature');
+            });
+        }
+
+        function renderPagination(totalPages: number) {
+            if (!pagination) return;
+            if (totalPages <= 1) {
+                pagination.classList.add('hidden');
+                pagination.innerHTML = '';
+                return;
+            }
+            pagination.classList.remove('hidden');
+
+            const buttons: string[] = [];
+            const isDisabled = (cond: boolean) => cond ? 'opacity-30 pointer-events-none' : '';
+
+            buttons.push(
+                `<button data-page="prev" aria-label="Previous page" class="page-btn ${isDisabled(currentPage === 1)} w-11 h-11 rounded-full border border-black/10 bg-white text-black flex items-center justify-center hover:border-[#E50000] hover:text-[#E50000] transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </button>`
+            );
+
+            const pages = pageRange(currentPage, totalPages);
+            pages.forEach(p => {
+                if (p === '…') {
+                    buttons.push('<span class="px-2 text-black/30 font-bold">…</span>');
+                } else {
+                    const active = p === currentPage;
+                    buttons.push(
+                        `<button data-page="${p}" aria-label="Page ${p}" aria-current="${active ? 'page' : 'false'}" class="page-btn w-11 h-11 rounded-full font-black text-[11px] transition-all duration-300 border ${active ? 'bg-black text-white border-black shadow-[0_8px_20px_rgba(0,0,0,0.18)]' : 'bg-white text-black/60 border-black/10 hover:border-[#E50000] hover:text-[#E50000]'}">${p}</button>`
+                    );
+                }
+            });
+
+            buttons.push(
+                `<button data-page="next" aria-label="Next page" class="page-btn ${isDisabled(currentPage === totalPages)} w-11 h-11 rounded-full border border-black/10 bg-white text-black flex items-center justify-center hover:border-[#E50000] hover:text-[#E50000] transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                </button>`
+            );
+
+            pagination.innerHTML = buttons.join('');
+            pagination.querySelectorAll<HTMLButtonElement>('.page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const v = btn.getAttribute('data-page');
+                    if (!v) return;
+                    if (v === 'prev') currentPage = Math.max(1, currentPage - 1);
+                    else if (v === 'next') currentPage = Math.min(totalPages, currentPage + 1);
+                    else currentPage = parseInt(v, 10);
+                    apply({ scroll: true });
+                });
+            });
+        }
+
+        function pageRange(current: number, total: number): (number | '…')[] {
+            const out: (number | '…')[] = [];
+            const push = (v: number | '…') => out.push(v);
+            const window = 1;
+            for (let i = 1; i <= total; i++) {
+                if (i === 1 || i === total || (i >= current - window && i <= current + window)) {
+                    push(i);
+                } else if (out[out.length - 1] !== '…') {
+                    push('…');
+                }
+            }
+            return out;
+        }
+
+        function apply(opts: { scroll?: boolean } = {}) {
+            const matching = getMatching(activeCat);
+            const totalPages = Math.max(1, Math.ceil(matching.length / PAGE_SIZE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * PAGE_SIZE;
+            const end = start + PAGE_SIZE;
+
+            items.forEach(it => it.classList.add('hidden'));
+            const onPage = matching.slice(start, end);
+            onPage.forEach(it => it.classList.remove('hidden'));
+            applyFeatureLayout(onPage);
+
+            if (empty) empty.classList.toggle('hidden', matching.length > 0);
+            renderPagination(totalPages);
+
+            if (matching.length > 0 && meta) {
+                meta.classList.remove('hidden');
+                meta.textContent = `Showing ${start + 1}–${Math.min(end, matching.length)} of ${matching.length}`;
+            } else if (meta) {
+                meta.classList.add('hidden');
+            }
+
+            if (opts.scroll && grid) {
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-cat') || 'all';
+                tabs.forEach(t => t.classList.remove('active-gallery-tab'));
+                tab.classList.add('active-gallery-tab');
+                activeCat = target;
+                currentPage = 1;
+                apply();
+            });
+        });
+
+        apply();
+    }
+
+    initGallery();
+    document.addEventListener('astro:after-swap', initGallery);
+</script>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    .gallery-tab { background: white; color: rgba(0,0,0,0.55); }
+    .gallery-tab:hover { border-color: rgba(229,0,0,0.4); color: #E50000; }
+    .gallery-tab.active-gallery-tab {
+        background: black; border-color: black; color: white;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    @media (min-width: 640px) {
+        .gallery-item-feature {
+            grid-column: span 2 / span 2;
+            grid-row: span 2 / span 2;
+            aspect-ratio: 1 / 1;
+        }
+    }
+</style>
