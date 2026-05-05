@@ -2,6 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import MoodBoardSection from "../components/MoodBoardSection.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+
+const floorplans = [
+    { title: "Grand Rover 21.6 v1", desc: "Front Bedroom + Rear Lounge", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v1.0.png" },
+    { title: "Grand Rover 21.6 v2", desc: "Alternate Family Configuration", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v2.0.png" },
+    { title: "Grand Rover 21.6 v3", desc: "Bunk + Lounge Variant", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 21.6 v3.0.png" }
+];
 ---
 
 <Layout title="Grand Rover 21.6 | Hike RV Caravans" description="The Grand Rover 21.6 combines thoughtful layout with high-end finishes for a travelling home that feels luxurious. Perfect for families who wander often.">
@@ -72,7 +79,7 @@ import MoodBoardSection from "../components/MoodBoardSection.astro";
             <!-- Right: Product Image -->
             <div class="relative w-full lg:w-[55%] min-h-[50vh] lg:min-h-full">
                 <img src="/rover/grandrover/Grand Rover 21.6.png" alt="Grand Rover 21.6" class="w-full h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/30 to-transparent lg:block hidden"></div>
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,_rgb(0_0_0)_0%,_rgb(0_0_0/0.1)_30%,_transparent_60%)] lg:block hidden"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
                 <!-- Corner accent -->
                 <div class="absolute bottom-8 right-8 hidden lg:flex flex-col items-end gap-2 animate-fade-up" style="animation-delay: 1000ms; animation-fill-mode: both;">
@@ -181,7 +188,12 @@ import MoodBoardSection from "../components/MoodBoardSection.astro";
         </section>
 
         <!-- ══════════════════════════════════════════════ -->
-        <!-- 4. INTERIOR STYLING — Mood Boards             -->
+        <!-- 4. 3D FLOORPLANS                              -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={floorplans} title="Masterful" subtitle="Spatial Design." />
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 5. INTERIOR STYLING — Mood Boards             -->
         <!-- ══════════════════════════════════════════════ -->
         <MoodBoardSection />
 
