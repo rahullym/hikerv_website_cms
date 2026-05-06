@@ -11,18 +11,18 @@ interface Props {
   subtitle?: string;
 }
 
-const { 
-  layouts, 
-  title = "Intelligent", 
-  subtitle = "Space Mapping." 
+const {
+  layouts,
+  title = "Intelligent",
+  subtitle = "Space Mapping."
 } = Astro.props;
 ---
 
-<section class="relative z-10 w-full py-24 md:py-40 bg-[#0a0a0a] text-white overflow-hidden">
+<section class="relative z-10 w-full py-24 md:py-40 bg-white text-black overflow-hidden border-t border-black/5">
     <!-- Background elements -->
-    <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
-        <div class="absolute top-0 left-[10%] w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-        <div class="absolute top-0 right-[10%] w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 w-full h-full opacity-40 pointer-events-none">
+        <div class="absolute top-0 left-[10%] w-px h-full bg-gradient-to-b from-transparent via-black/10 to-transparent"></div>
+        <div class="absolute top-0 right-[10%] w-px h-full bg-gradient-to-b from-transparent via-black/10 to-transparent"></div>
     </div>
 
     <div class="max-w-[1600px] mx-auto px-6 md:px-14">
@@ -33,19 +33,19 @@ const {
                     {title}<br/><span class="text-[#E50000]">{subtitle}</span>
                 </h2>
             </div>
-            <p class="text-white/40 font-medium md:text-lg max-w-sm border-l border-white/10 pl-8 py-2 animate-fade-up">
+            <p class="text-black/50 font-medium md:text-lg max-w-sm border-l border-black/10 pl-8 py-2 animate-fade-up">
                 Experience the architectural flow and spatial optimization of our custom layouts.
             </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Large Display Area -->
-            <div class="relative group aspect-[16/10] bg-white/2 rounded-[2.5rem] border border-white/5 overflow-hidden flex items-center justify-center p-8 md:p-12 order-2 lg:order-1 shadow-2xl">
+            <div class="relative group aspect-[16/10] bg-black rounded-[2.5rem] border border-black/10 overflow-hidden flex items-center justify-center p-8 md:p-12 order-2 lg:order-1 shadow-[0_30px_80px_rgba(0,0,0,0.15)]">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 to-transparent"></div>
-                
+
                 {layouts.map((layout, i) => (
-                    <img 
-                        src={layout.src} 
+                    <img
+                        src={layout.src}
                         alt={layout.title}
                         id={`layout-img-${i}`}
                         class={`layout-preview-img absolute inset-0 w-full h-full object-contain p-12 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${i === 0 ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-8 pointer-events-none'}`}
@@ -53,25 +53,25 @@ const {
                 ))}
 
                 <!-- Corner markings for blueprint feel -->
-                <div class="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-white/10"></div>
-                <div class="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-white/10"></div>
-                <div class="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-white/10"></div>
-                <div class="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-white/10"></div>
+                <div class="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-white/20"></div>
+                <div class="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-white/20"></div>
+                <div class="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-white/20"></div>
+                <div class="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-white/20"></div>
             </div>
 
             <!-- Configuration List -->
             <div class="flex flex-col gap-4 order-1 lg:order-2">
                 {layouts.map((layout, i) => (
-                    <button 
-                        class={`layout-selector-btn group flex flex-col p-8 rounded-[2rem] border transition-all duration-500 text-left ${i === 0 ? 'bg-white text-black border-white shadow-[0_20px_50px_rgba(255,255,255,0.05)]' : 'bg-white/2 border-white/5 text-white/40 hover:border-white/20'}`}
+                    <button
+                        class={`layout-selector-btn group flex flex-col p-8 rounded-[2rem] border transition-all duration-500 text-left ${i === 0 ? 'bg-black text-white border-black shadow-[0_20px_50px_rgba(0,0,0,0.15)]' : 'bg-white border-black/10 text-black/40 hover:border-black/30 hover:text-black/70'}`}
                         data-index={i}
                     >
                         <div class="flex items-center justify-between mb-2">
-                            <span class={`text-[10px] font-black uppercase tracking-[0.3em] font-label ${i === 0 ? 'text-[#E50000]' : 'text-white/20'}`}>Configuration {i + 1}</span>
-                            <div class={`dot w-2 h-2 rounded-full transition-colors duration-500 ${i === 0 ? 'bg-[#E50000]' : 'bg-white/10'}`}></div>
+                            <span class={`text-[10px] font-black uppercase tracking-[0.3em] font-label ${i === 0 ? 'text-[#E50000]' : 'text-black/30'}`}>Configuration {i + 1}</span>
+                            <div class={`dot w-2 h-2 rounded-full transition-colors duration-500 ${i === 0 ? 'bg-[#E50000]' : 'bg-black/10'}`}></div>
                         </div>
                         <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight mb-2 leading-none group-hover:tracking-normal transition-all duration-500">{layout.title}</h3>
-                        <p class={`desc text-sm font-medium transition-colors duration-500 ${i === 0 ? 'text-black/60' : 'text-white/20'}`}>{layout.desc}</p>
+                        <p class={`desc text-sm font-medium transition-colors duration-500 ${i === 0 ? 'text-white/60' : 'text-black/40'}`}>{layout.desc}</p>
                     </button>
                 ))}
             </div>
@@ -90,48 +90,48 @@ const {
 
                 // Reset buttons
                 btns.forEach(b => {
-                    b.classList.remove('bg-white', 'text-black', 'border-white', 'shadow-[0_20px_50px_rgba(255,255,255,0.05)]');
-                    b.classList.add('bg-white/2', 'border-white/5', 'text-white/40');
-                    
+                    b.classList.remove('bg-black', 'text-white', 'border-black', 'shadow-[0_20px_50px_rgba(0,0,0,0.15)]');
+                    b.classList.add('bg-white', 'border-black/10', 'text-black/40');
+
                     const label = b.querySelector('.font-label');
                     if (label) {
-                        label.classList.add('text-white/20');
+                        label.classList.add('text-black/30');
                         label.classList.remove('text-[#E50000]');
                     }
-                    
+
                     const dot = b.querySelector('.dot');
                     if (dot) {
-                        dot.classList.add('bg-white/10');
+                        dot.classList.add('bg-black/10');
                         dot.classList.remove('bg-[#E50000]');
                     }
-                    
+
                     const desc = b.querySelector('.desc');
                     if (desc) {
-                        desc.classList.add('text-white/20');
-                        desc.classList.remove('text-black/60');
+                        desc.classList.add('text-black/40');
+                        desc.classList.remove('text-white/60');
                     }
                 });
 
                 // Active button
-                btn.classList.add('bg-white', 'text-black', 'border-white', 'shadow-[0_20px_50px_rgba(255,255,255,0.05)]');
-                btn.classList.remove('bg-white/2', 'border-white/5', 'text-white/40');
-                
+                btn.classList.add('bg-black', 'text-white', 'border-black', 'shadow-[0_20px_50px_rgba(0,0,0,0.15)]');
+                btn.classList.remove('bg-white', 'border-black/10', 'text-black/40');
+
                 const label = btn.querySelector('.font-label');
                 if (label) {
-                    label.classList.remove('text-white/20');
+                    label.classList.remove('text-black/30');
                     label.classList.add('text-[#E50000]');
                 }
-                
+
                 const dot = btn.querySelector('.dot');
                 if (dot) {
-                    dot.classList.remove('bg-white/10');
+                    dot.classList.remove('bg-black/10');
                     dot.classList.add('bg-[#E50000]');
                 }
-                
+
                 const desc = btn.querySelector('.desc');
                 if (desc) {
-                    desc.classList.remove('text-white/20');
-                    desc.classList.add('text-black/60');
+                    desc.classList.remove('text-black/40');
+                    desc.classList.add('text-white/60');
                 }
 
                 // Switch images
