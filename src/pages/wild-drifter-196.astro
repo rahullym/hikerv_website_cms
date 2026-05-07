@@ -2,6 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import MoodBoardSection from "../components/MoodBoardSection.astro";
+import LayoutSection from "../components/LayoutSection.astro";
+
+const floorplans = [
+    { title: "Wild Drifter 19.6", desc: "The Ultimate Family Fiesta", src: "/Wild Drifter/Layouts Wild Drifter/3D-Layout-WILD-DRIFTER-19.6.jpg" }
+];
 
 const exteriorImages = [
     "/Wild Drifter/Images/External/Copy of IMG_4171.JPG",
@@ -329,6 +334,11 @@ const layoutImages = [
             .no-scrollbar::-webkit-scrollbar { display: none; }
             .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         </style>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- 4.5. 3D FLOORPLANS                            -->
+        <!-- ══════════════════════════════════════════════ -->
+        <LayoutSection layouts={floorplans} title="Family-Ready" subtitle="Spatial Design." />
 
         <!-- ══════════════════════════════════════════════ -->
         <!-- 5. INTERIOR STYLING — Mood Boards             -->
