@@ -2,27 +2,54 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
-const faqs = [
-  { q: "What makes Hike RV caravans different?", a: "Hike RV caravans are designed for Australian touring conditions with a strong focus on off-grid capability, modern layouts, practical storage, and premium inclusions at competitive pricing." },
-  { q: "Are Hike RV caravans Australian made?", a: "Hike RV caravans are built to suit Australian conditions using quality components and materials designed for long-term touring and off-road travel." },
-  { q: "Can I customise my caravan?", a: "Yes. Depending on the model, customers can choose from a range of layouts, colours, upholstery options, electrical upgrades, suspension upgrades, and additional accessories." },
-  { q: "Where are Hike RV caravans located?", a: "Hike RV is based in Campbellfield, Victoria." },
-  { q: "Are Hike RV caravans suitable for off-grid camping?", a: "Yes. Many Hike RV models are designed for off-grid travel with solar systems, lithium batteries, large water capacities, inverter systems, and diesel heaters available." },
-  { q: "What battery systems do you offer?", a: "Hike RV offers various battery and electrical upgrade options including lithium battery systems, inverter packages, solar upgrades, and advanced battery management systems." },
-  { q: "Can I run air conditioning off-grid?", a: "This depends on the battery, inverter, and solar setup selected. We can recommend systems based on your travel needs." },
-  { q: "What vehicle do I need to tow a Hike RV caravan?", a: "Tow vehicle requirements depend on the caravan model, ATM, and payload. Popular tow vehicles include LandCruiser, Ranger, Silverado, Ram, and similar 4WD vehicles." },
-  { q: "What is ATM?", a: "ATM stands for Aggregate Trailer Mass — the maximum allowable weight of the caravan when fully loaded." },
-  { q: "Do you offer independent suspension?", a: "Yes. Selected models and upgrade options include independent suspension systems designed for rough Australian conditions." },
-  { q: "What warranty do Hike RV caravans include?", a: "Warranty coverage includes structural and component warranties. Full warranty details are available from our team." },
-  { q: "What is the typical build time?", a: "Build times vary depending on model availability and customisation options. Please contact our team for current estimated delivery times." },
-  { q: "Do you offer finance?", a: "Yes. Finance options may be available through approved third-party finance providers." },
-  { q: "Can interstate customers purchase from Hike RV?", a: "Absolutely. We regularly assist customers across Australia and can help organise transport and handover arrangements." },
-  { q: "Do you provide after-sales support?", a: "Yes. Hike RV provides ongoing customer support, warranty assistance, and servicing guidance after delivery." },
-  { q: "Can I book servicing through Hike RV?", a: "Yes. Servicing and upgrade enquiries can be arranged through our team." },
-  { q: "What is the best caravan for off-grid travel in Australia?", a: "A good off-grid caravan should include lithium batteries, solar charging, sufficient water storage, quality suspension, and practical layouts suited to long-term travel." },
-  { q: "What size caravan is best for touring Australia?", a: "Popular touring sizes range from 18ft to 22ft depending on towing preferences, storage requirements, and travel style." },
-  { q: "Is a lithium battery worth it in a caravan?", a: "Lithium batteries provide faster charging, lighter weight, deeper discharge capability, and better long-term performance for off-grid travel." }
+const faqSections = [
+  {
+    category: "General",
+    items: [
+      { q: "What makes Hike RV caravans different?", a: "Hike RV caravans are designed for Australian touring conditions with a strong focus on off-grid capability, modern layouts, practical storage, and premium inclusions at competitive pricing." },
+      { q: "Are Hike RV caravans Australian made?", a: "Hike RV caravans are built to suit Australian conditions using quality components and materials designed for long-term touring and off-road travel." },
+      { q: "Can I customise my caravan?", a: "Yes. Depending on the model, customers can choose from a range of layouts, colours, upholstery options, electrical upgrades, suspension upgrades, and additional accessories." },
+      { q: "Where are Hike RV caravans located?", a: "Hike RV is based in Campbellfield, Victoria." }
+    ]
+  },
+  {
+    category: "Off-Grid & Electrical",
+    items: [
+      { q: "Are Hike RV caravans suitable for off-grid camping?", a: "Yes. Many Hike RV models are designed for off-grid travel with solar systems, lithium batteries, large water capacities, inverter systems, and diesel heaters available." },
+      { q: "What battery systems do you offer?", a: "Hike RV offers various battery and electrical upgrade options including lithium battery systems, inverter packages, solar upgrades, and advanced battery management systems." },
+      { q: "Can I run air conditioning off-grid?", a: "This depends on the battery, inverter, and solar setup selected. We can recommend systems based on your travel needs." }
+    ]
+  },
+  {
+    category: "Towing & Weights",
+    items: [
+      { q: "What vehicle do I need to tow a Hike RV caravan?", a: "Tow vehicle requirements depend on the caravan model, ATM, and payload. Popular tow vehicles include LandCruiser, Ranger, Silverado, Ram, and similar 4WD vehicles." },
+      { q: "What is ATM?", a: "ATM stands for Aggregate Trailer Mass — the maximum allowable weight of the caravan when fully loaded." },
+      { q: "Do you offer independent suspension?", a: "Yes. Selected models and upgrade options include independent suspension systems designed for rough Australian conditions." }
+    ]
+  },
+  {
+    category: "Ordering & Warranty",
+    items: [
+      { q: "What warranty do Hike RV caravans include?", a: "Warranty coverage includes structural and component warranties. Full warranty details are available from our team." },
+      { q: "What is the typical build time?", a: "Build times vary depending on model availability and customisation options. Please contact our team for current estimated delivery times." },
+      { q: "Do you offer finance?", a: "Yes. Finance options may be available through approved third-party finance providers." },
+      { q: "Can interstate customers purchase from Hike RV?", a: "Absolutely. We regularly assist customers across Australia and can help organise transport and handover arrangements." }
+    ]
+  },
+  {
+    category: "Service & Support",
+    items: [
+      { q: "Do you provide after-sales support?", a: "Yes. Hike RV provides ongoing customer support, warranty assistance, and servicing guidance after delivery." },
+      { q: "Can I book servicing through Hike RV?", a: "Yes. Servicing and upgrade enquiries can be arranged through our team." },
+      { q: "What is the best caravan for off-grid travel in Australia?", a: "A good off-grid caravan should include lithium batteries, solar charging, sufficient water storage, quality suspension, and practical layouts suited to long-term travel." },
+      { q: "What size caravan is best for touring Australia?", a: "Popular touring sizes range from 18ft to 22ft depending on towing preferences, storage requirements, and travel style." },
+      { q: "Is a lithium battery worth it in a caravan?", a: "Lithium batteries provide faster charging, lighter weight, deeper discharge capability, and better long-term performance for off-grid travel." }
+    ]
+  }
 ];
+
+let globalIdx = 0;
 ---
 
 <Layout title="FAQ | Hike RV Caravans" description="Find answers to common questions about Hike RV caravans, construction, and warranties.">
@@ -59,24 +86,36 @@ const faqs = [
         <section class="relative z-10 w-full py-24 md:py-40 bg-white">
             <div class="max-w-4xl mx-auto px-6 md:px-14">
                 
-                <div class="space-y-6">
-                    {faqs.map((faq, i) => (
-                        <div class="group border border-black/5 rounded-[2rem] bg-[#fdfdfd] overflow-hidden transition-all duration-500 hover:border-[#E50000]/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-up" style={`animation-delay: ${200 + (i * 100)}ms; animation-fill-mode: both;`}>
-                            <div class="p-8 md:p-10">
-                                <div class="flex items-start gap-6">
-                                    <span class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center font-black text-xs shrink-0 mt-1">
-                                        0{i+1}
-                                    </span>
-                                    <div class="flex flex-col">
-                                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-black mb-6 group-hover:text-[#E50000] transition-colors duration-500 leading-tight">
-                                            {faq.q}
-                                        </h3>
-                                        <p class="text-black/50 font-medium text-base md:text-lg leading-relaxed">
-                                            {faq.a}
-                                        </p>
-                                    </div>
-                                </div>
+                <div class="space-y-16">
+                    {faqSections.map((section) => (
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4 sm:gap-6 pb-2 animate-fade-up">
+                                <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] sm:text-xs whitespace-nowrap">{section.category}</span>
+                                <div class="flex-1 h-px bg-black/10"></div>
                             </div>
+                            {section.items.map((faq) => {
+                                const idx = ++globalIdx;
+                                const n = idx < 10 ? `0${idx}` : `${idx}`;
+                                return (
+                                    <div class="group border border-black/5 rounded-[2rem] bg-[#fdfdfd] overflow-hidden transition-all duration-500 hover:border-[#E50000]/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-up">
+                                        <div class="p-8 md:p-10">
+                                            <div class="flex items-start gap-6">
+                                                <span class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center font-black text-xs shrink-0 mt-1">
+                                                    {n}
+                                                </span>
+                                                <div class="flex flex-col">
+                                                    <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-black mb-6 group-hover:text-[#E50000] transition-colors duration-500 leading-tight">
+                                                        {faq.q}
+                                                    </h3>
+                                                    <p class="text-black/50 font-medium text-base md:text-lg leading-relaxed">
+                                                        {faq.a}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     ))}
                 </div>
