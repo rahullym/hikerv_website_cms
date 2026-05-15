@@ -68,7 +68,8 @@ const {
                             <span class={`text-[9px] font-black uppercase tracking-[0.25em] font-label ${i === 0 ? 'text-[#E50000]' : 'text-black/30'}`}>Configuration {i + 1}</span>
                             <div class={`dot w-1.5 h-1.5 rounded-full transition-colors duration-500 ${i === 0 ? 'bg-[#E50000]' : 'bg-black/10'}`}></div>
                         </div>
-                        <h3 class={`desc text-base md:text-lg font-black uppercase tracking-tight leading-tight transition-colors duration-500 ${i === 0 ? 'text-white/60' : 'text-black/40'}`}>{layout.desc}</h3>
+                        <h3 class="text-base md:text-lg font-black uppercase tracking-tight mb-1 leading-tight transition-all duration-500">{layout.title}</h3>
+                        <p class={`desc text-xs font-medium transition-colors duration-500 ${i === 0 ? 'text-white/60' : 'text-black/40'}`}>{layout.desc}</p>
                     </button>
                 ))}
             </div>
