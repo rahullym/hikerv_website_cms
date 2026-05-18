@@ -1,0 +1,93 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import { loadPublishedPosts } from "../../lib/cms/blog";
+
+export async function getStaticPaths() {
+  const posts = await loadPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const publishedFormatted = new Date(post.publishedAt).toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Layout title={`${post.title} | Hike RV Caravans`} description={post.description}>
+  <Navbar />
+
+  <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+    <!-- Hero -->
+    <section class="relative z-10 w-full bg-black pt-40 pb-16 md:pt-52 md:pb-24 px-6 md:px-14 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0"></div>
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <a href="/blogs" class="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-8 inline-flex items-center gap-2 hover:text-[#E50000] transition-colors duration-300">
+          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+          All articles
+        </a>
+        {post.category && (
+          <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white text-[9px] font-black uppercase tracking-widest border border-white/20 mb-6">{post.category}</span>
+        )}
+        <h1 class="text-white text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-6">
+          {post.title}
+        </h1>
+        {post.subtitle && (
+          <p class="text-white/60 text-base md:text-xl font-semibold mb-6">{post.subtitle}</p>
+        )}
+        <div class="flex items-center gap-4 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+          {post.readTime && <span class="text-[#E50000]">{post.readTime}</span>}
+          {post.readTime && <span class="w-1 h-1 rounded-full bg-white/20"></span>}
+          <span>{publishedFormatted}</span>
+        </div>
+      </div>
+    </section>
+
+    {/* Hero image */}
+    {post.heroImage && (
+      <section class="relative z-10 -mt-6 md:-mt-12 px-6 md:px-14">
+        <div class="max-w-5xl mx-auto rounded-[2rem] overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.12)]">
+          <img src={post.heroImage} alt={post.title} class="w-full h-auto object-cover" loading="lazy" />
+        </div>
+      </section>
+    )}
+
+    {/* Body */}
+    <section class="relative z-10 w-full py-16 md:py-24 px-6 md:px-14">
+      <article class="max-w-3xl mx-auto blog-body" set:html={post.body}></article>
+    </section>
+
+    {/* Bottom CTA */}
+    <section class="relative z-10 w-full px-6 md:px-14 pb-24 md:pb-32">
+      <div class="max-w-3xl mx-auto border-t border-black/10 pt-12 flex flex-col items-center gap-6 text-center">
+        <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px]">More from Hike RV</span>
+        <a href="/blogs" class="px-10 py-4 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-colors duration-500">Read more articles</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>
+
+<style is:global>
+  .blog-body { font-size: 1.0625rem; line-height: 1.75; color: rgba(0,0,0,0.75); }
+  .blog-body p { margin: 0 0 1.25rem; }
+  .blog-body h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin: 2.5rem 0 1rem; color: #0a0a0a; text-transform: uppercase; }
+  .blog-body h3 { font-size: 1.25rem; font-weight: 800; margin: 2rem 0 0.75rem; color: #0a0a0a; }
+  .blog-body a { color: #E50000; text-decoration: underline; }
+  .blog-body ul, .blog-body ol { margin: 0 0 1.5rem 1.5rem; }
+  .blog-body li { margin: 0.35rem 0; }
+  .blog-body img { width: 100%; height: auto; border-radius: 1.5rem; margin: 2rem 0; }
+  .blog-body blockquote {
+    border-left: 4px solid #E50000;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    color: rgba(0,0,0,0.55);
+    font-style: italic;
+  }
+</style>

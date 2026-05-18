@@ -1,0 +1,156 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import ImagePicker from '../../../components/admin/ImagePicker.astro';
+import { connectDB } from '../../../lib/db';
+import { Post } from '../../../lib/db/models/Post';
+
+const session = Astro.locals.session!;
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect('/admin/blog');
+}
+
+await connectDB();
+const post = await Post.findById(id).lean();
+if (!post) {
+  return Astro.redirect('/admin/blog');
+}
+
+const dataJson = JSON.stringify({
+  _id: post._id.toString(),
+  slug: post.slug,
+  title: post.title,
+  subtitle: post.subtitle,
+  description: post.description,
+  body: post.body,
+  category: post.category,
+  readTime: post.readTime,
+  heroImage: post.heroImage,
+  status: post.status,
+});
+---
+
+<AdminLayout title={`Edit: ${post.title}`} active="blog" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <a href="/admin/blog" style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">← All posts</a>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <span id="status-msg" style="font-size: 0.75rem; color: rgba(0,0,0,0.4);"></span>
+      <button id="delete-btn" style="padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: #c00; text-transform: uppercase; letter-spacing: 0.1em;">Delete</button>
+      <button id="save-btn" style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Save</button>
+    </div>
+  </div>
+
+  <form id="post-form" style="display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem;">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Title
+        <input name="title" type="text" required style="font-size: 1.25rem; font-weight: 800;" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Subtitle
+        <input name="subtitle" type="text" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Description (shown on listing)
+        <textarea name="description" rows="2" style="resize: vertical;"></textarea>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Body (HTML — &lt;p&gt;, &lt;h2&gt;, &lt;a href&gt;, &lt;img src&gt;, &lt;ul&gt;, &lt;ol&gt;…)
+        <textarea name="body" rows="16" style="resize: vertical; font-family: ui-monospace, monospace; font-size: 0.875rem;"></textarea>
+      </label>
+    </div>
+
+    <aside style="display: flex; flex-direction: column; gap: 1rem; background: #fafafa; border: 1px solid rgba(0,0,0,0.06); border-radius: 0.75rem; padding: 1.25rem;">
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Status
+        <select name="status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+        </select>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Slug
+        <input name="slug" type="text" style="font-family: ui-monospace, monospace; font-size: 0.8125rem;" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Category
+        <input name="category" type="text" placeholder="e.g. Comparison Guide" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Read Time
+        <input name="readTime" type="text" placeholder="e.g. 8 Min Read" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+        Hero Image
+        <div style="display: flex; gap: 0.4rem;">
+          <input id="hero-image-input" name="heroImage" type="text" placeholder="/blogs/foo.png or https://..." style="flex: 1;" />
+          <button type="button" onclick="window.openImagePicker && window.openImagePicker('hero-image-input')"
+            style="padding: 0.4rem 0.875rem; background: #0a0a0a; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; white-space: nowrap;">Browse…</button>
+        </div>
+        <img id="hero-image-preview" src="" alt="" style="display: none; width: 100%; border-radius: 0.5rem; margin-top: 0.5rem; border: 1px solid rgba(0,0,0,0.08);" />
+      </label>
+    </aside>
+  </form>
+
+  <ImagePicker />
+
+  <script is:inline define:vars={{ dataJson }}>
+    const data = JSON.parse(dataJson);
+    const form = document.getElementById('post-form');
+    for (const name of ['title', 'subtitle', 'description', 'body', 'slug', 'category', 'readTime', 'heroImage', 'status']) {
+      const el = form.querySelector(`[name="${name}"]`);
+      if (el) el.value = data[name] ?? '';
+    }
+    const statusMsg = document.getElementById('status-msg');
+
+    // Live hero image preview
+    const heroInput = document.getElementById('hero-image-input');
+    const heroPreview = document.getElementById('hero-image-preview');
+    function syncHeroPreview() {
+      const val = heroInput.value.trim();
+      if (val) {
+        heroPreview.src = val;
+        heroPreview.style.display = 'block';
+      } else {
+        heroPreview.style.display = 'none';
+      }
+    }
+    heroInput.addEventListener('input', syncHeroPreview);
+    syncHeroPreview();
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const payload = {};
+      for (const name of ['title', 'subtitle', 'description', 'body', 'slug', 'category', 'readTime', 'heroImage', 'status']) {
+        const el = form.querySelector(`[name="${name}"]`);
+        if (el) payload[name] = el.value;
+      }
+      statusMsg.textContent = 'Saving…';
+      const res = await fetch(`/api/blog/${data._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        statusMsg.textContent = 'Saved · publish to push live';
+        setTimeout(() => (statusMsg.textContent = ''), 4000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        statusMsg.textContent = 'Failed: ' + (body.error || 'unknown');
+      }
+    });
+
+    document.getElementById('delete-btn').addEventListener('click', async () => {
+      if (!confirm('Delete this post? Cannot be undone.')) return;
+      const res = await fetch(`/api/blog/${data._id}`, { method: 'DELETE' });
+      if (res.ok) {
+        window.location.href = '/admin/blog';
+      } else {
+        const body = await res.json().catch(() => ({}));
+        alert(body.error || 'Failed to delete');
+      }
+    });
+  </script>
+</AdminLayout>

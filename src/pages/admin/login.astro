@@ -1,0 +1,99 @@
+---
+export const prerender = false;
+
+const next = Astro.url.searchParams.get('next') ?? '/admin';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in · Hike RV CMS</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style is:global>
+      :root { color-scheme: light; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #0a0a0a;
+        color: #fff;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="w-full" style="max-width: 380px;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h1 style="font-size: 1.75rem; font-weight: 900; margin: 0 0 0.5rem; letter-spacing: -0.02em;">HIKE RV<span style="color: #E50000;">.</span> CMS</h1>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.875rem; margin: 0;">Sign in to manage site content.</p>
+      </div>
+
+      <form id="login-form" style="display: flex; flex-direction: column; gap: 1rem;">
+        <label style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4);">
+          Email
+          <input type="email" name="email" autocomplete="username" required
+            style="padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff; font-size: 0.9375rem; outline: none;"
+            onfocus="this.style.borderColor='#E50000'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          />
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4);">
+          Password
+          <input type="password" name="password" autocomplete="current-password" required
+            style="padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff; font-size: 0.9375rem; outline: none;"
+            onfocus="this.style.borderColor='#E50000'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          />
+        </label>
+        <p id="login-error" style="display: none; color: #ff6b6b; font-size: 0.8125rem; margin: 0;"></p>
+        <button type="submit" id="login-submit"
+          style="margin-top: 0.5rem; padding: 0.875rem 1rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; transition: background 0.2s;"
+          onmouseover="this.style.background='#fff'; this.style.color='#000'"
+          onmouseout="this.style.background='#E50000'; this.style.color='#fff'">
+          Sign in
+        </button>
+      </form>
+    </main>
+
+    <script define:vars={{ next }}>
+      const form = document.getElementById('login-form');
+      const error = document.getElementById('login-error');
+      const submit = document.getElementById('login-submit');
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form || !error || !submit) return;
+        error.style.display = 'none';
+        submit.setAttribute('disabled', 'true');
+        submit.textContent = 'Signing in…';
+        const formData = new FormData(form);
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: formData.get('email'),
+              password: formData.get('password'),
+            }),
+          });
+          if (res.ok) {
+            window.location.href = next;
+            return;
+          }
+          const body = await res.json().catch(() => ({}));
+          error.textContent = body.error || 'Sign-in failed.';
+          error.style.display = 'block';
+        } catch (err) {
+          error.textContent = 'Network error — please try again.';
+          error.style.display = 'block';
+        } finally {
+          submit.removeAttribute('disabled');
+          submit.textContent = 'Sign in';
+        }
+      });
+    </script>
+  </body>
+</html>

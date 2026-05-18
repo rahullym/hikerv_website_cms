@@ -1,0 +1,121 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { connectDB } from '../../lib/db';
+import { Faq } from '../../lib/db/models/Faq';
+
+const session = Astro.locals.session!;
+
+await connectDB();
+const doc = await Faq.findOne({ key: 'main' }).lean();
+const sections = doc?.sections ?? [];
+const initialJson = JSON.stringify(sections);
+---
+
+<AdminLayout title="FAQ" active="faq" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <p style="margin: 0; color: rgba(0,0,0,0.5);">
+      Edit FAQ sections and questions. Changes save to the database immediately; click <b>Publish</b> to push them to the live site.
+    </p>
+    <div style="display: flex; gap: 0.5rem;">
+      <span id="faq-status" style="font-size: 0.75rem; color: rgba(0,0,0,0.4); align-self: center;"></span>
+      <button id="add-section-btn"
+        style="padding: 0.5rem 1.25rem; background: #0a0a0a; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+        + Section
+      </button>
+      <button id="save-btn"
+        style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <div id="faq-editor" style="display: flex; flex-direction: column; gap: 1.25rem;">
+    <!-- rendered by client script -->
+  </div>
+
+  <template id="section-tpl">
+    <div class="section-card" style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 0.75rem; padding: 1.25rem 1.5rem;">
+      <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem;">
+        <input class="section-category" type="text" placeholder="Section name (e.g. General)" style="flex: 1; font-weight: 800; font-size: 1rem;" />
+        <button type="button" class="add-item-btn" style="padding: 0.4rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">+ Question</button>
+        <button type="button" class="remove-section-btn" style="padding: 0.4rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: #c00;">Remove section</button>
+      </div>
+      <div class="items-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+    </div>
+  </template>
+
+  <template id="item-tpl">
+    <div class="item-card" style="background: #fafafa; border: 1px solid rgba(0,0,0,0.06); border-radius: 0.5rem; padding: 0.875rem 1rem; display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <input class="item-q" type="text" placeholder="Question" />
+        <textarea class="item-a" rows="3" placeholder="Answer" style="resize: vertical; min-height: 64px;"></textarea>
+      </div>
+      <button type="button" class="remove-item-btn" style="padding: 0.35rem 0.75rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: #c00; align-self: start;">×</button>
+    </div>
+  </template>
+
+  <script is:inline define:vars={{ initialJson }}>
+    const initial = JSON.parse(initialJson);
+    const editor = document.getElementById('faq-editor');
+    const statusEl = document.getElementById('faq-status');
+    const sectionTpl = document.getElementById('section-tpl');
+    const itemTpl = document.getElementById('item-tpl');
+
+    function renderItem(item, listEl) {
+      const node = itemTpl.content.firstElementChild.cloneNode(true);
+      node.querySelector('.item-q').value = item.q ?? '';
+      node.querySelector('.item-a').value = item.a ?? '';
+      node.querySelector('.remove-item-btn').addEventListener('click', () => node.remove());
+      listEl.appendChild(node);
+    }
+
+    function renderSection(section) {
+      const node = sectionTpl.content.firstElementChild.cloneNode(true);
+      node.querySelector('.section-category').value = section.category ?? '';
+      const list = node.querySelector('.items-list');
+      (section.items ?? []).forEach((it) => renderItem(it, list));
+      node.querySelector('.add-item-btn').addEventListener('click', () => renderItem({ q: '', a: '' }, list));
+      node.querySelector('.remove-section-btn').addEventListener('click', () => {
+        if (confirm('Remove this section and all its questions?')) node.remove();
+      });
+      editor.appendChild(node);
+    }
+
+    initial.forEach(renderSection);
+
+    document.getElementById('add-section-btn').addEventListener('click', () => {
+      renderSection({ category: '', items: [{ q: '', a: '' }] });
+    });
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const sections = [];
+      editor.querySelectorAll('.section-card').forEach((sec) => {
+        const category = sec.querySelector('.section-category').value.trim();
+        if (!category) return;
+        const items = [];
+        sec.querySelectorAll('.item-card').forEach((it) => {
+          const q = it.querySelector('.item-q').value.trim();
+          const a = it.querySelector('.item-a').value.trim();
+          if (q && a) items.push({ q, a });
+        });
+        sections.push({ category, items });
+      });
+
+      statusEl.textContent = 'Saving…';
+      const res = await fetch('/api/faq', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sections }),
+      });
+      if (res.ok) {
+        statusEl.textContent = 'Saved · publish to push live';
+        setTimeout(() => (statusEl.textContent = ''), 4000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        statusEl.textContent = 'Failed: ' + (body.error || 'unknown');
+      }
+    });
+  </script>
+</AdminLayout>
