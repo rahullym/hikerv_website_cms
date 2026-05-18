@@ -1,0 +1,201 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+
+const sections = [
+  {
+    title: "1. Information We Collect",
+    body: "We may collect personal information including but not limited to:",
+    list: [
+      "Full name",
+      "Phone number",
+      "Email address",
+      "Residential or postal address",
+      "Vehicle or caravan details",
+      "Purchase information",
+      "Finance enquiry details",
+      "Warranty claim information",
+      "Website usage data",
+      "IP address and browser information",
+    ],
+  },
+  {
+    title: "2. How We Collect Information",
+    body: "We collect information through:",
+    list: [
+      "Website enquiry forms",
+      "Contact forms",
+      "Warranty submissions",
+      "Finance applications",
+      "Email or phone communications",
+      "Social media interactions",
+      "Cookies and analytics tools",
+      "Dealer or service partner communications",
+    ],
+  },
+  {
+    title: "3. How We Use Your Information",
+    body: "Your information may be used to:",
+    list: [
+      "Respond to enquiries",
+      "Process orders and bookings",
+      "Provide customer support",
+      "Manage warranty claims",
+      "Arrange servicing or repairs",
+      "Send updates, promotions, and marketing communications",
+      "Improve our website and services",
+      "Comply with legal obligations",
+    ],
+  },
+  {
+    title: "4. Marketing Communications",
+    body: "By submitting your information through our website, you may receive marketing communications from Hike RV regarding products, services, promotions, and updates.\n\nYou may opt out of marketing communications at any time by:",
+    list: [
+      "Clicking the unsubscribe link in emails, or",
+      "Contacting us directly",
+    ],
+  },
+  {
+    title: "5. Cookies & Website Analytics",
+    body: "Our website may use cookies and third-party analytics tools such as Google Analytics and Meta Pixel to:",
+    list: [
+      "Monitor website traffic",
+      "Improve user experience",
+      "Deliver relevant advertising and remarketing campaigns",
+    ],
+    after: "You may disable cookies through your browser settings.",
+  },
+  {
+    title: "6. Third-Party Services",
+    body: "We may share information with trusted third parties including:",
+    list: [
+      "Finance providers",
+      "Warranty suppliers",
+      "Delivery partners",
+      "Marketing platforms",
+      "Website and hosting providers",
+      "CRM and customer support systems",
+    ],
+    after: "These third parties are required to handle your information securely and in accordance with privacy laws.",
+  },
+  {
+    title: "7. Data Security",
+    body: "Hike RV takes reasonable steps to protect personal information from misuse, interference, loss, unauthorised access, modification, or disclosure.\n\nHowever, no online transmission or storage system can be guaranteed to be completely secure.",
+  },
+  {
+    title: "8. Access & Correction",
+    body: "You may request access to the personal information we hold about you and request corrections if necessary.\n\nTo request access or updates, please contact us using the details below.",
+  },
+  {
+    title: "9. Links to Other Websites",
+    body: "Our website may contain links to external websites. Hike RV is not responsible for the privacy practices or content of third-party websites.",
+  },
+  {
+    title: "10. Changes to This Policy",
+    body: "We may update this Privacy Policy from time to time. Updated versions will be published on this page with the revised effective date.",
+  },
+];
+---
+
+<Layout title="Privacy Policy | Hike RV Caravans" description="How Hike RV collects, uses, stores, and discloses your personal information in accordance with the Australian Privacy Principles and the Privacy Act 1988 (Cth).">
+    <Navbar />
+
+    <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
+
+        <!-- 1. HERO -->
+        <section class="relative z-10 w-full bg-black pt-40 pb-24 md:pt-52 md:pb-36 px-6 md:px-14 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-[#0a0a0a] z-0"></div>
+
+            <div class="relative z-10 flex items-center justify-center gap-4 sm:gap-6 mb-8 animate-fade-up" style="animation-delay:200ms;animation-fill-mode:both;">
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+                <span class="text-white/60 text-[10px] sm:text-xs font-black uppercase tracking-[0.5em] text-center">Legal</span>
+                <div class="w-8 sm:w-16 h-px bg-white/20"></div>
+            </div>
+
+            <h1 class="relative z-10 text-white text-5xl md:text-7xl lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 animate-fade-up" style="animation-delay:400ms;animation-fill-mode:both;">
+                Privacy <br/><span class="text-[#E50000]">Policy.</span>
+            </h1>
+
+            <p class="relative z-10 text-white/50 font-medium text-sm md:text-lg tracking-wide max-w-2xl animate-fade-up" style="animation-delay:600ms;animation-fill-mode:both;">
+                Effective Date: <span class="text-white/80">[Insert Date]</span>
+            </p>
+        </section>
+
+        <!-- 2. INTRO -->
+        <section class="relative z-10 w-full pt-20 md:pt-28 px-6 md:px-14">
+            <div class="max-w-3xl mx-auto">
+                <p class="text-black/70 font-medium text-base md:text-lg leading-relaxed mb-6">
+                    Welcome to Hike RV (<a href="https://hikervcaravans.com.au" class="text-[#E50000] underline">https://hikervcaravans.com.au</a>). We are committed to protecting your privacy and handling your personal information in accordance with the Australian Privacy Principles contained in the <i>Privacy Act 1988</i> (Cth).
+                </p>
+                <p class="text-black/70 font-medium text-base md:text-lg leading-relaxed">
+                    This Privacy Policy outlines how Hike RV collects, uses, stores, and discloses your personal information when you visit our website, submit enquiries, purchase products, request warranty support, or interact with our services.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. SECTIONS -->
+        <section class="relative z-10 w-full py-16 md:py-24 px-6 md:px-14">
+            <div class="max-w-3xl mx-auto space-y-12 md:space-y-14">
+                {sections.map((section) => (
+                    <article class="border-l-4 border-[#E50000] pl-6 md:pl-10 animate-fade-up">
+                        <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight text-black mb-5 leading-tight">{section.title}</h2>
+                        {section.body && (
+                            <p class="text-black/65 font-medium text-base md:text-lg leading-relaxed mb-4 whitespace-pre-line">{section.body}</p>
+                        )}
+                        {section.list && (
+                            <ul class="list-disc list-outside ml-5 space-y-1.5 text-black/65 font-medium text-base md:text-lg leading-relaxed mb-4">
+                                {section.list.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                        {section.after && (
+                            <p class="text-black/65 font-medium text-base md:text-lg leading-relaxed mt-4">{section.after}</p>
+                        )}
+                    </article>
+                ))}
+
+                <!-- 11. Contact (rendered separately since it has structured contact info) -->
+                <article class="border-l-4 border-[#E50000] pl-6 md:pl-10 animate-fade-up">
+                    <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight text-black mb-5 leading-tight">11. Contact Us</h2>
+                    <div class="bg-[#f9f9f9] border border-black/5 rounded-[1.5rem] p-6 md:p-8">
+                        <p class="text-black font-black uppercase tracking-tight text-lg mb-4">Hike RV</p>
+                        <dl class="space-y-2.5 text-base">
+                            <div class="flex flex-col sm:flex-row sm:gap-3">
+                                <dt class="text-black/40 text-[10px] font-black uppercase tracking-[0.2em] sm:w-28 sm:pt-1">Website</dt>
+                                <dd><a href="https://hikervcaravans.com.au" class="text-[#E50000] font-medium underline">https://hikervcaravans.com.au</a></dd>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:gap-3">
+                                <dt class="text-black/40 text-[10px] font-black uppercase tracking-[0.2em] sm:w-28 sm:pt-1">Email</dt>
+                                <dd><a href="mailto:explore@hikerv.com.au" class="text-[#E50000] font-medium underline">explore@hikerv.com.au</a></dd>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:gap-3">
+                                <dt class="text-black/40 text-[10px] font-black uppercase tracking-[0.2em] sm:w-28 sm:pt-1">Phone</dt>
+                                <dd><a href="tel:0393223562" class="text-[#E50000] font-medium underline">03 9322 3562</a></dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 4. BOTTOM CTA -->
+        <section class="relative z-10 w-full py-24 md:py-32 bg-[#fdfdfd] border-t border-black/5">
+            <div class="max-w-3xl mx-auto px-6 md:px-14 text-center">
+                 <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Questions about your data?</span>
+                 <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-none text-black mb-10">We're here to help.</h2>
+                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                      <a href="/contact" class="px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-[#E50000] transition-colors duration-500 shadow-xl">Contact Us</a>
+                      <a href="/faq" class="px-12 py-5 border border-black/10 text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-full hover:bg-black hover:text-white transition-all duration-500">Visit FAQ</a>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+</Layout>
+
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+</style>

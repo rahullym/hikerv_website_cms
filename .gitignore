@@ -29,3 +29,6 @@ pnpm-debug.log*
 
 # Local backup copies kept for diff reference
 *.bak
+
+# Per-developer Claude Code permission overrides
+.claude/settings.local.json
