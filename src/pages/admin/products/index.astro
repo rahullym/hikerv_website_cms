@@ -1,0 +1,141 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { connectDB } from '../../../lib/db';
+import { Series } from '../../../lib/db/models/Series';
+import { Variant } from '../../../lib/db/models/Variant';
+
+const session = Astro.locals.session!;
+
+await connectDB();
+const series = await Series.find().sort({ order: 1 }).lean();
+const variants = await Variant.find().sort({ order: 1, name: 1 }).lean();
+
+// Group variants under their series for the UI
+const grouped = series.map((s) => ({
+  series: s,
+  variants: variants.filter((v) => String(v.seriesId) === String(s._id)),
+}));
+// Variants whose series record was deleted (orphans)
+const orphans = variants.filter((v) => !series.some((s) => String(s._id) === String(v.seriesId)));
+---
+
+<AdminLayout title="Products" active="products" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <p style="margin: 0; color: rgba(0,0,0,0.5);">
+      {series.length} {series.length === 1 ? 'series' : 'series'} · {variants.length} {variants.length === 1 ? 'variant' : 'variants'}
+    </p>
+    <div style="display: flex; gap: 0.5rem;">
+      <button id="new-series-btn"
+        style="padding: 0.5rem 1.25rem; background: #0a0a0a; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+        + Series
+      </button>
+      <button id="new-variant-btn"
+        style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+        + Variant
+      </button>
+    </div>
+  </div>
+
+  {grouped.length === 0 && (
+    <p style="background: #fff; border: 1px dashed rgba(0,0,0,0.12); border-radius: 0.75rem; padding: 2.5rem; text-align: center; color: rgba(0,0,0,0.4);">
+      No series yet. Run <code>npm run seed</code> to import the existing model data, or click <b>+ Series</b> to start fresh.
+    </p>
+  )}
+
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+    {grouped.map(({ series: s, variants: vs }) => (
+      <section style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 0.75rem; overflow: hidden;">
+        <header style={`padding: 1rem 1.5rem; background: ${s.accentColor}10; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center;`}>
+          <div>
+            <h2 style="margin: 0; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em;">{s.name}</h2>
+            <small style="color: rgba(0,0,0,0.5); font-family: ui-monospace, monospace; font-size: 0.75rem;">/{s.slug}</small>
+          </div>
+          <span style={`width: 0.9rem; height: 0.9rem; border-radius: 0.25rem; background: ${s.accentColor};`}></span>
+        </header>
+        {vs.length === 0 ? (
+          <p style="padding: 1.5rem; color: rgba(0,0,0,0.4); margin: 0;">No variants in this series yet.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {vs.map((v) => (
+                <tr>
+                  <td><a href={`/admin/products/${v._id.toString()}`} style="font-weight: 700; color: #0a0a0a; text-decoration: underline;">{v.name}</a></td>
+                  <td style="color: rgba(0,0,0,0.5); font-size: 0.8125rem; font-family: ui-monospace, monospace;">/{v.slug}</td>
+                  <td>
+                    <span style={`display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; ${v.status === 'published' ? 'background: rgba(0,180,0,0.1); color: #060;' : 'background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5);'}`}>
+                      {v.status}
+                    </span>
+                  </td>
+                  <td style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">{new Date(v.updatedAt).toLocaleDateString()}</td>
+                  <td style="text-align: right;">
+                    <a href={`/admin/products/${v._id.toString()}`} style="padding: 0.35rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">Edit</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+    ))}
+    {orphans.length > 0 && (
+      <section style="background: #fff; border: 1px solid rgba(192,0,0,0.2); border-radius: 0.75rem; padding: 1.5rem;">
+        <h2 style="margin: 0 0 0.5rem; font-size: 0.875rem; font-weight: 800; color: #c00;">Orphan variants</h2>
+        <p style="margin: 0 0 0.75rem; font-size: 0.8125rem; color: rgba(0,0,0,0.6);">These variants reference a series that no longer exists.</p>
+        {orphans.map((v) => (
+          <div style="font-size: 0.875rem;"><a href={`/admin/products/${v._id.toString()}`}>{v.name}</a> <span style="font-family: ui-monospace, monospace; color: rgba(0,0,0,0.4);">/{v.slug}</span></div>
+        ))}
+      </section>
+    )}
+  </div>
+
+  <script>
+    document.getElementById('new-series-btn')?.addEventListener('click', async () => {
+      const name = prompt('Series name?');
+      if (!name) return;
+      const slug = prompt('URL slug?', name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+      if (!slug) return;
+      const res = await fetch('/api/products/series', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, slug }),
+      });
+      if (res.ok) window.location.reload();
+      else {
+        const body = await res.json().catch(() => ({}));
+        alert(body.error || 'Failed');
+      }
+    });
+
+    document.getElementById('new-variant-btn')?.addEventListener('click', async () => {
+      const seriesSlug = prompt('Which series slug?');
+      if (!seriesSlug) return;
+      const name = prompt('Variant name (e.g. "Grand Rover 19.6")');
+      if (!name) return;
+      const slug = prompt('URL slug (matches Astro filename, e.g. "grand-rover-196")');
+      if (!slug) return;
+      const res = await fetch('/api/products/variants', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seriesSlug, name, slug }),
+      });
+      if (res.ok) {
+        const body = await res.json();
+        window.location.href = `/admin/products/${body.variant._id}`;
+      } else {
+        const body = await res.json().catch(() => ({}));
+        alert(body.error || 'Failed');
+      }
+    });
+  </script>
+</AdminLayout>

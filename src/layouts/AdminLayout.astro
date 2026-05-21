@@ -1,0 +1,117 @@
+---
+import type { SessionPayload } from '../lib/auth/jwt';
+
+interface Props {
+  title: string;
+  active?: 'dashboard' | 'products' | 'blog' | 'faq' | 'images' | 'users';
+  session: SessionPayload;
+}
+
+const { title, active, session } = Astro.props;
+
+type NavItem = { href: string; label: string; key: NonNullable<Props['active']>; adminOnly?: boolean };
+const nav: NavItem[] = [
+  { href: '/admin', label: 'Dashboard', key: 'dashboard' },
+  { href: '/admin/products', label: 'Products', key: 'products' },
+  { href: '/admin/blog', label: 'Blog', key: 'blog' },
+  { href: '/admin/faq', label: 'FAQ', key: 'faq' },
+  { href: '/admin/images', label: 'Images', key: 'images' },
+  { href: '/admin/users', label: 'Users', key: 'users', adminOnly: true },
+];
+
+const visibleNav = nav.filter((item) => !item.adminOnly || session.role === 'admin');
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Hike RV CMS</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style is:global>
+      :root { color-scheme: light; --accent: #E50000; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #f6f6f7;
+        color: #111;
+      }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; cursor: pointer; }
+      input, textarea, select {
+        font: inherit;
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.12);
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        outline: none;
+      }
+      input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.06); }
+      th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(0,0,0,0.5); font-weight: 800; }
+    </style>
+  </head>
+  <body>
+    <div style="display: grid; grid-template-columns: 240px 1fr; min-height: 100vh;">
+      <aside style="background: #0a0a0a; color: #fff; padding: 2rem 0;">
+        <div style="padding: 0 1.5rem 2rem;">
+          <a href="/admin" style="font-size: 1.125rem; font-weight: 900; letter-spacing: -0.02em;">
+            HIKE RV<span style="color: var(--accent);">.</span> CMS
+          </a>
+        </div>
+        <nav>
+          {visibleNav.map((item) => (
+            <a href={item.href}
+              style={`display: block; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; color: ${item.key === active ? '#fff' : 'rgba(255,255,255,0.5)'}; ${item.key === active ? 'background: rgba(229,0,0,0.15); border-left: 3px solid var(--accent); padding-left: calc(1.5rem - 3px);' : ''}`}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </aside>
+      <main>
+        <header style="background: #fff; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+          <h1 style="margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em;">{title}</h1>
+          <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8125rem;">
+            <span style="color: rgba(0,0,0,0.5);">{session.email} · <span style="text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--accent);">{session.role}</span></span>
+            <button id="publish-btn" title="Trigger a rebuild of the public site"
+              style="padding: 0.4rem 1rem; background: var(--accent); color: #fff; border: none; border-radius: 9999px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Publish</button>
+            <button id="logout-btn" style="padding: 0.4rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Logout</button>
+          </div>
+        </header>
+        <section style="padding: 2rem;">
+          <slot />
+        </section>
+      </main>
+    </div>
+    <script>
+      document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/admin/login';
+      });
+
+      document.getElementById('publish-btn')?.addEventListener('click', async (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        if (!confirm('Trigger a public rebuild now? It takes ~1–2 minutes for changes to go live.')) return;
+        const original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Publishing…';
+        try {
+          const res = await fetch('/api/publish', { method: 'POST' });
+          if (res.ok) {
+            btn.textContent = 'Triggered ✓';
+            setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 4000);
+          } else {
+            const body = await res.json().catch(() => ({}));
+            alert(body.error || 'Publish failed');
+            btn.textContent = original; btn.disabled = false;
+          }
+        } catch (err) {
+          alert((err as Error).message);
+          btn.textContent = original; btn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

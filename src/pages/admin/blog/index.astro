@@ -1,0 +1,80 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { connectDB } from '../../../lib/db';
+import { Post } from '../../../lib/db/models/Post';
+
+const session = Astro.locals.session!;
+
+await connectDB();
+const posts = await Post.find().sort({ updatedAt: -1 }).select('-body').lean();
+---
+
+<AdminLayout title="Blog" active="blog" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <p style="margin: 0; color: rgba(0,0,0,0.5);">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+    <button id="new-post-btn"
+      style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+      + New Post
+    </button>
+  </div>
+
+  <div style="background: #fff; border-radius: 0.75rem; overflow: hidden; border: 1px solid rgba(0,0,0,0.06);">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Slug</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Updated</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {posts.length === 0 && (
+          <tr><td colspan="6" style="text-align: center; color: rgba(0,0,0,0.4); padding: 2.5rem 1rem;">No posts yet. Click <b>New Post</b> to create your first.</td></tr>
+        )}
+        {posts.map((p) => (
+          <tr>
+            <td><a href={`/admin/blog/${p._id.toString()}`} style="font-weight: 700; color: #0a0a0a; text-decoration: underline;">{p.title}</a></td>
+            <td style="color: rgba(0,0,0,0.5); font-size: 0.8125rem; font-family: ui-monospace, monospace;">{p.slug}</td>
+            <td style="font-size: 0.8125rem;">{p.category || '—'}</td>
+            <td>
+              <span style={`display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; ${p.status === 'published' ? 'background: rgba(0,180,0,0.1); color: #060;' : 'background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.5);'}`}>
+                {p.status}
+              </span>
+            </td>
+            <td style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">{new Date(p.updatedAt).toLocaleDateString()}</td>
+            <td style="text-align: right;">
+              <a href={`/admin/blog/${p._id.toString()}`}
+                style="padding: 0.35rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">
+                Edit
+              </a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.getElementById('new-post-btn')?.addEventListener('click', async () => {
+      const title = prompt('Post title?');
+      if (!title) return;
+      const res = await fetch('/api/blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      });
+      if (res.ok) {
+        const body = await res.json();
+        window.location.href = `/admin/blog/${body.post._id}`;
+      } else {
+        const body = await res.json().catch(() => ({}));
+        alert(body.error || 'Failed to create post');
+      }
+    });
+  </script>
+</AdminLayout>

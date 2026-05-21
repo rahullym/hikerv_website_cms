@@ -1,0 +1,158 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { connectDB } from '../../lib/db';
+import { ImageAsset } from '../../lib/db/models/ImageAsset';
+
+const session = Astro.locals.session!;
+
+await connectDB();
+const images = await ImageAsset.find().sort({ createdAt: -1 }).limit(120).lean();
+const s3Configured = Boolean(import.meta.env.S3_BUCKET);
+---
+
+<AdminLayout title="Images" active="images" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <div>
+      <p style="margin: 0; color: rgba(0,0,0,0.5);">{images.length} {images.length === 1 ? 'image' : 'images'} · Stored in S3 + served via CloudFront</p>
+      {!s3Configured && (
+        <p style="margin: 0.5rem 0 0; color: #c00; font-size: 0.8125rem;">⚠ S3 not configured — set S3_BUCKET / S3_REGION / S3_ACCESS_KEY / S3_SECRET_KEY in <code>.env</code> to enable uploads.</p>
+      )}
+    </div>
+    <label style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer;">
+      + Upload
+      <input id="upload-input" type="file" accept="image/*" multiple style="display: none;" />
+    </label>
+  </div>
+
+  <div id="upload-status" style="display: none; padding: 0.75rem 1rem; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.8125rem;"></div>
+
+  <div id="image-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+    {images.length === 0 && (
+      <p style="grid-column: 1 / -1; text-align: center; color: rgba(0,0,0,0.4); padding: 4rem 1rem;">No images yet. Upload your first.</p>
+    )}
+    {images.map((img) => (
+      <article data-image-id={img._id.toString()}
+        style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 0.75rem; overflow: hidden;">
+        <div style="width: 100%; aspect-ratio: 1; background: #f0f0f0; overflow: hidden;">
+          <img src={img.url} alt={img.alt || img.filename} style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+        </div>
+        <div style="padding: 0.75rem;">
+          <p style="margin: 0 0 0.25rem; font-size: 0.75rem; font-weight: 700; word-break: break-all;">{img.filename}</p>
+          <p style="margin: 0; font-size: 0.7rem; color: rgba(0,0,0,0.4);">
+            {img.width && img.height ? `${img.width}×${img.height}` : ''}
+            {img.width && img.height && ' · '}
+            {Math.round(img.size / 1024)} KB
+          </p>
+          <div style="display: flex; gap: 0.35rem; margin-top: 0.5rem;">
+            <button class="copy-url-btn" data-url={img.url}
+              style="flex: 1; padding: 0.3rem 0.5rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.7rem; font-weight: 700;">Copy URL</button>
+            <button class="delete-image-btn" data-image-id={img._id.toString()} data-filename={img.filename}
+              style="padding: 0.3rem 0.6rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.7rem; font-weight: 700; color: #c00;">×</button>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <script>
+    const grid = document.getElementById('image-grid') as HTMLDivElement;
+    const statusEl = document.getElementById('upload-status') as HTMLDivElement;
+    const input = document.getElementById('upload-input') as HTMLInputElement;
+
+    async function uploadOne(file: File) {
+      const presignRes = await fetch('/api/images/presign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+      if (!presignRes.ok) {
+        const err = await presignRes.json().catch(() => ({}));
+        throw new Error(err.error || 'Presign failed');
+      }
+      const { key, uploadUrl, publicUrl } = await presignRes.json();
+
+      // Upload directly to S3
+      const putRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      });
+      if (!putRes.ok) throw new Error(`S3 upload failed (${putRes.status})`);
+
+      // Probe dimensions for the metadata record
+      const { width, height } = await new Promise<{ width?: number; height?: number }>((resolve) => {
+        const url = URL.createObjectURL(file);
+        const im = new Image();
+        im.onload = () => {
+          resolve({ width: im.naturalWidth, height: im.naturalHeight });
+          URL.revokeObjectURL(url);
+        };
+        im.onerror = () => resolve({});
+        im.src = url;
+      });
+
+      // Save metadata in Mongo
+      const metaRes = await fetch('/api/images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key,
+          url: publicUrl,
+          filename: file.name,
+          mime: file.type,
+          size: file.size,
+          width,
+          height,
+        }),
+      });
+      if (!metaRes.ok) {
+        const err = await metaRes.json().catch(() => ({}));
+        throw new Error(err.error || 'Failed to record image');
+      }
+    }
+
+    input?.addEventListener('change', async () => {
+      const files = Array.from(input.files ?? []);
+      if (!files.length) return;
+      statusEl.style.display = 'block';
+      let done = 0;
+      for (const file of files) {
+        statusEl.textContent = `Uploading ${++done}/${files.length}: ${file.name}…`;
+        try {
+          await uploadOne(file);
+        } catch (err) {
+          statusEl.textContent = `Failed on ${file.name}: ${(err as Error).message}`;
+          return;
+        }
+      }
+      statusEl.textContent = `Uploaded ${done} file(s). Refreshing…`;
+      setTimeout(() => window.location.reload(), 800);
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('.copy-url-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const url = btn.dataset.url ?? '';
+        await navigator.clipboard.writeText(url);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => (btn.textContent = original), 1500);
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('.delete-image-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (!confirm(`Delete ${btn.dataset.filename}? Also removes from S3.`)) return;
+        const id = btn.dataset.imageId;
+        const res = await fetch(`/api/images/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          btn.closest('article')?.remove();
+        } else {
+          const err = await res.json().catch(() => ({}));
+          alert(err.error || 'Delete failed');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

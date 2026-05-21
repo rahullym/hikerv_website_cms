@@ -1,0 +1,387 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import ImagePicker from '../../../components/admin/ImagePicker.astro';
+import { connectDB } from '../../../lib/db';
+import { Variant } from '../../../lib/db/models/Variant';
+import { Series } from '../../../lib/db/models/Series';
+
+const session = Astro.locals.session!;
+const { id } = Astro.params;
+
+if (!id) return Astro.redirect('/admin/products');
+
+await connectDB();
+const variant = await Variant.findById(id).lean();
+if (!variant) return Astro.redirect('/admin/products');
+
+const series = await Series.findById(variant.seriesId).lean();
+const dataJson = JSON.stringify({
+  _id: variant._id.toString(),
+  name: variant.name,
+  slug: variant.slug,
+  status: variant.status,
+  hero: variant.hero,
+  specIcons: variant.specIcons,
+  specTable: variant.specTable,
+  premiumLiving: variant.premiumLiving,
+  floorplans: variant.floorplans,
+  cta: variant.cta,
+  gallery: variant.gallery,
+});
+const iconOptions = ['inverter', 'lounge', 'fridge', 'frame', 'suspension', 'washer', 'battery', 'solar'];
+const iconOptionsJson = JSON.stringify(iconOptions);
+---
+
+<AdminLayout title={`Edit: ${variant.name}`} active="products" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem;">
+    <div>
+      <a href="/admin/products" style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">← All products</a>
+      {series && (
+        <p style="margin: 0.25rem 0 0; color: rgba(0,0,0,0.45); font-size: 0.8125rem;">
+          Series: <b>{series.name}</b> · Public URL:
+          <a href={`/${variant.slug}`} target="_blank" style="color: #E50000; text-decoration: underline; font-family: ui-monospace, monospace;">/{variant.slug}</a>
+        </p>
+      )}
+    </div>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <span id="status-msg" style="font-size: 0.75rem; color: rgba(0,0,0,0.4);"></span>
+      <button id="delete-btn" style="padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: #c00; text-transform: uppercase; letter-spacing: 0.1em;">Delete</button>
+      <button id="save-btn" style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Save</button>
+    </div>
+  </div>
+
+  <form id="variant-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Identity -->
+    <fieldset class="block-card">
+      <legend>Identity</legend>
+      <div class="row">
+        <label class="lbl">Name<input data-bind="name" type="text" /></label>
+        <label class="lbl">Slug<input data-bind="slug" type="text" style="font-family: ui-monospace, monospace;" /></label>
+        <label class="lbl">Status<select data-bind="status"><option value="published">Published</option><option value="draft">Draft</option></select></label>
+      </div>
+    </fieldset>
+
+    <!-- Hero -->
+    <fieldset class="block-card">
+      <legend>Hero</legend>
+      <div class="row">
+        <label class="lbl">Kicker (red label)<input data-bind="hero.kicker" type="text" /></label>
+        <label class="lbl">Title (h1)<input data-bind="hero.title" type="text" /></label>
+        <label class="lbl">Subtitle (h2)<input data-bind="hero.subtitle" type="text" /></label>
+      </div>
+      <label class="lbl">Body<textarea data-bind="hero.body" rows="3"></textarea></label>
+      <div class="row">
+        <label class="lbl" style="flex: 1;">Hero Image
+          <div class="img-input-row">
+            <input id="hero-image-input" data-bind="hero.heroImage" type="text" style="flex: 1;" />
+            <button type="button" onclick="window.openImagePicker && window.openImagePicker('hero-image-input')" class="browse-btn">Browse…</button>
+          </div>
+        </label>
+        <label class="lbl">Brochure URL<input data-bind="hero.brochureUrl" type="text" /></label>
+      </div>
+    </fieldset>
+
+    <!-- Spec Icons -->
+    <fieldset class="block-card">
+      <legend>Spec Icons (8 cells under the hero)</legend>
+      <div id="spec-icons-list" class="vstack"></div>
+      <button type="button" id="add-icon-btn" class="ghost-btn">+ Add icon</button>
+    </fieldset>
+
+    <!-- Spec Table -->
+    <fieldset class="block-card">
+      <legend>Spec Table (Ultra / Terrain / Hiker × Chassis / Furniture / Electrical / Plumbing)</legend>
+      <div id="spec-table-root" class="vstack"></div>
+    </fieldset>
+
+    <!-- Premium Living -->
+    <fieldset class="block-card">
+      <legend>Premium Living</legend>
+      <div class="row">
+        <label class="lbl">Heading<input data-bind="premiumLiving.heading" type="text" /></label>
+      </div>
+      <label class="lbl">Body<textarea data-bind="premiumLiving.body" rows="4"></textarea></label>
+      <p class="hint">3 image slots — first one is the big portrait, second and third are stacked squares.</p>
+      <div id="pl-images" class="vstack"></div>
+      <button type="button" id="add-pl-img" class="ghost-btn">+ Add image slot</button>
+      <p class="hint" style="margin-top:1rem;">Chips (feature pills shown under body):</p>
+      <div id="pl-chips" class="vstack"></div>
+      <button type="button" id="add-pl-chip" class="ghost-btn">+ Add chip</button>
+    </fieldset>
+
+    <!-- Floorplans -->
+    <fieldset class="block-card">
+      <legend>3D Floorplans</legend>
+      <div id="floorplans-list" class="vstack"></div>
+      <button type="button" id="add-floorplan-btn" class="ghost-btn">+ Add floorplan</button>
+    </fieldset>
+
+    <!-- CTA -->
+    <fieldset class="block-card">
+      <legend>CTA (bottom banner)</legend>
+      <div class="row">
+        <label class="lbl">Kicker<input data-bind="cta.kicker" type="text" /></label>
+        <label class="lbl">Heading<input data-bind="cta.heading" type="text" /></label>
+      </div>
+      <label class="lbl">Body<textarea data-bind="cta.body" rows="2"></textarea></label>
+    </fieldset>
+  </form>
+
+  <ImagePicker />
+
+  <style is:global>
+    .block-card { border: 1px solid rgba(0,0,0,0.08); background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; }
+    .block-card legend { padding: 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: #E50000; font-weight: 800; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.875rem; margin-bottom: 0.875rem; }
+    .lbl { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); }
+    .lbl input, .lbl textarea, .lbl select { font-family: inherit; font-size: 0.875rem; text-transform: none; letter-spacing: normal; color: #111; }
+    .vstack { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .row-card { display: grid; grid-template-columns: 130px 1fr 1fr auto; gap: 0.5rem; align-items: center; padding: 0.5rem; background: #fafafa; border: 1px solid rgba(0,0,0,0.05); border-radius: 0.5rem; }
+    .row-card.full { grid-template-columns: 1fr auto; }
+    .ghost-btn { padding: 0.4rem 0.875rem; background: transparent; border: 1px dashed rgba(0,0,0,0.2); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+    .remove-btn { padding: 0.35rem 0.6rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; color: #c00; font-weight: 700; }
+    .img-input-row { display: flex; gap: 0.4rem; }
+    .browse-btn { padding: 0.4rem 0.75rem; background: #0a0a0a; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+    .hint { font-size: 0.75rem; color: rgba(0,0,0,0.5); margin: 0.5rem 0; }
+    .tier-block { border: 1px solid rgba(0,0,0,0.08); border-radius: 0.5rem; padding: 0.875rem; background: #fafafa; }
+    .tier-block h4 { margin: 0 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: #0a0a0a; font-weight: 800; }
+    .tier-block textarea { width: 100%; min-height: 110px; font-family: ui-monospace, monospace; font-size: 0.8125rem; }
+  </style>
+
+  <script is:inline define:vars={{ dataJson, iconOptionsJson }}>
+    const state = JSON.parse(dataJson);
+    const iconOptions = JSON.parse(iconOptionsJson);
+    const form = document.getElementById('variant-form');
+    const statusMsg = document.getElementById('status-msg');
+
+    /** Read a nested value with dot path */
+    function get(obj, path) {
+      return path.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
+    }
+    function set(obj, path, val) {
+      const parts = path.split('.');
+      const last = parts.pop();
+      const target = parts.reduce((o, k) => (o[k] = o[k] ?? {}), obj);
+      target[last] = val;
+    }
+
+    // ── Simple data-bind inputs ────────────────────────────────
+    form.querySelectorAll('[data-bind]').forEach((el) => {
+      const path = el.dataset.bind;
+      el.value = get(state, path) ?? '';
+      el.addEventListener('input', () => set(state, path, el.value));
+    });
+
+    // ── Spec Icons ─────────────────────────────────────────────
+    const iconsList = document.getElementById('spec-icons-list');
+    function renderIcons() {
+      iconsList.innerHTML = '';
+      state.specIcons = state.specIcons || [];
+      state.specIcons.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'row-card';
+        div.innerHTML = `
+          <select data-k="icon">${iconOptions.map((o) => `<option value="${o}" ${o === item.icon ? 'selected' : ''}>${o}</option>`).join('')}</select>
+          <input data-k="value" type="text" placeholder="Value" />
+          <input data-k="caption" type="text" placeholder="Caption" />
+          <button type="button" class="remove-btn">×</button>
+        `;
+        div.querySelector('[data-k="value"]').value = item.value || '';
+        div.querySelector('[data-k="caption"]').value = item.caption || '';
+        div.querySelectorAll('[data-k]').forEach((input) => {
+          input.addEventListener('input', () => {
+            state.specIcons[idx][input.dataset.k] = input.value;
+          });
+        });
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          state.specIcons.splice(idx, 1);
+          renderIcons();
+        });
+        iconsList.appendChild(div);
+      });
+    }
+    document.getElementById('add-icon-btn').addEventListener('click', () => {
+      state.specIcons = state.specIcons || [];
+      state.specIcons.push({ icon: 'inverter', value: '', caption: '' });
+      renderIcons();
+    });
+    renderIcons();
+
+    // ── Spec Table ─────────────────────────────────────────────
+    const tableRoot = document.getElementById('spec-table-root');
+    function ensureSpecTable() {
+      const blank = { chassis: [], furniture: [], electrical: [], plumbing: [] };
+      state.specTable = state.specTable || {};
+      ['ultra', 'terrain', 'hiker'].forEach((t) => {
+        state.specTable[t] = state.specTable[t] || { ...blank };
+        ['chassis', 'furniture', 'electrical', 'plumbing'].forEach((c) => {
+          state.specTable[t][c] = state.specTable[t][c] || [];
+        });
+      });
+    }
+    function renderTable() {
+      ensureSpecTable();
+      tableRoot.innerHTML = '';
+      ['ultra', 'terrain', 'hiker'].forEach((tier) => {
+        const block = document.createElement('div');
+        block.className = 'tier-block';
+        block.innerHTML = `<h4>${tier.charAt(0).toUpperCase() + tier.slice(1)} Pack</h4>` +
+          ['chassis', 'furniture', 'electrical', 'plumbing'].map((cat) => `
+            <label class="lbl">${cat} (one item per line)
+              <textarea data-tier="${tier}" data-cat="${cat}"></textarea>
+            </label>
+          `).join('');
+        block.querySelectorAll('textarea').forEach((ta) => {
+          const t = ta.dataset.tier;
+          const c = ta.dataset.cat;
+          ta.value = (state.specTable[t][c] || []).join('\n');
+          ta.addEventListener('input', () => {
+            state.specTable[t][c] = ta.value.split('\n').map((s) => s.trim()).filter(Boolean);
+          });
+        });
+        tableRoot.appendChild(block);
+      });
+    }
+    renderTable();
+
+    // ── Premium Living images & chips ─────────────────────────
+    const plImages = document.getElementById('pl-images');
+    const plChips = document.getElementById('pl-chips');
+    function ensurePL() {
+      state.premiumLiving = state.premiumLiving || { heading: '', body: '', images: [], chips: [] };
+      state.premiumLiving.images = state.premiumLiving.images || [];
+      state.premiumLiving.chips = state.premiumLiving.chips || [];
+    }
+    function renderPL() {
+      ensurePL();
+      plImages.innerHTML = '';
+      state.premiumLiving.images.forEach((url, idx) => {
+        const id = `pl-img-${idx}-${Date.now()}`;
+        const div = document.createElement('div');
+        div.className = 'row-card full';
+        div.innerHTML = `
+          <div class="img-input-row" style="grid-column: 1;">
+            <input id="${id}" type="text" style="flex: 1;" />
+            <button type="button" class="browse-btn">Browse…</button>
+          </div>
+          <button type="button" class="remove-btn">×</button>
+        `;
+        const input = div.querySelector('input');
+        input.value = url;
+        input.addEventListener('input', () => (state.premiumLiving.images[idx] = input.value));
+        div.querySelector('.browse-btn').addEventListener('click', () => window.openImagePicker && window.openImagePicker(id));
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          state.premiumLiving.images.splice(idx, 1);
+          renderPL();
+        });
+        plImages.appendChild(div);
+      });
+      plChips.innerHTML = '';
+      state.premiumLiving.chips.forEach((chip, idx) => {
+        const div = document.createElement('div');
+        div.className = 'row-card full';
+        div.innerHTML = `<input type="text" /><button type="button" class="remove-btn">×</button>`;
+        const input = div.querySelector('input');
+        input.value = chip;
+        input.addEventListener('input', () => (state.premiumLiving.chips[idx] = input.value));
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          state.premiumLiving.chips.splice(idx, 1);
+          renderPL();
+        });
+        plChips.appendChild(div);
+      });
+    }
+    document.getElementById('add-pl-img').addEventListener('click', () => {
+      ensurePL();
+      state.premiumLiving.images.push('');
+      renderPL();
+    });
+    document.getElementById('add-pl-chip').addEventListener('click', () => {
+      ensurePL();
+      state.premiumLiving.chips.push('');
+      renderPL();
+    });
+    renderPL();
+
+    // ── Floorplans ─────────────────────────────────────────────
+    const fpList = document.getElementById('floorplans-list');
+    function renderFloorplans() {
+      state.floorplans = state.floorplans || [];
+      fpList.innerHTML = '';
+      state.floorplans.forEach((fp, idx) => {
+        const id = `fp-img-${idx}-${Date.now()}`;
+        const div = document.createElement('div');
+        div.className = 'row-card';
+        div.style.gridTemplateColumns = '1fr 1fr 1.5fr auto';
+        div.innerHTML = `
+          <input data-k="title" type="text" placeholder="Title" />
+          <input data-k="desc" type="text" placeholder="Description" />
+          <div class="img-input-row">
+            <input id="${id}" data-k="src" type="text" placeholder="Image URL" style="flex: 1;" />
+            <button type="button" class="browse-btn">Browse…</button>
+          </div>
+          <button type="button" class="remove-btn">×</button>
+        `;
+        div.querySelector('[data-k="title"]').value = fp.title || '';
+        div.querySelector('[data-k="desc"]').value = fp.desc || '';
+        div.querySelector('[data-k="src"]').value = fp.src || '';
+        div.querySelectorAll('[data-k]').forEach((input) => {
+          input.addEventListener('input', () => (state.floorplans[idx][input.dataset.k] = input.value));
+        });
+        div.querySelector('.browse-btn').addEventListener('click', () => window.openImagePicker && window.openImagePicker(id));
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          state.floorplans.splice(idx, 1);
+          renderFloorplans();
+        });
+        fpList.appendChild(div);
+      });
+    }
+    document.getElementById('add-floorplan-btn').addEventListener('click', () => {
+      state.floorplans = state.floorplans || [];
+      state.floorplans.push({ title: '', desc: '', src: '' });
+      renderFloorplans();
+    });
+    renderFloorplans();
+
+    // ── Save / Delete ─────────────────────────────────────────
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      statusMsg.textContent = 'Saving…';
+      const payload = {
+        name: state.name,
+        slug: state.slug,
+        status: state.status,
+        hero: state.hero,
+        specIcons: state.specIcons,
+        specTable: state.specTable,
+        premiumLiving: state.premiumLiving,
+        floorplans: state.floorplans,
+        cta: state.cta,
+      };
+      const res = await fetch(`/api/products/variants/${state._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        statusMsg.textContent = 'Saved · publish to push live';
+        setTimeout(() => (statusMsg.textContent = ''), 4000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        statusMsg.textContent = 'Failed: ' + (body.error || 'unknown');
+      }
+    });
+
+    document.getElementById('delete-btn').addEventListener('click', async () => {
+      if (!confirm('Delete this variant? Cannot be undone.')) return;
+      const res = await fetch(`/api/products/variants/${state._id}`, { method: 'DELETE' });
+      if (res.ok) window.location.href = '/admin/products';
+      else {
+        const body = await res.json().catch(() => ({}));
+        alert(body.error || 'Failed');
+      }
+    });
+  </script>
+</AdminLayout>

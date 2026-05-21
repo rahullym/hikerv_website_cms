@@ -1,0 +1,169 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { hasRole } from '../../lib/auth/session';
+import { connectDB } from '../../lib/db';
+import { User } from '../../lib/db/models/User';
+
+const session = Astro.locals.session!;
+
+if (!hasRole(session, 'admin')) {
+  return Astro.redirect('/admin');
+}
+
+await connectDB();
+const users = await User.find({}, { passwordHash: 0 }).sort({ createdAt: -1 }).lean();
+---
+
+<AdminLayout title="Users" active="users" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <p style="margin: 0; color: rgba(0,0,0,0.5);">{users.length} {users.length === 1 ? 'user' : 'users'}</p>
+    <button id="new-user-btn"
+      style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+      + New User
+    </button>
+  </div>
+
+  <div style="background: #fff; border-radius: 0.75rem; overflow: hidden; border: 1px solid rgba(0,0,0,0.06);">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="users-tbody">
+        {users.map((u) => (
+          <tr data-user-id={u._id.toString()}>
+            <td>{u.email}</td>
+            <td>
+              <select class="role-select" data-user-id={u._id.toString()}>
+                {(['admin', 'editor', 'viewer'] as const).map((r) => (
+                  <option value={r} selected={u.role === r}>{r}</option>
+                ))}
+              </select>
+            </td>
+            <td>
+              <label style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem;">
+                <input type="checkbox" class="disabled-toggle" data-user-id={u._id.toString()} checked={u.disabled} />
+                Disabled
+              </label>
+            </td>
+            <td style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">{new Date(u.createdAt).toLocaleDateString()}</td>
+            <td style="text-align: right;">
+              <button class="delete-user-btn" data-user-id={u._id.toString()} data-user-email={u.email}
+                style="padding: 0.35rem 0.75rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; color: #c00; font-weight: 700;">
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- New User Modal -->
+  <div id="new-user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="background: #fff; border-radius: 1rem; padding: 2rem; width: 100%; max-width: 400px;">
+      <h2 style="margin: 0 0 1.5rem; font-size: 1.125rem; font-weight: 800;">Create User</h2>
+      <form id="new-user-form" style="display: flex; flex-direction: column; gap: 0.875rem;">
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+          Password (min 8 chars)
+          <input type="password" name="password" required minlength="8" />
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+          Role
+          <select name="role">
+            <option value="viewer">Viewer</option>
+            <option value="editor">Editor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </label>
+        <p id="new-user-error" style="color: #c00; font-size: 0.8125rem; margin: 0; display: none;"></p>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" id="cancel-new-user" style="flex: 1; padding: 0.625rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Cancel</button>
+          <button type="submit" style="flex: 1; padding: 0.625rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('new-user-modal') as HTMLDivElement;
+    document.getElementById('new-user-btn')?.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+    document.getElementById('cancel-new-user')?.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    const form = document.getElementById('new-user-form') as HTMLFormElement;
+    const errorEl = document.getElementById('new-user-error') as HTMLParagraphElement;
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      const data = new FormData(form);
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: data.get('email'),
+          password: data.get('password'),
+          role: data.get('role'),
+        }),
+      });
+      if (res.ok) {
+        window.location.reload();
+        return;
+      }
+      const body = await res.json().catch(() => ({}));
+      errorEl.textContent = body.error || 'Failed to create user';
+      errorEl.style.display = 'block';
+    });
+
+    document.querySelectorAll<HTMLSelectElement>('.role-select').forEach((sel) => {
+      sel.addEventListener('change', async () => {
+        const id = sel.dataset.userId;
+        await fetch(`/api/users/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: sel.value }),
+        });
+      });
+    });
+
+    document.querySelectorAll<HTMLInputElement>('.disabled-toggle').forEach((cb) => {
+      cb.addEventListener('change', async () => {
+        const id = cb.dataset.userId;
+        await fetch(`/api/users/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ disabled: cb.checked }),
+        });
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('.delete-user-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.userId;
+        const email = btn.dataset.userEmail;
+        if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
+        const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          btn.closest('tr')?.remove();
+        } else {
+          const body = await res.json().catch(() => ({}));
+          alert(body.error || 'Failed to delete user');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

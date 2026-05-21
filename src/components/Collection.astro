@@ -35,14 +35,14 @@ const models = [
 
         {models.map((model, index) => (
             <div id={`zoom-slide-${index}`} class="absolute inset-0 w-full h-full will-change-transform flex items-center justify-center opacity-0">
-                <img 
-                    src={typeof model.image === 'string' ? model.image : model.image.src} 
-                    alt={model.name} 
-                    class="absolute inset-0 w-full h-full object-cover z-0 scale-[1.4] object-center"
+                <img
+                    src={typeof model.image === 'string' ? model.image : model.image.src}
+                    alt={model.name}
+                    class="absolute inset-0 w-full h-full object-cover z-0 scale-100 md:scale-[1.4] object-center"
                 />
-                
-                <!-- Heavy Vignette to make text pop -->
-                <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none"></div>
+
+                <!-- Heavy Vignette to make text pop. Stronger on mobile (where text overlaps directly on the caravan body) than on desktop. -->
+                <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/85 via-black/60 to-black/95 md:from-black/80 md:via-black/30 md:to-black/90 pointer-events-none"></div>
 
                 <!-- Text Overlay -->
                 <div class="relative z-20 flex flex-col items-center justify-center text-center px-6" id={`zoom-text-${index}`}>

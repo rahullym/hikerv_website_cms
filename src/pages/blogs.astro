@@ -1,36 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import { loadPublishedPosts } from "../lib/cms/blog";
 
-const blogPosts = [
-  {
-    title: "Off-Road vs Semi Off-Road Caravans",
-    subtitle: "Which One is Right for You?",
-    description: "Australia offers diverse landscapes. Choosing between extreme terrain and light gravel touring is your first big decision.",
-    image: "/blogs/off-road-vs-semi.png",
-    link: "/blogs/off-road-vs-semi-off-road",
-    category: "Comparison Guide",
-    readTime: "8 Min Read"
-  },
-  {
-    title: "The Ultimate Guide to Caravan Travel",
-    subtitle: "Exploring Australia",
-    description: "From the East Coast to the Red Centre, discover the essentials of route planning, gear, and safe travel.",
-    image: "/blogs/ultimate-guide-australia.png",
-    link: "/blogs/ultimate-guide-australia",
-    category: "Ultimate Guide",
-    readTime: "12 Min Read"
-  },
-  {
-    title: "The Ultimate Guide to RV Maintenance",
-    subtitle: "Maintaining your Investment",
-    description: "Protect your freedom and adventure by following our expert checklist for chassis, electrical, and plumbing care.",
-    image: "/blogs/rv-maintenance.png",
-    link: "/blogs/rv-maintenance",
-    category: "Care & Support",
-    readTime: "15 Min Read"
-  }
-];
+const posts = await loadPublishedPosts();
+const blogPosts = posts.map((p) => ({
+  title: p.title,
+  subtitle: p.subtitle,
+  description: p.description,
+  image: p.heroImage,
+  link: `/blogs/${p.slug}`,
+  category: p.category,
+  readTime: p.readTime,
+}));
 ---
 
 <Layout title="Blogs | Hike RV Caravans" description="Stay up to date with the latest from Hike RV. From product announcements to off-grid travel tips and guide articles.">

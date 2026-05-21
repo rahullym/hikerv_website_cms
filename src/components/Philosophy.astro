@@ -11,8 +11,8 @@ const text2 = "absolute refinement.".split('');
         <div class="absolute inset-0 w-full h-full z-0">
             <img src="/philosophybg.jpg" alt="" class="w-full h-full object-cover scale-[1.4] object-center" />
             
-            <!-- Mild darkening to keep white text readable -->
-            <div class="absolute inset-0 bg-black/40"></div>
+            <!-- Mild darkening to keep white text readable. Stronger on mobile (text overlays caravan body directly there). -->
+            <div class="absolute inset-0 bg-black/65 md:bg-black/40"></div>
             
             <!-- Fade edges into the black background seamlessly -->
             <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
@@ -70,16 +70,24 @@ const text2 = "absolute refinement.".split('');
     */
     .phil-dim {
         color: transparent;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+        /* Mobile: stronger stroke so the dim state is still readable on the
+           busy bg; desktop: subtle stroke to keep the scroll-fill effect. */
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
+    }
+    @media (min-width: 768px) {
+        .phil-dim { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); }
     }
     .phil-filled {
         color: transparent;
         -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
         filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
     }
-    
+
     .phil-accent-dim {
-        color: rgba(229, 0, 0, 0.15); /* #E50000 */
+        color: rgba(229, 0, 0, 0.45); /* visible from the start on mobile */
+    }
+    @media (min-width: 768px) {
+        .phil-accent-dim { color: rgba(229, 0, 0, 0.15); }
     }
     .phil-accent-filled {
         color: rgba(229, 0, 0, 1);
