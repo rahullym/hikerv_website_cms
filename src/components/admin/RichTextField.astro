@@ -1,0 +1,239 @@
+---
+/**
+ * Reusable rich-text field powered by Tiptap (loaded via esm.sh CDN — no
+ * bundle install required). Renders a toolbar + contenteditable surface and
+ * mirrors its HTML into a hidden <textarea> so existing form-submit code
+ * (FormData / serialiser reading `.value`) keeps working unchanged.
+ *
+ * Usage: render <RichTextField id="post-body" name="body" />, then set the
+ * initial HTML on the hidden textarea (document.getElementById('post-body').value)
+ * before the editor initialises.
+ */
+interface Props {
+  /** Unique element id — used for both the textarea and the editor mount node. */
+  id: string;
+  /** form field name (mirrored on the hidden textarea). */
+  name: string;
+  /** Optional placeholder shown when empty. */
+  placeholder?: string;
+  /** Min height in CSS units (default 240px). */
+  minHeight?: string;
+}
+
+const { id, name, placeholder = 'Write something…', minHeight = '240px' } = Astro.props;
+const editorId = `${id}-editor`;
+const toolbarId = `${id}-toolbar`;
+---
+
+<div class="rtf-wrap" data-rtf-root={id} style="border: 1px solid rgba(0,0,0,0.12); border-radius: 0.5rem; overflow: hidden; background: #fff;">
+  <div id={toolbarId} class="rtf-toolbar" style="display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0.4rem 0.6rem; background: #f6f6f7; border-bottom: 1px solid rgba(0,0,0,0.08);">
+    <button type="button" data-cmd="bold" title="Bold" class="rtf-btn"><b>B</b></button>
+    <button type="button" data-cmd="italic" title="Italic" class="rtf-btn"><i>I</i></button>
+    <button type="button" data-cmd="strike" title="Strikethrough" class="rtf-btn"><s>S</s></button>
+    <span class="rtf-sep"></span>
+    <button type="button" data-cmd="h2" title="Heading 2" class="rtf-btn">H2</button>
+    <button type="button" data-cmd="h3" title="Heading 3" class="rtf-btn">H3</button>
+    <button type="button" data-cmd="paragraph" title="Paragraph" class="rtf-btn">¶</button>
+    <span class="rtf-sep"></span>
+    <button type="button" data-cmd="bulletList" title="Bulleted list" class="rtf-btn">• List</button>
+    <button type="button" data-cmd="orderedList" title="Numbered list" class="rtf-btn">1. List</button>
+    <button type="button" data-cmd="blockquote" title="Quote" class="rtf-btn">❝</button>
+    <span class="rtf-sep"></span>
+    <button type="button" data-cmd="link" title="Link" class="rtf-btn">🔗</button>
+    <button type="button" data-cmd="image" title="Insert image (from library)" class="rtf-btn">🖼</button>
+    <button type="button" data-cmd="hr" title="Horizontal rule" class="rtf-btn">―</button>
+    <span class="rtf-sep"></span>
+    <button type="button" data-cmd="undo" title="Undo" class="rtf-btn">↶</button>
+    <button type="button" data-cmd="redo" title="Redo" class="rtf-btn">↷</button>
+    <span style="flex: 1;"></span>
+    <button type="button" data-cmd="toggle-html" title="Toggle HTML source" class="rtf-btn">&lt;/&gt;</button>
+  </div>
+
+  <div id={editorId} class="rtf-surface" data-rtf-mode="rich" style={`min-height: ${minHeight}; padding: 0.875rem 1rem; outline: none; font-size: 0.9375rem; line-height: 1.6;`}></div>
+
+  <textarea id={id} name={name} class="rtf-source" style="display: none;"></textarea>
+</div>
+
+<style is:global>
+  .rtf-btn {
+    padding: 0.25rem 0.55rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.3rem;
+    font-size: 0.8125rem;
+    color: rgba(0,0,0,0.65);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .rtf-btn:hover { background: #fff; border-color: rgba(0,0,0,0.1); }
+  .rtf-btn.is-active { background: #E50000; color: #fff; border-color: #E50000; }
+  .rtf-sep { width: 1px; background: rgba(0,0,0,0.1); margin: 0 0.25rem; }
+  .rtf-surface .ProseMirror { outline: none; min-height: inherit; }
+  .rtf-surface .ProseMirror p { margin: 0 0 0.75rem; }
+  .rtf-surface .ProseMirror h2 { font-size: 1.35rem; font-weight: 800; margin: 1.25rem 0 0.6rem; text-transform: uppercase; letter-spacing: -0.01em; }
+  .rtf-surface .ProseMirror h3 { font-size: 1.125rem; font-weight: 800; margin: 1rem 0 0.5rem; }
+  .rtf-surface .ProseMirror a { color: #E50000; text-decoration: underline; }
+  .rtf-surface .ProseMirror ul, .rtf-surface .ProseMirror ol { padding-left: 1.5rem; margin: 0 0 0.75rem; }
+  .rtf-surface .ProseMirror blockquote { border-left: 3px solid #E50000; padding-left: 0.875rem; margin: 0 0 0.875rem; color: rgba(0,0,0,0.6); font-style: italic; }
+  .rtf-surface .ProseMirror hr { border: none; border-top: 1px solid rgba(0,0,0,0.15); margin: 1.25rem 0; }
+  .rtf-surface .ProseMirror img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 0.5rem 0; }
+  .rtf-surface[data-rtf-mode="html"] textarea {
+    width: 100%; min-height: inherit; border: none; outline: none;
+    font-family: ui-monospace, "SF Mono", monospace; font-size: 0.8125rem; padding: 0; background: transparent;
+    color: #111; resize: vertical;
+  }
+</style>
+
+<script is:inline define:vars={{ rootId: id, editorId, toolbarId, placeholder }}>
+  // Lazy-init: only download Tiptap once per page even if multiple instances mount.
+  if (!window.__rtfInitPromise) {
+    window.__rtfInitPromise = (async () => {
+      const [{ Editor }, StarterKitMod, LinkMod, ImageMod, PlaceholderMod] = await Promise.all([
+        import('https://esm.sh/@tiptap/core@2.6.6'),
+        import('https://esm.sh/@tiptap/starter-kit@2.6.6'),
+        import('https://esm.sh/@tiptap/extension-link@2.6.6'),
+        import('https://esm.sh/@tiptap/extension-image@2.6.6'),
+        import('https://esm.sh/@tiptap/extension-placeholder@2.6.6'),
+      ]);
+      return {
+        Editor,
+        StarterKit: StarterKitMod.default,
+        Link: LinkMod.default,
+        Image: ImageMod.default,
+        Placeholder: PlaceholderMod.default,
+      };
+    })();
+  }
+
+  (async function initOne() {
+    const root = document.querySelector(`[data-rtf-root="${rootId}"]`);
+    if (!root) return;
+    const textarea = root.querySelector('.rtf-source');
+    const mount = document.getElementById(editorId);
+    const toolbar = document.getElementById(toolbarId);
+    if (!textarea || !mount || !toolbar) return;
+
+    const { Editor, StarterKit, Link, Image, Placeholder } = await window.__rtfInitPromise;
+
+    const editor = new Editor({
+      element: mount,
+      extensions: [
+        StarterKit,
+        Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' } }),
+        Image,
+        Placeholder.configure({ placeholder }),
+      ],
+      content: textarea.value || '',
+      onUpdate: ({ editor: e }) => {
+        textarea.value = e.getHTML();
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      },
+    });
+
+    // Allow upstream code that resets the textarea to re-load the editor.
+    textarea.addEventListener('rtf:set', () => editor.commands.setContent(textarea.value || ''));
+
+    // Toggle toolbar buttons' active state on selection change
+    const refresh = () => {
+      toolbar.querySelectorAll('button[data-cmd]').forEach((btn) => {
+        const cmd = btn.dataset.cmd;
+        let active = false;
+        if (cmd === 'bold') active = editor.isActive('bold');
+        else if (cmd === 'italic') active = editor.isActive('italic');
+        else if (cmd === 'strike') active = editor.isActive('strike');
+        else if (cmd === 'h2') active = editor.isActive('heading', { level: 2 });
+        else if (cmd === 'h3') active = editor.isActive('heading', { level: 3 });
+        else if (cmd === 'paragraph') active = editor.isActive('paragraph');
+        else if (cmd === 'bulletList') active = editor.isActive('bulletList');
+        else if (cmd === 'orderedList') active = editor.isActive('orderedList');
+        else if (cmd === 'blockquote') active = editor.isActive('blockquote');
+        else if (cmd === 'link') active = editor.isActive('link');
+        btn.classList.toggle('is-active', active);
+      });
+    };
+    editor.on('selectionUpdate', refresh);
+    editor.on('transaction', refresh);
+
+    // Toolbar handlers
+    toolbar.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-cmd]');
+      if (!btn) return;
+      const cmd = btn.dataset.cmd;
+      const chain = editor.chain().focus();
+      switch (cmd) {
+        case 'bold':         chain.toggleBold().run(); break;
+        case 'italic':       chain.toggleItalic().run(); break;
+        case 'strike':       chain.toggleStrike().run(); break;
+        case 'h2':           chain.toggleHeading({ level: 2 }).run(); break;
+        case 'h3':           chain.toggleHeading({ level: 3 }).run(); break;
+        case 'paragraph':    chain.setParagraph().run(); break;
+        case 'bulletList':   chain.toggleBulletList().run(); break;
+        case 'orderedList':  chain.toggleOrderedList().run(); break;
+        case 'blockquote':   chain.toggleBlockquote().run(); break;
+        case 'hr':           chain.setHorizontalRule().run(); break;
+        case 'undo':         chain.undo().run(); break;
+        case 'redo':         chain.redo().run(); break;
+        case 'link': {
+          const prev = editor.getAttributes('link').href || '';
+          const url = window.prompt('URL (leave blank to remove)', prev);
+          if (url === null) break;
+          if (url === '') chain.unsetLink().run();
+          else chain.setLink({ href: url }).run();
+          break;
+        }
+        case 'image': {
+          // Use the existing ImagePicker modal if present on the page
+          if (typeof window.openImagePicker === 'function') {
+            // We hijack a transient hidden input as the picker target, then
+            // forward the picked URL into the editor.
+            let tmp = document.getElementById('__rtf_img_tmp');
+            if (!tmp) {
+              tmp = document.createElement('input');
+              tmp.type = 'hidden';
+              tmp.id = '__rtf_img_tmp';
+              document.body.appendChild(tmp);
+            }
+            const onSet = () => {
+              tmp.removeEventListener('change', onSet);
+              if (tmp.value) editor.chain().focus().setImage({ src: tmp.value }).run();
+              tmp.value = '';
+            };
+            tmp.addEventListener('change', onSet);
+            window.openImagePicker('__rtf_img_tmp');
+          } else {
+            const url = window.prompt('Image URL');
+            if (url) chain.setImage({ src: url }).run();
+          }
+          break;
+        }
+        case 'toggle-html': {
+          if (mount.dataset.rtfMode === 'rich') {
+            // Swap to raw HTML textarea
+            const html = editor.getHTML();
+            mount.dataset.rtfMode = 'html';
+            mount.innerHTML = '';
+            const ta = document.createElement('textarea');
+            ta.value = html;
+            ta.style.cssText = 'width:100%;min-height:inherit;border:none;outline:none;font-family:ui-monospace,monospace;font-size:0.8125rem;padding:0;resize:vertical;';
+            ta.addEventListener('input', () => {
+              textarea.value = ta.value;
+              textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            mount.appendChild(ta);
+          } else {
+            // Swap back to rich editor with current HTML
+            mount.dataset.rtfMode = 'rich';
+            mount.innerHTML = '';
+            editor.commands.setContent(textarea.value || '');
+            // Tiptap detaches when innerHTML is wiped; remount
+            editor.options.element = mount;
+            editor.createView();
+          }
+          break;
+        }
+      }
+    });
+
+    refresh();
+  })();
+</script>

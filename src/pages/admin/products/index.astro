@@ -12,12 +12,10 @@ await connectDB();
 const series = await Series.find().sort({ order: 1 }).lean();
 const variants = await Variant.find().sort({ order: 1, name: 1 }).lean();
 
-// Group variants under their series for the UI
 const grouped = series.map((s) => ({
   series: s,
   variants: variants.filter((v) => String(v.seriesId) === String(s._id)),
 }));
-// Variants whose series record was deleted (orphans)
 const orphans = variants.filter((v) => !series.some((s) => String(s._id) === String(v.seriesId)));
 ---
 
@@ -26,36 +24,51 @@ const orphans = variants.filter((v) => !series.some((s) => String(s._id) === Str
     <p style="margin: 0; color: rgba(0,0,0,0.5);">
       {series.length} {series.length === 1 ? 'series' : 'series'} · {variants.length} {variants.length === 1 ? 'variant' : 'variants'}
     </p>
-    <div style="display: flex; gap: 0.5rem;">
-      <button id="new-series-btn"
-        style="padding: 0.5rem 1.25rem; background: #0a0a0a; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
-        + Series
-      </button>
-      <button id="new-variant-btn"
-        style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
-        + Variant
-      </button>
-    </div>
+    <button class="open-series-modal" data-mode="new"
+      style="padding: 0.5rem 1.25rem; background: #0a0a0a; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer;">
+      + New Series
+    </button>
   </div>
 
   {grouped.length === 0 && (
     <p style="background: #fff; border: 1px dashed rgba(0,0,0,0.12); border-radius: 0.75rem; padding: 2.5rem; text-align: center; color: rgba(0,0,0,0.4);">
-      No series yet. Run <code>npm run seed</code> to import the existing model data, or click <b>+ Series</b> to start fresh.
+      No series yet. Run <code>npm run seed</code> to import the existing model data, or click <b>+ New Series</b> to start fresh.
     </p>
   )}
 
   <div style="display: flex; flex-direction: column; gap: 2rem;">
     {grouped.map(({ series: s, variants: vs }) => (
       <section style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 0.75rem; overflow: hidden;">
-        <header style={`padding: 1rem 1.5rem; background: ${s.accentColor}10; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center;`}>
-          <div>
-            <h2 style="margin: 0; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em;">{s.name}</h2>
-            <small style="color: rgba(0,0,0,0.5); font-family: ui-monospace, monospace; font-size: 0.75rem;">/{s.slug}</small>
+        <header style={`padding: 1rem 1.5rem; background: ${s.accentColor}10; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 1rem;`}>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style={`width: 0.9rem; height: 0.9rem; border-radius: 0.25rem; background: ${s.accentColor};`}></span>
+            <div>
+              <h2 style="margin: 0; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em;">{s.name}</h2>
+              <small style="color: rgba(0,0,0,0.5); font-family: ui-monospace, monospace; font-size: 0.75rem;">/{s.slug}</small>
+            </div>
           </div>
-          <span style={`width: 0.9rem; height: 0.9rem; border-radius: 0.25rem; background: ${s.accentColor};`}></span>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="open-variant-modal"
+              data-series-id={s._id.toString()}
+              data-series-slug={s.slug}
+              data-series-name={s.name}
+              style="padding: 0.4rem 0.875rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer;">
+              + Variant
+            </button>
+            <button class="open-series-modal" data-mode="edit"
+              data-series-id={s._id.toString()}
+              data-series-name={s.name}
+              data-series-slug={s.slug}
+              data-series-accent={s.accentColor}
+              data-series-order={s.order}
+              data-variant-count={vs.length}
+              style="padding: 0.4rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.15); border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer;">
+              Edit Series
+            </button>
+          </div>
         </header>
         {vs.length === 0 ? (
-          <p style="padding: 1.5rem; color: rgba(0,0,0,0.4); margin: 0;">No variants in this series yet.</p>
+          <p style="padding: 1.5rem; color: rgba(0,0,0,0.4); margin: 0; font-size: 0.875rem;">No variants in this series yet. Click <b>+ Variant</b> above.</p>
         ) : (
           <table>
             <thead>
@@ -88,6 +101,7 @@ const orphans = variants.filter((v) => !series.some((s) => String(s._id) === Str
         )}
       </section>
     ))}
+
     {orphans.length > 0 && (
       <section style="background: #fff; border: 1px solid rgba(192,0,0,0.2); border-radius: 0.75rem; padding: 1.5rem;">
         <h2 style="margin: 0 0 0.5rem; font-size: 0.875rem; font-weight: 800; color: #c00;">Orphan variants</h2>
@@ -99,43 +113,192 @@ const orphans = variants.filter((v) => !series.some((s) => String(s._id) === Str
     )}
   </div>
 
+  <!-- Series modal (new + edit) -->
+  <div id="series-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="background: #fff; border-radius: 1rem; width: 100%; max-width: 460px; padding: 1.75rem 2rem;">
+      <h2 id="series-modal-title" style="margin: 0 0 1.25rem; font-size: 1.125rem; font-weight: 800;">Series</h2>
+      <form id="series-form" style="display: flex; flex-direction: column; gap: 0.875rem;">
+        <label class="modal-lbl">Name<input name="name" type="text" required /></label>
+        <label class="modal-lbl">Slug<input name="slug" type="text" required style="font-family: ui-monospace, monospace;" /></label>
+        <label class="modal-lbl">Accent color<input name="accentColor" type="text" placeholder="#E50000" /></label>
+        <label class="modal-lbl">Sort order<input name="order" type="number" min="0" placeholder="0" /></label>
+        <p id="series-form-error" style="color: #c00; font-size: 0.8125rem; margin: 0; display: none;"></p>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" id="series-modal-delete" style="padding: 0.625rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #c00; display: none;">Delete</button>
+          <span style="flex: 1;"></span>
+          <button type="button" class="modal-cancel" style="padding: 0.625rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Cancel</button>
+          <button type="submit" style="padding: 0.625rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Variant modal -->
+  <div id="variant-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="background: #fff; border-radius: 1rem; width: 100%; max-width: 460px; padding: 1.75rem 2rem;">
+      <h2 style="margin: 0 0 0.25rem; font-size: 1.125rem; font-weight: 800;">New Variant</h2>
+      <p id="variant-modal-series" style="margin: 0 0 1.25rem; font-size: 0.8125rem; color: rgba(0,0,0,0.5);"></p>
+      <form id="variant-form" style="display: flex; flex-direction: column; gap: 0.875rem;">
+        <label class="modal-lbl">Name (display, e.g. "Grand Rover 19.6")<input name="name" type="text" required /></label>
+        <label class="modal-lbl">Slug (matches Astro filename, e.g. "grand-rover-196")<input name="slug" type="text" required style="font-family: ui-monospace, monospace;" /></label>
+        <p id="variant-form-error" style="color: #c00; font-size: 0.8125rem; margin: 0; display: none;"></p>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <span style="flex: 1;"></span>
+          <button type="button" class="modal-cancel" style="padding: 0.625rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Cancel</button>
+          <button type="submit" style="padding: 0.625rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Create &amp; Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style is:global>
+    .modal-lbl { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); }
+    .modal-lbl input { font-size: 0.875rem; text-transform: none; letter-spacing: normal; color: #111; }
+  </style>
+
   <script>
-    document.getElementById('new-series-btn')?.addEventListener('click', async () => {
-      const name = prompt('Series name?');
-      if (!name) return;
-      const slug = prompt('URL slug?', name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-      if (!slug) return;
-      const res = await fetch('/api/products/series', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, slug }),
-      });
-      if (res.ok) window.location.reload();
-      else {
-        const body = await res.json().catch(() => ({}));
-        alert(body.error || 'Failed');
+    type SeriesModalMode = 'new' | 'edit';
+    const seriesModal = document.getElementById('series-modal') as HTMLDivElement;
+    const seriesForm = document.getElementById('series-form') as HTMLFormElement;
+    const seriesTitle = document.getElementById('series-modal-title') as HTMLElement;
+    const seriesError = document.getElementById('series-form-error') as HTMLParagraphElement;
+    const seriesDeleteBtn = document.getElementById('series-modal-delete') as HTMLButtonElement;
+    const variantModal = document.getElementById('variant-modal') as HTMLDivElement;
+    const variantForm = document.getElementById('variant-form') as HTMLFormElement;
+    const variantSeriesLabel = document.getElementById('variant-modal-series') as HTMLParagraphElement;
+    const variantError = document.getElementById('variant-form-error') as HTMLParagraphElement;
+
+    let editingSeriesId: string | null = null;
+    let creatingVariantForSeries: string | null = null;
+
+    function openSeriesModal(mode: SeriesModalMode, btn?: HTMLElement) {
+      editingSeriesId = null;
+      seriesError.style.display = 'none';
+      seriesForm.reset();
+      if (mode === 'new') {
+        seriesTitle.textContent = 'New Series';
+        seriesDeleteBtn.style.display = 'none';
+        (seriesForm.querySelector('[name="accentColor"]') as HTMLInputElement).value = '#E50000';
+      } else if (mode === 'edit' && btn) {
+        editingSeriesId = btn.dataset.seriesId || null;
+        seriesTitle.textContent = `Edit Series: ${btn.dataset.seriesName}`;
+        (seriesForm.querySelector('[name="name"]') as HTMLInputElement).value = btn.dataset.seriesName || '';
+        (seriesForm.querySelector('[name="slug"]') as HTMLInputElement).value = btn.dataset.seriesSlug || '';
+        (seriesForm.querySelector('[name="accentColor"]') as HTMLInputElement).value = btn.dataset.seriesAccent || '';
+        (seriesForm.querySelector('[name="order"]') as HTMLInputElement).value = btn.dataset.seriesOrder || '0';
+        seriesDeleteBtn.style.display = 'inline-block';
+        seriesDeleteBtn.dataset.variantCount = btn.dataset.variantCount || '0';
       }
+      seriesModal.style.display = 'flex';
+    }
+
+    function openVariantModal(btn: HTMLElement) {
+      variantError.style.display = 'none';
+      variantForm.reset();
+      creatingVariantForSeries = btn.dataset.seriesSlug || null;
+      variantSeriesLabel.textContent = `Adding to: ${btn.dataset.seriesName}`;
+      variantModal.style.display = 'flex';
+    }
+
+    function closeModal(el: HTMLDivElement) {
+      el.style.display = 'none';
+    }
+
+    // Wire all triggers
+    document.querySelectorAll<HTMLButtonElement>('.open-series-modal').forEach((btn) => {
+      btn.addEventListener('click', () => openSeriesModal(btn.dataset.mode as SeriesModalMode, btn));
+    });
+    document.querySelectorAll<HTMLButtonElement>('.open-variant-modal').forEach((btn) => {
+      btn.addEventListener('click', () => openVariantModal(btn));
+    });
+    document.querySelectorAll<HTMLElement>('.modal-cancel').forEach((btn) => {
+      btn.addEventListener('click', (e) => closeModal((e.currentTarget as HTMLElement).closest('[id$="-modal"]') as HTMLDivElement));
+    });
+    [seriesModal, variantModal].forEach((m) => {
+      m.addEventListener('click', (e) => { if (e.target === m) closeModal(m); });
     });
 
-    document.getElementById('new-variant-btn')?.addEventListener('click', async () => {
-      const seriesSlug = prompt('Which series slug?');
-      if (!seriesSlug) return;
-      const name = prompt('Variant name (e.g. "Grand Rover 19.6")');
-      if (!name) return;
-      const slug = prompt('URL slug (matches Astro filename, e.g. "grand-rover-196")');
-      if (!slug) return;
+    // Series form submit
+    seriesForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      seriesError.style.display = 'none';
+      const data = new FormData(seriesForm);
+      const payload: Record<string, unknown> = {
+        name: data.get('name'),
+        slug: data.get('slug'),
+        accentColor: data.get('accentColor') || '#E50000',
+      };
+      const orderVal = data.get('order');
+      if (orderVal !== null && orderVal !== '') payload.order = Number(orderVal);
+
+      const url = editingSeriesId ? `/api/products/series/${editingSeriesId}` : '/api/products/series';
+      const method = editingSeriesId ? 'PATCH' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) { window.location.reload(); return; }
+      const body = await res.json().catch(() => ({}));
+      seriesError.textContent = body.error || 'Failed';
+      seriesError.style.display = 'block';
+    });
+
+    // Series delete
+    seriesDeleteBtn.addEventListener('click', async () => {
+      if (!editingSeriesId) return;
+      const variantCount = Number(seriesDeleteBtn.dataset.variantCount || '0');
+      if (variantCount > 0) {
+        alert(`Delete blocked: this series still has ${variantCount} variant${variantCount === 1 ? '' : 's'}. Move or delete those first.`);
+        return;
+      }
+      if (!confirm('Delete this series? Cannot be undone.')) return;
+      const res = await fetch(`/api/products/series/${editingSeriesId}`, { method: 'DELETE' });
+      if (res.ok) { window.location.reload(); return; }
+      const body = await res.json().catch(() => ({}));
+      seriesError.textContent = body.error || 'Delete failed';
+      seriesError.style.display = 'block';
+    });
+
+    // Variant form submit
+    variantForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      variantError.style.display = 'none';
+      const data = new FormData(variantForm);
       const res = await fetch('/api/products/variants', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seriesSlug, name, slug }),
+        body: JSON.stringify({
+          seriesSlug: creatingVariantForSeries,
+          name: data.get('name'),
+          slug: data.get('slug'),
+        }),
       });
       if (res.ok) {
         const body = await res.json();
         window.location.href = `/admin/products/${body.variant._id}`;
-      } else {
-        const body = await res.json().catch(() => ({}));
-        alert(body.error || 'Failed');
+        return;
       }
+      const body = await res.json().catch(() => ({}));
+      variantError.textContent = body.error || 'Failed';
+      variantError.style.display = 'block';
     });
+
+    // Auto-slug for name fields
+    function attachSlugify(nameInput: HTMLInputElement | null, slugInput: HTMLInputElement | null) {
+      if (!nameInput || !slugInput) return;
+      let userTouchedSlug = false;
+      slugInput.addEventListener('input', () => { userTouchedSlug = true; });
+      nameInput.addEventListener('input', () => {
+        if (userTouchedSlug) return;
+        slugInput.value = nameInput.value
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+      });
+    }
+    attachSlugify(seriesForm.querySelector('[name="name"]'), seriesForm.querySelector('[name="slug"]'));
+    attachSlugify(variantForm.querySelector('[name="name"]'), variantForm.querySelector('[name="slug"]'));
   </script>
 </AdminLayout>
