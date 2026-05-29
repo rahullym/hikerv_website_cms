@@ -10,7 +10,34 @@ import WhyChooseUs from "../components/WhyChooseUs.astro";
 import Testimonials from "../components/Testimonials.astro";
 import Invitation from "../components/Invitation.astro";
 ---
-<Layout title="Hike RV Caravan | Precision Engineered Luxury">
+<Layout
+	title="Off Road Caravans Australia | Luxury Family & Couples Caravans — Hike RV"
+	description="Hike RV — Australian made off road, off grid and luxury caravans for families and couples. Explore touring, hybrid and semi off road models built for any terrain."
+	keywords="off road caravans Australia, family caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Australian made caravans, hybrid caravans Australia, touring caravans Australia, best off road caravans, affordable luxury caravans, Hike RV, Hike RV Caravans, Hike caravans"
+>
+	<script is:inline type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "Hike RV",
+		"alternateName": "Hike RV Caravans",
+		"url": "https://hikervcaravans.com.au",
+		"logo": "https://hikervcaravans.com.au/favicon.png",
+		"description": "Australian made off road, off grid and luxury caravans for families and couples.",
+		"address": {
+			"@type": "PostalAddress",
+			"addressCountry": "AU",
+			"addressRegion": "VIC",
+			"addressLocality": "Melbourne"
+		},
+		"contactPoint": {
+			"@type": "ContactPoint",
+			"telephone": "+61-3-9322-3562",
+			"contactType": "customer service",
+			"email": "explore@hikerv.com.au",
+			"areaServed": "AU"
+		},
+		"sameAs": []
+	})} />
 	<Loader />
 	<Navbar />
 	<main class="relative bg-black w-full" id="stack-container">

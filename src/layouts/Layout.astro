@@ -7,9 +7,14 @@ import RightSidebar from '../components/RightSidebar.astro';
 interface Props {
 	title: string;
 	description?: string;
+	keywords?: string;
 }
 
-const { title, description = "Hike RV Caravan - Discover the ultimate mobile-first luxury caravan experience. Engineering meets adventure." } = Astro.props;
+const {
+	title,
+	description = "Hike RV — Australian made off road, off grid and luxury caravans for families and couples. Engineered for the wild, built for the long haul.",
+	keywords = "off road caravans Australia, family caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Australian made caravans, Hike RV"
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -21,6 +26,7 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
 		
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
@@ -36,8 +42,31 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+		<!-- Google Tag Manager — hikervcaravans.com.au -->
+		<script is:inline>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-KZRQGG54');
+		</script>
+		<!-- End Google Tag Manager -->
+
+		<!-- Google tag (gtag.js) — HIKE RV CARAVANS -->
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-10893746450"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'AW-10893746450');
+		</script>
 	</head>
 	<body class="bg-black text-white">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZRQGG54" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
 		<div id="cursor-dot"></div>
 		<div id="cursor-ring"></div>
 		
