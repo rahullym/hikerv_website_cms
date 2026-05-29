@@ -11,12 +11,14 @@
                 <p class="text-white/40 text-sm md:text-base leading-relaxed max-w-md">
                     Look no further! Our newsletter is your key to staying informed and ahead of the curve.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 mt-4">
-                    <input type="email" placeholder="Enter your email" class="bg-white/5 border border-white/10 rounded-full px-8 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-[#E50000]/50 transition-all flex-1" />
-                    <button class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all duration-300 rounded-full shrink-0">
+                <form id="newsletter-form" class="flex flex-col sm:flex-row gap-4 mt-4" novalidate>
+                    <input type="email" name="email" required autocomplete="email" placeholder="Enter your email" class="bg-white/5 border border-white/10 rounded-full px-8 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-[#E50000]/50 transition-all flex-1" />
+                    <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" />
+                    <button type="submit" id="newsletter-submit" class="px-10 py-4 bg-[#E50000] text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all duration-300 rounded-full shrink-0">
                         Subscribe (Newsletter)
                     </button>
-                </div>
+                </form>
+                <p id="newsletter-status" class="text-xs text-white/50 mt-2" style="min-height:1.25em" aria-live="polite"></p>
             </div>
 
             <div class="flex flex-col justify-between">
@@ -129,3 +131,48 @@
 
     </div>
 </footer>
+
+<script>
+    const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+    const status = document.getElementById('newsletter-status') as HTMLParagraphElement | null;
+    const btn = document.getElementById('newsletter-submit') as HTMLButtonElement | null;
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form || !status || !btn) return;
+        status.style.color = ''; status.textContent = '';
+        const data = new FormData(form);
+        const email = String(data.get('email') ?? '').trim();
+        const website = String(data.get('website') ?? '');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            status.style.color = '#ff8a8a';
+            status.textContent = 'Please enter a valid email address.';
+            return;
+        }
+        const original = btn.textContent;
+        btn.disabled = true; btn.textContent = 'Subscribing…';
+        try {
+            const res = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, website }),
+            });
+            if (res.ok) {
+                const body = await res.json().catch(() => ({}));
+                status.style.color = '#9be38b';
+                status.textContent = body.alreadySubscribed
+                    ? 'You’re already on the list — thanks!'
+                    : 'Thanks — you’re subscribed.';
+                form.reset();
+            } else {
+                const body = await res.json().catch(() => ({} as { error?: string }));
+                status.style.color = '#ff8a8a';
+                status.textContent = body.error || 'Could not subscribe. Please try again.';
+            }
+        } catch {
+            status.style.color = '#ff8a8a';
+            status.textContent = 'Network error. Please try again.';
+        } finally {
+            btn.disabled = false; btn.textContent = original;
+        }
+    });
+</script>

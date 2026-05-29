@@ -1,0 +1,131 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const session = Astro.locals.session!;
+---
+
+<AdminLayout title="Enquiries" active="leads" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <p id="count" style="color: rgba(0,0,0,0.55); margin: 0;">Loading…</p>
+      <select id="filter"
+        style="padding: 0.4rem 0.8rem; font-size: 0.8125rem; font-weight: 600;">
+        <option value="">All statuses</option>
+        <option value="new">New</option>
+        <option value="contacted">Contacted</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+    <a href="/api/leads/export"
+       style="padding: 0.5rem 1rem; background: #111; color: #fff; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+      Export CSV
+    </a>
+  </div>
+
+  <div id="grid" style="display: grid; gap: 1rem;">
+    <p style="color: rgba(0,0,0,0.4)">Loading…</p>
+  </div>
+
+  <script>
+    type Lead = {
+      _id: string; name: string; email: string; phone: string;
+      model?: string; size?: string; state?: string; message?: string;
+      status: 'new' | 'contacted' | 'closed'; createdAt: string;
+    };
+    const grid = document.getElementById('grid') as HTMLDivElement;
+    const count = document.getElementById('count') as HTMLParagraphElement;
+    const filter = document.getElementById('filter') as HTMLSelectElement;
+
+    function fmtDate(iso: string): string {
+      try { return new Date(iso).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }); }
+      catch { return iso; }
+    }
+    function esc(s: string): string {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+    }
+    function badge(status: string): string {
+      const c = status === 'new' ? '#E50000' : status === 'contacted' ? '#0066cc' : '#666';
+      return `<span style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;background:${c}15;color:${c};padding:0.25rem 0.6rem;border-radius:9999px">${status}</span>`;
+    }
+
+    async function load() {
+      const status = filter.value;
+      const url = status ? `/api/contact?status=${status}` : '/api/contact';
+      const res = await fetch(url);
+      if (!res.ok) {
+        grid.innerHTML = `<p style="color:#c00">Failed to load (HTTP ${res.status})</p>`;
+        count.textContent = '';
+        return;
+      }
+      const body = await res.json() as { leads: Lead[]; total: number };
+      count.textContent = `${body.total} enquir${body.total === 1 ? 'y' : 'ies'}`;
+      if (body.total === 0) {
+        grid.innerHTML = `<p style="padding:2rem;text-align:center;color:rgba(0,0,0,0.4);background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:1rem">No enquiries yet.</p>`;
+        return;
+      }
+      grid.innerHTML = body.leads.map(l => `
+        <article style="background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:1rem;padding:1.25rem 1.5rem">
+          <header style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:0.75rem">
+            <div>
+              <h3 style="margin:0 0 0.25rem;font-size:1rem;font-weight:800">${esc(l.name)} ${badge(l.status)}</h3>
+              <p style="margin:0;font-size:0.8125rem;color:rgba(0,0,0,0.55)">
+                <a href="mailto:${esc(l.email)}" style="color:#E50000">${esc(l.email)}</a>
+                · <a href="tel:${esc(l.phone)}" style="color:#111">${esc(l.phone)}</a>
+                · ${fmtDate(l.createdAt)}
+              </p>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center">
+              <select data-id="${l._id}" class="status-sel"
+                style="padding:0.3rem 0.6rem;font-size:0.75rem;font-weight:600">
+                <option value="new" ${l.status==='new'?'selected':''}>New</option>
+                <option value="contacted" ${l.status==='contacted'?'selected':''}>Contacted</option>
+                <option value="closed" ${l.status==='closed'?'selected':''}>Closed</option>
+              </select>
+              <button data-id="${l._id}" data-name="${esc(l.name)}" class="del-btn"
+                style="padding:0.3rem 0.7rem;background:transparent;border:1px solid rgba(0,0,0,0.12);border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#c00">
+                Delete
+              </button>
+            </div>
+          </header>
+          ${(l.model || l.size || l.state) ? `
+            <div style="display:flex;gap:1.5rem;font-size:0.8125rem;margin-bottom:0.75rem;color:rgba(0,0,0,0.7)">
+              ${l.model ? `<span><strong>Model:</strong> ${esc(l.model)}</span>` : ''}
+              ${l.size ? `<span><strong>Size:</strong> ${esc(l.size)} ft</span>` : ''}
+              ${l.state ? `<span><strong>State:</strong> ${esc(l.state)}</span>` : ''}
+            </div>` : ''}
+          ${l.message ? `<p style="margin:0;padding:0.75rem 1rem;background:rgba(0,0,0,0.02);border-radius:0.5rem;font-size:0.875rem;line-height:1.5;white-space:pre-wrap">${esc(l.message)}</p>` : ''}
+        </article>
+      `).join('');
+
+      grid.querySelectorAll<HTMLSelectElement>('.status-sel').forEach(sel => {
+        sel.addEventListener('change', async () => {
+          const id = sel.dataset.id!;
+          const orig = sel.value;
+          sel.disabled = true;
+          const r = await fetch(`/api/leads/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: orig }),
+          });
+          sel.disabled = false;
+          if (!r.ok) alert('Failed to update status');
+        });
+      });
+      grid.querySelectorAll<HTMLButtonElement>('.del-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id!;
+          const name = btn.dataset.name!;
+          if (!confirm(`Delete enquiry from ${name}?`)) return;
+          btn.disabled = true; btn.textContent = '…';
+          const r = await fetch(`/api/leads/${id}`, { method: 'DELETE' });
+          if (r.ok) load(); else { btn.disabled = false; btn.textContent = 'Delete'; alert('Failed to delete'); }
+        });
+      });
+    }
+
+    filter.addEventListener('change', load);
+    load();
+  </script>
+</AdminLayout>

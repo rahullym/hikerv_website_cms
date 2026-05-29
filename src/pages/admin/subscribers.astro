@@ -1,0 +1,84 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const session = Astro.locals.session!;
+---
+
+<AdminLayout title="Newsletter Subscribers" active="subscribers" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <p id="count" style="color: rgba(0,0,0,0.55); margin: 0;">Loading…</p>
+    <a href="/api/subscribers/export"
+       style="padding: 0.5rem 1rem; background: #111; color: #fff; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+      Export CSV
+    </a>
+  </div>
+
+  <div style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 1rem; overflow: hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Source</th>
+          <th>Subscribed</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr><td colspan="4" style="padding: 2rem; text-align: center; color: rgba(0,0,0,0.4);">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    type Sub = { _id: string; email: string; source: string; createdAt: string };
+    const rows = document.getElementById('rows') as HTMLTableSectionElement;
+    const count = document.getElementById('count') as HTMLParagraphElement;
+
+    function fmtDate(iso: string): string {
+      try { return new Date(iso).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }); }
+      catch { return iso; }
+    }
+
+    async function load() {
+      const res = await fetch('/api/subscribe');
+      if (!res.ok) {
+        rows.innerHTML = `<tr><td colspan="4" style="padding:2rem;text-align:center;color:#c00">Failed to load (HTTP ${res.status})</td></tr>`;
+        count.textContent = '';
+        return;
+      }
+      const body = await res.json() as { subscribers: Sub[]; total: number };
+      count.textContent = `${body.total} subscriber${body.total === 1 ? '' : 's'}`;
+      if (body.total === 0) {
+        rows.innerHTML = `<tr><td colspan="4" style="padding:2rem;text-align:center;color:rgba(0,0,0,0.4)">No subscribers yet.</td></tr>`;
+        return;
+      }
+      rows.innerHTML = body.subscribers.map(s => `
+        <tr>
+          <td><a href="mailto:${s.email}" style="color:#E50000;font-weight:600">${s.email}</a></td>
+          <td><span style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;background:rgba(0,0,0,0.04);padding:0.2rem 0.6rem;border-radius:9999px">${s.source}</span></td>
+          <td style="color:rgba(0,0,0,0.6)">${fmtDate(s.createdAt)}</td>
+          <td style="text-align:right">
+            <button data-id="${s._id}" data-email="${s.email}" class="del-btn"
+              style="padding:0.35rem 0.75rem;background:transparent;border:1px solid rgba(0,0,0,0.12);border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#c00">
+              Remove
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      rows.querySelectorAll<HTMLButtonElement>('.del-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id!;
+          const email = btn.dataset.email!;
+          if (!confirm(`Remove ${email}?`)) return;
+          btn.disabled = true; btn.textContent = '…';
+          const r = await fetch(`/api/subscribers/${id}`, { method: 'DELETE' });
+          if (r.ok) load(); else { btn.disabled = false; btn.textContent = 'Remove'; alert('Failed to remove'); }
+        });
+      });
+    }
+    load();
+  </script>
+</AdminLayout>

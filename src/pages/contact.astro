@@ -49,17 +49,17 @@ import model03 from "../assets/elite-series.png";
                 
                 <!-- 1. THE QUOTE FORM (Light Version) -->
                 <div class="bg-white p-8 md:p-12 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.05)] border border-black/5 relative overflow-hidden">
-                    <form class="flex flex-col gap-8 relative z-10">
+                    <form id="contact-form" class="flex flex-col gap-8 relative z-10" novalidate>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Name -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Name*</label>
-                                <input type="text" placeholder="John Doe" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
+                                <input type="text" name="name" autocomplete="name" placeholder="John Doe" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
                             </div>
                             <!-- Email -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Email*</label>
-                                <input type="email" placeholder="john@example.com" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
+                                <input type="email" name="email" autocomplete="email" placeholder="john@example.com" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
                             </div>
                         </div>
 
@@ -67,12 +67,12 @@ import model03 from "../assets/elite-series.png";
                             <!-- Phone -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Phone*</label>
-                                <input type="tel" placeholder="+61 03 9322 3562" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
+                                <input type="tel" name="phone" autocomplete="tel" placeholder="+61 03 9322 3562" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors" />
                             </div>
                             <!-- Select Model -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Select Model*</label>
-                                <select required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
+                                <select name="model" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
                                     <option value="">Choose Lineup</option>
                                     <option value="rover">Rover Series</option>
                                     <option value="drifter">Drifter Series</option>
@@ -85,7 +85,7 @@ import model03 from "../assets/elite-series.png";
                             <!-- Select Size -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Select Size*</label>
-                                <select required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
+                                <select name="size" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
                                     <option value="">Choose Size</option>
                                     <option value="19.6">19.6 FT</option>
                                     <option value="20.6">20.6 FT</option>
@@ -96,7 +96,7 @@ import model03 from "../assets/elite-series.png";
                             <!-- Select State -->
                             <div class="flex flex-col gap-3">
                                 <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Select State*</label>
-                                <select required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
+                                <select name="state" required class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black focus:outline-none focus:border-[#E50000]/50 transition-colors appearance-none cursor-pointer">
                                     <option value="">Choose State</option>
                                     <option value="VIC">Victoria</option>
                                     <option value="NSW">New South Wales</option>
@@ -111,13 +111,69 @@ import model03 from "../assets/elite-series.png";
                         <!-- Message -->
                         <div class="flex flex-col gap-3">
                             <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Message</label>
-                            <textarea rows="4" placeholder="How can we help?" class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors resize-none"></textarea>
+                            <textarea name="message" rows="4" placeholder="How can we help?" class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors resize-none"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-6 mt-4 bg-black text-white font-black uppercase tracking-[0.3em] text-xs hover:bg-[#E50000] transition-all duration-500 rounded-2xl shadow-xl shadow-black/10">
+                        <!-- Honeypot -->
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" />
+
+                        <p id="contact-status" class="text-xs" style="min-height:1.25em" aria-live="polite"></p>
+
+                        <button type="submit" id="contact-submit" class="w-full py-6 mt-4 bg-black text-white font-black uppercase tracking-[0.3em] text-xs hover:bg-[#E50000] transition-all duration-500 rounded-2xl shadow-xl shadow-black/10">
                             Send Inquiry
                         </button>
                     </form>
+
+                    <script>
+                        const cform = document.getElementById('contact-form') as HTMLFormElement | null;
+                        const cstatus = document.getElementById('contact-status') as HTMLParagraphElement | null;
+                        const cbtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+                        cform?.addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            if (!cform || !cstatus || !cbtn) return;
+                            cstatus.style.color = ''; cstatus.textContent = '';
+                            const data = new FormData(cform);
+                            const payload = {
+                                name: String(data.get('name') ?? '').trim(),
+                                email: String(data.get('email') ?? '').trim(),
+                                phone: String(data.get('phone') ?? '').trim(),
+                                model: String(data.get('model') ?? ''),
+                                size: String(data.get('size') ?? ''),
+                                state: String(data.get('state') ?? ''),
+                                message: String(data.get('message') ?? '').trim(),
+                                website: String(data.get('website') ?? ''),
+                                source: 'contact_page',
+                            };
+                            if (!payload.name || !payload.email || !payload.phone) {
+                                cstatus.style.color = '#c00';
+                                cstatus.textContent = 'Please fill in your name, email and phone.';
+                                return;
+                            }
+                            const original = cbtn.textContent;
+                            cbtn.disabled = true; cbtn.textContent = 'Sending…';
+                            try {
+                                const res = await fetch('/api/contact', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(payload),
+                                });
+                                if (res.ok) {
+                                    cstatus.style.color = '#0a8a3a';
+                                    cstatus.textContent = 'Thanks — we’ll be in touch shortly.';
+                                    cform.reset();
+                                } else {
+                                    const body = await res.json().catch(() => ({} as { error?: string }));
+                                    cstatus.style.color = '#c00';
+                                    cstatus.textContent = body.error || 'Could not send. Please try again.';
+                                }
+                            } catch {
+                                cstatus.style.color = '#c00';
+                                cstatus.textContent = 'Network error. Please try again.';
+                            } finally {
+                                cbtn.disabled = false; cbtn.textContent = original;
+                            }
+                        });
+                    </script>
                 </div>
 
                 <!-- 2. CONTACT DETAILS & MAP (Light Version) -->
