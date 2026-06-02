@@ -64,6 +64,9 @@ const PatchBody = z.object({
     exterior: z.array(z.string()).optional(),
     interior: z.array(z.string()).optional(),
   }).optional(),
+  showMoodBoard: z.boolean().optional(),
+  backLinkHref: z.string().optional(),
+  backLinkLabel: z.string().optional(),
 });
 
 export const GET: APIRoute = async ({ params, locals }) => {

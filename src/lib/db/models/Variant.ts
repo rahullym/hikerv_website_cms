@@ -68,6 +68,11 @@ export interface VariantDoc {
     exterior: string[];
     interior: string[];
   };
+  showMoodBoard: boolean;
+  /** Override the "← Back to X" link target. Defaults to /{seriesSlug}. */
+  backLinkHref: string;
+  /** Override the back link label. Defaults to "Series". */
+  backLinkLabel: string;
   order: number;
   status: 'draft' | 'published';
   createdAt: Date;
@@ -150,6 +155,9 @@ const VariantSchema = new mongoose.Schema<VariantDoc>(
       exterior: { type: [String], default: [] },
       interior: { type: [String], default: [] },
     },
+    showMoodBoard: { type: Boolean, default: true },
+    backLinkHref: { type: String, default: '' },
+    backLinkLabel: { type: String, default: '' },
     order: { type: Number, default: 0 },
     status: { type: String, enum: ['draft', 'published'], default: 'published' },
   },

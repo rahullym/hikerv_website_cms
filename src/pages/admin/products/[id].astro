@@ -28,7 +28,10 @@ const dataJson = JSON.stringify({
   premiumLiving: variant.premiumLiving,
   floorplans: variant.floorplans,
   cta: variant.cta,
-  gallery: variant.gallery,
+  gallery: variant.gallery ?? { exterior: [], interior: [] },
+  showMoodBoard: variant.showMoodBoard ?? true,
+  backLinkHref: variant.backLinkHref ?? '',
+  backLinkLabel: variant.backLinkLabel ?? '',
 });
 const iconOptions = ['inverter', 'lounge', 'fridge', 'frame', 'suspension', 'washer', 'battery', 'solar'];
 const iconOptionsJson = JSON.stringify(iconOptions);
@@ -84,6 +87,14 @@ const iconOptionsJson = JSON.stringify(iconOptions);
       </div>
     </fieldset>
 
+    <!-- Hero Quick Stats -->
+    <fieldset class="block-card">
+      <legend>Hero Quick Stats (numeric badges in the hero — e.g. "21 FT Length")</legend>
+      <p class="hint">Leave empty if this variant doesn't show a stats row in its hero.</p>
+      <div id="quick-stats-list" class="vstack"></div>
+      <button type="button" id="add-quickstat-btn" class="ghost-btn">+ Add stat</button>
+    </fieldset>
+
     <!-- Spec Icons -->
     <fieldset class="block-card">
       <legend>Spec Icons (8 cells under the hero)</legend>
@@ -119,6 +130,18 @@ const iconOptionsJson = JSON.stringify(iconOptions);
       <button type="button" id="add-floorplan-btn" class="ghost-btn">+ Add floorplan</button>
     </fieldset>
 
+    <!-- Gallery -->
+    <fieldset class="block-card">
+      <legend>Gallery</legend>
+      <p class="hint">Optional photo gallery shown above the mood boards. Leave empty to hide the gallery section.</p>
+      <p class="hint" style="margin-top:0.75rem;font-weight:700;color:#0a0a0a;">Exterior shots</p>
+      <div id="gallery-exterior" class="vstack"></div>
+      <button type="button" id="add-gallery-exterior" class="ghost-btn">+ Add exterior image</button>
+      <p class="hint" style="margin-top:1rem;font-weight:700;color:#0a0a0a;">Interior shots</p>
+      <div id="gallery-interior" class="vstack"></div>
+      <button type="button" id="add-gallery-interior" class="ghost-btn">+ Add interior image</button>
+    </fieldset>
+
     <!-- CTA -->
     <fieldset class="block-card">
       <legend>CTA (bottom banner)</legend>
@@ -127,6 +150,23 @@ const iconOptionsJson = JSON.stringify(iconOptions);
         <label class="lbl">Heading<input data-bind="cta.heading" type="text" /></label>
       </div>
       <label class="lbl">Body<textarea data-bind="cta.body" rows="2"></textarea></label>
+    </fieldset>
+
+    <!-- Page Options -->
+    <fieldset class="block-card">
+      <legend>Page Options</legend>
+      <div class="row">
+        <label class="lbl" style="flex-direction: row; align-items: center; gap: 0.6rem;">
+          <input data-bind-bool="showMoodBoard" type="checkbox" style="width: auto;" />
+          <span style="text-transform: none; letter-spacing: normal; font-size: 0.875rem; color: #111;">Show site-wide Mood Boards section</span>
+        </label>
+      </div>
+      <p class="hint">When off, the page skips the shared MoodBoardSection block (useful for compact variants).</p>
+      <div class="row">
+        <label class="lbl">Back link URL (override)<input data-bind="backLinkHref" type="text" placeholder="/atom" /></label>
+        <label class="lbl">Back link label (override)<input data-bind="backLinkLabel" type="text" placeholder="Atom Range" /></label>
+      </div>
+      <p class="hint">If left blank, defaults to <code>/{`{seriesSlug}`}</code> and "Series".</p>
     </fieldset>
   </form>
 
@@ -174,6 +214,102 @@ const iconOptionsJson = JSON.stringify(iconOptions);
       el.value = get(state, path) ?? '';
       el.addEventListener('input', () => set(state, path, el.value));
     });
+
+    // ── Boolean checkbox binds ─────────────────────────────────
+    form.querySelectorAll('[data-bind-bool]').forEach((el) => {
+      const path = el.dataset.bindBool;
+      el.checked = get(state, path) !== false; // default true
+      el.addEventListener('change', () => set(state, path, el.checked));
+    });
+
+    // ── Hero Quick Stats ───────────────────────────────────────
+    const quickStatsList = document.getElementById('quick-stats-list');
+    function renderQuickStats() {
+      state.hero = state.hero || {};
+      state.hero.quickStats = state.hero.quickStats || [];
+      quickStatsList.innerHTML = '';
+      state.hero.quickStats.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'row-card';
+        div.style.gridTemplateColumns = '1fr 80px 1fr auto';
+        div.innerHTML = `
+          <input data-k="value" type="text" placeholder="Value (e.g. 21)" />
+          <input data-k="accent" type="text" placeholder="Accent (e.g. FT)" />
+          <input data-k="label" type="text" placeholder="Label (e.g. Length)" />
+          <button type="button" class="remove-btn">×</button>
+        `;
+        div.querySelector('[data-k="value"]').value = item.value || '';
+        div.querySelector('[data-k="accent"]').value = item.accent || '';
+        div.querySelector('[data-k="label"]').value = item.label || '';
+        div.querySelectorAll('[data-k]').forEach((input) => {
+          input.addEventListener('input', () => {
+            state.hero.quickStats[idx][input.dataset.k] = input.value;
+          });
+        });
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          state.hero.quickStats.splice(idx, 1);
+          renderQuickStats();
+        });
+        quickStatsList.appendChild(div);
+      });
+    }
+    document.getElementById('add-quickstat-btn').addEventListener('click', () => {
+      state.hero = state.hero || {};
+      state.hero.quickStats = state.hero.quickStats || [];
+      state.hero.quickStats.push({ value: '', accent: '', label: '' });
+      renderQuickStats();
+    });
+    renderQuickStats();
+
+    // ── Gallery (exterior + interior) ──────────────────────────
+    function makeGalleryRenderer(listId, key) {
+      const list = document.getElementById(listId);
+      function render() {
+        state.gallery = state.gallery || { exterior: [], interior: [] };
+        state.gallery[key] = state.gallery[key] || [];
+        list.innerHTML = '';
+        state.gallery[key].forEach((url, idx) => {
+          const inputId = `${listId}-${idx}-${Date.now()}`;
+          const div = document.createElement('div');
+          div.className = 'row-card full';
+          div.innerHTML = `
+            <div class="img-input-row" style="grid-column: 1;">
+              <input id="${inputId}" type="text" style="flex: 1;" />
+              <button type="button" class="browse-btn">Browse…</button>
+            </div>
+            <button type="button" class="remove-btn">×</button>
+          `;
+          const input = div.querySelector('input');
+          input.value = url;
+          input.addEventListener('input', () => (state.gallery[key][idx] = input.value));
+          div.querySelector('.browse-btn').addEventListener('click', () =>
+            window.openImagePicker && window.openImagePicker(inputId)
+          );
+          div.querySelector('.remove-btn').addEventListener('click', () => {
+            state.gallery[key].splice(idx, 1);
+            render();
+          });
+          list.appendChild(div);
+        });
+      }
+      return render;
+    }
+    const renderGalleryExterior = makeGalleryRenderer('gallery-exterior', 'exterior');
+    const renderGalleryInterior = makeGalleryRenderer('gallery-interior', 'interior');
+    document.getElementById('add-gallery-exterior').addEventListener('click', () => {
+      state.gallery = state.gallery || { exterior: [], interior: [] };
+      state.gallery.exterior = state.gallery.exterior || [];
+      state.gallery.exterior.push('');
+      renderGalleryExterior();
+    });
+    document.getElementById('add-gallery-interior').addEventListener('click', () => {
+      state.gallery = state.gallery || { exterior: [], interior: [] };
+      state.gallery.interior = state.gallery.interior || [];
+      state.gallery.interior.push('');
+      renderGalleryInterior();
+    });
+    renderGalleryExterior();
+    renderGalleryInterior();
 
     // ── Spec Icons ─────────────────────────────────────────────
     const iconsList = document.getElementById('spec-icons-list');
@@ -359,6 +495,10 @@ const iconOptionsJson = JSON.stringify(iconOptions);
         premiumLiving: state.premiumLiving,
         floorplans: state.floorplans,
         cta: state.cta,
+        gallery: state.gallery,
+        showMoodBoard: state.showMoodBoard,
+        backLinkHref: state.backLinkHref,
+        backLinkLabel: state.backLinkLabel,
       };
       const res = await fetch(`/api/products/variants/${state._id}`, {
         method: 'PATCH',
