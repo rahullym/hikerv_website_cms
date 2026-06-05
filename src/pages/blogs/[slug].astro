@@ -1,17 +1,15 @@
 ---
+export const prerender = false;
+
 import Layout from "../../layouts/Layout.astro";
 import Navbar from "../../components/Navbar.astro";
-import { loadPublishedPosts } from "../../lib/cms/blog";
+import { loadPostBySlug } from "../../lib/cms/blog";
 
-export async function getStaticPaths() {
-  const posts = await loadPublishedPosts();
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+const { slug } = Astro.params;
+const post = slug ? await loadPostBySlug(slug) : null;
+if (!post) {
+  return Astro.redirect('/blogs');
 }
-
-const { post } = Astro.props;
 const publishedFormatted = new Date(post.publishedAt).toLocaleDateString('en-AU', {
   year: 'numeric',
   month: 'long',
