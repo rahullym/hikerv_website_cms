@@ -105,8 +105,10 @@ const visibleNav = nav.filter((item) => !item.adminOnly || session.role === 'adm
             btn.textContent = 'Triggered ✓';
             setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 4000);
           } else {
-            const body = await res.json().catch(() => ({}));
-            alert(body.error || 'Publish failed');
+            const text = await res.text().catch(() => '');
+            let detail = text;
+            try { detail = JSON.parse(text).error ?? text; } catch {}
+            alert(`Publish failed (HTTP ${res.status}): ${detail || '(no detail)'}\n\nIf this says "VERCEL_BUILD_HOOK is not configured", set the env var in Vercel and redeploy.`);
             btn.textContent = original; btn.disabled = false;
           }
         } catch (err) {
