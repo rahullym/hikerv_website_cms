@@ -32,6 +32,9 @@ export interface Hero {
   subtitle?: string; // h2
   body?: string;
   heroImage: string; // right-side image URL
+  /** Image fit mode: 'cover' (crops to fill, default) or 'contain' (shows
+   *  the full vehicle on a black bg, no cropping). */
+  fit?: 'cover' | 'contain';
   brochureUrl?: string;
   quickStats: QuickStat[];
 }
@@ -111,6 +114,7 @@ const HeroSchema = new mongoose.Schema<Hero>(
     subtitle: { type: String, default: '' },
     body: { type: String, default: '' },
     heroImage: { type: String, default: '' },
+    fit: { type: String, enum: ['cover', 'contain'], default: 'cover' },
     brochureUrl: { type: String, default: '' },
     quickStats: { type: [QuickStatSchema], default: [] },
   },

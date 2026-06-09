@@ -19,6 +19,11 @@ const { variant, seriesHref, seriesLabel } = Astro.props;
 const backHref = seriesHref ?? variant.backLinkHref ?? `/${variant.seriesSlug || ''}`;
 const backLabel = seriesLabel ?? variant.backLinkLabel ?? 'Series';
 const { hero, specIcons, premiumLiving, floorplans, cta, gallery } = variant;
+// Editor-controlled hero image fit. 'contain' shows the full vehicle on a
+// black background (no cropping); 'cover' fills the panel and crops to fit.
+const heroFitClass = (hero as { fit?: string }).fit === 'contain'
+  ? 'object-contain object-center bg-black'
+  : 'object-cover object-center';
 const quickStats = hero.quickStats ?? [];
 const galleryExterior = gallery?.exterior ?? [];
 const galleryInterior = gallery?.interior ?? [];
@@ -90,7 +95,7 @@ const specTableHasContent =
         )}
       </div>
       <div class="relative w-full lg:w-[55%] min-h-[50vh] lg:min-h-full">
-        {hero.heroImage && <img src={hero.heroImage} alt={variant.name} class="w-full h-full object-cover object-center" />}
+        {hero.heroImage && <img src={hero.heroImage} alt={variant.name} class={`w-full h-full ${heroFitClass}`} />}
         <div class="absolute inset-0 bg-[linear-gradient(to_right,_rgb(0_0_0)_0%,_rgb(0_0_0/0.1)_30%,_transparent_60%)] lg:block hidden"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
       </div>

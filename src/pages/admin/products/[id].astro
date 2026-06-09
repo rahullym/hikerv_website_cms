@@ -85,6 +85,14 @@ const iconOptionsJson = JSON.stringify(iconOptions);
         </label>
         <label class="lbl">Brochure URL<input data-bind="hero.brochureUrl" type="text" /></label>
       </div>
+      <div class="row">
+        <label class="lbl">Hero Image Fit
+          <select data-bind="hero.fit">
+            <option value="cover">Cover (crop to fill — default)</option>
+            <option value="contain">Contain (show full vehicle, no crop)</option>
+          </select>
+        </label>
+      </div>
     </fieldset>
 
     <!-- Hero Quick Stats -->

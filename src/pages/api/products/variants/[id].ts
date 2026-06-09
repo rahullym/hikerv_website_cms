@@ -27,6 +27,7 @@ const PatchBody = z.object({
     subtitle: z.string().optional(),
     body: z.string().optional(),
     heroImage: z.string().optional(),
+    fit: z.enum(['cover', 'contain']).optional(),
     brochureUrl: z.string().optional(),
     quickStats: z.array(z.object({
       value: z.string(),
