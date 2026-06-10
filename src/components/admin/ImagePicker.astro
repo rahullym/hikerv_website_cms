@@ -15,6 +15,11 @@
     <header style="padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
       <h2 style="margin: 0; font-size: 1rem; font-weight: 800;">Pick an image</h2>
       <input id="img-picker-search" type="text" placeholder="Search by filename, alt or tag…" style="flex: 1; max-width: 320px;" />
+      <label for="img-picker-upload"
+        style="padding: 0.4rem 0.875rem; background: #E50000; color: #fff; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
+        + Upload
+        <input id="img-picker-upload" type="file" accept="image/*" multiple style="display: none;" />
+      </label>
       <button id="img-picker-close" type="button"
         style="padding: 0.4rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">Close</button>
     </header>
@@ -33,12 +38,10 @@
     const search = document.getElementById('img-picker-search');
     const count = document.getElementById('img-picker-count');
     const closeBtn = document.getElementById('img-picker-close');
+    const uploadInput = document.getElementById('img-picker-upload');
     let targetInputId = null;
-    let lastQuery = null;
 
     async function load(query) {
-      if (query === lastQuery) return;
-      lastQuery = query;
       grid.innerHTML = '<p style="grid-column: 1 / -1; color: rgba(0,0,0,0.4); padding: 2rem; text-align: center;">Loading…</p>';
       const qs = query ? `?q=${encodeURIComponent(query)}` : '';
       const res = await fetch('/api/images' + qs);
@@ -97,6 +100,43 @@
     search.addEventListener('input', () => {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => load(search.value.trim() || null), 250);
+    });
+
+    // Inline upload: presign → PUT to S3 → POST DB record → refresh grid
+    async function uploadOne(file) {
+      const ps = await fetch('/api/images/presign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, contentType: file.type || 'application/octet-stream' }),
+      });
+      if (!ps.ok) {
+        const b = await ps.json().catch(() => ({}));
+        throw new Error(b.error || `Presign failed (HTTP ${ps.status})`);
+      }
+      const { key, uploadUrl, publicUrl } = await ps.json();
+      const put = await fetch(uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type || 'application/octet-stream' }, body: file });
+      if (!put.ok) throw new Error(`S3 upload failed (HTTP ${put.status})`);
+      const rec = await fetch('/api/images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, url: publicUrl, filename: file.name, mime: file.type || 'application/octet-stream', size: file.size }),
+      });
+      if (!rec.ok) {
+        const b = await rec.json().catch(() => ({}));
+        throw new Error(b.error || `DB save failed (HTTP ${rec.status})`);
+      }
+    }
+    uploadInput.addEventListener('change', async () => {
+      const files = Array.from(uploadInput.files || []);
+      if (!files.length) return;
+      grid.innerHTML = `<p style="grid-column: 1 / -1; color: rgba(0,0,0,0.4); padding: 2rem; text-align: center;">Uploading ${files.length} image${files.length===1?'':'s'}…</p>`;
+      try {
+        for (const f of files) await uploadOne(f);
+        uploadInput.value = '';
+        await load(search.value.trim() || null);
+      } catch (err) {
+        grid.innerHTML = `<p style="grid-column: 1 / -1; color: #c00; padding: 2rem; text-align: center;">Upload failed: ${err && err.message ? err.message : 'unknown error'}</p>`;
+      }
     });
 
     window.openImagePicker = open;
