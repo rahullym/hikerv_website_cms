@@ -29,6 +29,14 @@ const galleryExterior = gallery?.exterior ?? [];
 const galleryInterior = gallery?.interior ?? [];
 const showMoodBoard = variant.showMoodBoard !== false;
 
+// SEO — editor overrides fall back to sensible derived defaults.
+const seo = (variant as { seo?: { title?: string; description?: string; keywords?: string; ogImage?: string; canonical?: string } }).seo ?? {};
+const seoTitle = seo.title?.trim() || `${variant.name} | Hike RV Caravans`;
+const seoDescription = seo.description?.trim() || hero.body?.trim() || `Explore the ${variant.name} caravan from Hike RV.`;
+const seoKeywords = seo.keywords?.trim() || undefined;
+const seoOgImage = seo.ogImage?.trim() || hero.heroImage || undefined;
+const seoCanonical = seo.canonical?.trim() || `https://hikervcaravans.com.au/${variant.slug}`;
+
 // Spec table is meaningful only when at least one tier has at least one item.
 const specTableHasContent =
   variant.specTable &&
@@ -39,7 +47,7 @@ const specTableHasContent =
   );
 ---
 
-<Layout title={`${variant.name} | Hike RV Caravans`} description={hero.body || `Explore the ${variant.name} caravan from Hike RV.`}>
+<Layout title={seoTitle} description={seoDescription} keywords={seoKeywords} ogImage={seoOgImage} canonical={seoCanonical}>
   <Navbar />
 
   <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">

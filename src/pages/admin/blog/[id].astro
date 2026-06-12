@@ -31,6 +31,11 @@ const dataJson = JSON.stringify({
   readTime: post.readTime,
   heroImage: post.heroImage,
   status: post.status,
+  seoTitle: post.seo?.title ?? '',
+  seoDescription: post.seo?.description ?? '',
+  seoKeywords: post.seo?.keywords ?? '',
+  seoOgImage: post.seo?.ogImage ?? '',
+  seoCanonical: post.seo?.canonical ?? '',
 });
 ---
 
@@ -93,6 +98,35 @@ const dataJson = JSON.stringify({
         </div>
         <img id="hero-image-preview" src="" alt="" style="display: none; width: 100%; border-radius: 0.5rem; margin-top: 0.5rem; border: 1px solid rgba(0,0,0,0.08);" />
       </label>
+
+      <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(0,0,0,0.12);">
+        <h3 style="margin: 0 0 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #E50000; font-weight: 800;">SEO</h3>
+        <p style="margin: 0 0 0.75rem; font-size: 0.7rem; color: rgba(0,0,0,0.5);">All fields optional — defaults derived from title / description / hero image.</p>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.75rem;">
+          Page Title (override)
+          <input name="seoTitle" type="text" placeholder="~60 chars" maxlength="70" />
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.75rem;">
+          Meta Description (override)
+          <textarea name="seoDescription" rows="2" placeholder="~150 chars" maxlength="160" style="font-size: 0.8125rem;"></textarea>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.75rem;">
+          Meta Keywords (comma-separated)
+          <input name="seoKeywords" type="text" placeholder="caravan buying guide Australia, …" />
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.75rem;">
+          Social Share Image (override)
+          <div style="display: flex; gap: 0.4rem;">
+            <input id="seo-og-image-input" name="seoOgImage" type="text" placeholder="Auto: hero image" style="flex: 1;" />
+            <button type="button" onclick="window.openImagePicker && window.openImagePicker('seo-og-image-input')"
+              style="padding: 0.4rem 0.875rem; background: #0a0a0a; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; white-space: nowrap;">Browse…</button>
+          </div>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+          Canonical URL (override)
+          <input name="seoCanonical" type="text" placeholder="https://hikervcaravans.com.au/blogs/…" />
+        </label>
+      </div>
     </aside>
   </form>
 
@@ -101,7 +135,7 @@ const dataJson = JSON.stringify({
   <script is:inline define:vars={{ dataJson }}>
     const data = JSON.parse(dataJson);
     const form = document.getElementById('post-form');
-    for (const name of ['title', 'subtitle', 'description', 'body', 'slug', 'category', 'readTime', 'heroImage', 'status']) {
+    for (const name of ['title', 'subtitle', 'description', 'body', 'slug', 'category', 'readTime', 'heroImage', 'status', 'seoTitle', 'seoDescription', 'seoKeywords', 'seoOgImage', 'seoCanonical']) {
       const el = form.querySelector(`[name="${name}"]`);
       if (el) {
         el.value = data[name] ?? '';
@@ -133,6 +167,15 @@ const dataJson = JSON.stringify({
         const el = form.querySelector(`[name="${name}"]`);
         if (el) payload[name] = el.value;
       }
+      // Flat seo* inputs → nested seo: {...} for the API.
+      const seoVal = (n) => form.querySelector(`[name="${n}"]`)?.value ?? '';
+      payload.seo = {
+        title: seoVal('seoTitle'),
+        description: seoVal('seoDescription'),
+        keywords: seoVal('seoKeywords'),
+        ogImage: seoVal('seoOgImage'),
+        canonical: seoVal('seoCanonical'),
+      };
       statusMsg.textContent = 'Saving…';
       const res = await fetch(`/api/blog/${data._id}`, {
         method: 'PATCH',

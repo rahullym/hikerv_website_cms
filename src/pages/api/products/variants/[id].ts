@@ -68,6 +68,13 @@ const PatchBody = z.object({
   showMoodBoard: z.boolean().optional(),
   backLinkHref: z.string().optional(),
   backLinkLabel: z.string().optional(),
+  seo: z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    keywords: z.string().optional(),
+    ogImage: z.string().optional(),
+    canonical: z.string().optional(),
+  }).optional(),
 });
 
 export const GET: APIRoute = async ({ params, locals }) => {

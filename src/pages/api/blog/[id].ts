@@ -17,6 +17,13 @@ const PatchBody = z.object({
   readTime: z.string().optional(),
   heroImage: z.string().optional(),
   status: z.enum(['draft', 'published']).optional(),
+  seo: z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    keywords: z.string().optional(),
+    ogImage: z.string().optional(),
+    canonical: z.string().optional(),
+  }).optional(),
 });
 
 export const GET: APIRoute = async ({ params, locals }) => {

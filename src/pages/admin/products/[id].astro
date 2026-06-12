@@ -32,6 +32,7 @@ const dataJson = JSON.stringify({
   showMoodBoard: variant.showMoodBoard ?? true,
   backLinkHref: variant.backLinkHref ?? '',
   backLinkLabel: variant.backLinkLabel ?? '',
+  seo: variant.seo ?? { title: '', description: '', keywords: '', ogImage: '', canonical: '' },
 });
 const iconOptions = ['inverter', 'lounge', 'fridge', 'frame', 'suspension', 'washer', 'battery', 'solar'];
 const iconOptionsJson = JSON.stringify(iconOptions);
@@ -158,6 +159,33 @@ const iconOptionsJson = JSON.stringify(iconOptions);
         <label class="lbl">Heading<input data-bind="cta.heading" type="text" /></label>
       </div>
       <label class="lbl">Body<textarea data-bind="cta.body" rows="2"></textarea></label>
+    </fieldset>
+
+    <!-- SEO -->
+    <fieldset class="block-card">
+      <legend>SEO (meta tags, social share)</legend>
+      <p class="hint">Each field is optional — leave blank to use the auto-generated default (variant name → title, hero body → description, hero image → social share image).</p>
+      <label class="lbl">Page Title (override)
+        <input data-bind="seo.title" type="text" placeholder="Auto: «Variant Name» | Hike RV Caravans" maxlength="70" />
+      </label>
+      <p class="hint" style="margin-top:-0.4rem;">Aim for ~60 characters. Shown in browser tab + Google search results.</p>
+      <label class="lbl">Meta Description (override)
+        <textarea data-bind="seo.description" rows="2" placeholder="Auto: hero body text" maxlength="160"></textarea>
+      </label>
+      <p class="hint" style="margin-top:-0.4rem;">Aim for ~150 characters. The snippet Google shows under the title.</p>
+      <label class="lbl">Meta Keywords (comma-separated)
+        <input data-bind="seo.keywords" type="text" placeholder="off road caravans Australia, family caravans Australia, …" />
+      </label>
+      <div class="row">
+        <label class="lbl" style="flex: 1;">Social Share Image (override)
+          <div class="img-input-row">
+            <input id="seo-og-image-input" data-bind="seo.ogImage" type="text" placeholder="Auto: hero image" style="flex: 1;" />
+            <button type="button" onclick="window.openImagePicker && window.openImagePicker('seo-og-image-input')" class="browse-btn">Browse…</button>
+          </div>
+        </label>
+        <label class="lbl">Canonical URL (override)<input data-bind="seo.canonical" type="text" placeholder="https://hikervcaravans.com.au/…" /></label>
+      </div>
+      <p class="hint">Open Graph / Twitter image is shown when this page is shared on Facebook, LinkedIn, X, etc. Ideal size 1200×630.</p>
     </fieldset>
 
     <!-- Page Options -->
@@ -507,6 +535,7 @@ const iconOptionsJson = JSON.stringify(iconOptions);
         showMoodBoard: state.showMoodBoard,
         backLinkHref: state.backLinkHref,
         backLinkLabel: state.backLinkLabel,
+        seo: state.seo,
       };
       const res = await fetch(`/api/products/variants/${state._id}`, {
         method: 'PATCH',

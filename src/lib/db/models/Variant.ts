@@ -52,6 +52,19 @@ export interface CtaBlock {
   body?: string;
 }
 
+export interface Seo {
+  /** Override the <title> tag. Falls back to "{variant.name} | Hike RV Caravans". */
+  title?: string;
+  /** Meta description. Falls back to hero.body. */
+  description?: string;
+  /** Meta keywords (comma-separated). */
+  keywords?: string;
+  /** Open Graph + Twitter card image URL. Falls back to hero.heroImage. */
+  ogImage?: string;
+  /** Canonical URL. Falls back to https://hikervcaravans.com.au/<slug>. */
+  canonical?: string;
+}
+
 export interface VariantDoc {
   _id: mongoose.Types.ObjectId;
   seriesId: mongoose.Types.ObjectId;
@@ -67,6 +80,7 @@ export interface VariantDoc {
   premiumLiving: PremiumLiving;
   floorplans: Floorplan[];
   cta: CtaBlock;
+  seo: Seo;
   gallery: {
     exterior: string[];
     interior: string[];
@@ -140,6 +154,17 @@ const CtaSchema = new mongoose.Schema<CtaBlock>(
   { _id: false }
 );
 
+const SeoSchema = new mongoose.Schema<Seo>(
+  {
+    title: { type: String, default: '' },
+    description: { type: String, default: '' },
+    keywords: { type: String, default: '' },
+    ogImage: { type: String, default: '' },
+    canonical: { type: String, default: '' },
+  },
+  { _id: false }
+);
+
 const VariantSchema = new mongoose.Schema<VariantDoc>(
   {
     seriesId: { type: mongoose.Schema.Types.ObjectId, ref: 'Series', required: true },
@@ -155,6 +180,7 @@ const VariantSchema = new mongoose.Schema<VariantDoc>(
     premiumLiving: { type: PremiumLivingSchema, default: () => ({ images: [], chips: [] }) },
     floorplans: { type: [FloorplanSchema], default: [] },
     cta: { type: CtaSchema, default: () => ({}) },
+    seo: { type: SeoSchema, default: () => ({}) },
     gallery: {
       exterior: { type: [String], default: [] },
       interior: { type: [String], default: [] },

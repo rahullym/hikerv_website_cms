@@ -1,5 +1,13 @@
 import { BLOG_SEED, type SeedPost } from './blogSeed';
 
+export interface PublicPostSeo {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
 export interface PublicPost {
   slug: string;
   title: string;
@@ -10,6 +18,7 @@ export interface PublicPost {
   readTime: string;
   heroImage: string;
   publishedAt: string; // ISO
+  seo: PublicPostSeo;
 }
 
 function seedToPublic(s: SeedPost): PublicPost {
@@ -23,6 +32,7 @@ function seedToPublic(s: SeedPost): PublicPost {
     readTime: s.readTime,
     heroImage: s.heroImage,
     publishedAt: s.publishedAt,
+    seo: {},
   };
 }
 
@@ -48,6 +58,7 @@ export async function loadPublishedPosts(): Promise<PublicPost[]> {
       readTime: d.readTime ?? '',
       heroImage: d.heroImage ?? '',
       publishedAt: (d.publishedAt ?? d.createdAt).toISOString(),
+      seo: d.seo ?? {},
     }));
   } catch (err) {
     console.warn('[blog] Mongo unavailable, using seed:', (err as Error).message);

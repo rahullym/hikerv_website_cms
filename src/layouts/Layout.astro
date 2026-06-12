@@ -8,13 +8,18 @@ interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
+	ogImage?: string;
+	canonical?: string;
 }
 
 const {
 	title,
 	description = "Hike RV — Australian made off road, off grid and luxury caravans for families and couples. Engineered for the wild, built for the long haul.",
-	keywords = "off road caravans Australia, family caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Australian made caravans, Hike RV"
+	keywords = "off road caravans Australia, family caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Australian made caravans, Hike RV",
+	ogImage,
+	canonical,
 } = Astro.props;
+const resolvedOgImage = ogImage && ogImage.trim() !== '' ? ogImage : '/assets/hero.png';
 ---
 
 <!DOCTYPE html>
@@ -27,18 +32,19 @@ const {
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
-		
+		{canonical && <link rel="canonical" href={canonical} />}
+
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content="/assets/hero.png" />
+		<meta property="og:image" content={resolvedOgImage} />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:title" content={title} />
 		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content="/assets/hero.png" />
+		<meta property="twitter:image" content={resolvedOgImage} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

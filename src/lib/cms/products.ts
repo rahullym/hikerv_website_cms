@@ -35,6 +35,7 @@ export async function loadVariantBySlug(slug: string): Promise<VariantPublic | n
           showMoodBoard: doc.showMoodBoard ?? true,
           backLinkHref: doc.backLinkHref ?? '',
           backLinkLabel: doc.backLinkLabel ?? '',
+          seo: doc.seo ?? {},
           seriesSlug: series?.slug ?? '',
         };
       }

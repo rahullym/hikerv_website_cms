@@ -15,9 +15,16 @@ const publishedFormatted = new Date(post.publishedAt).toLocaleDateString('en-AU'
   month: 'long',
   day: 'numeric',
 });
+
+const seo = (post as { seo?: { title?: string; description?: string; keywords?: string; ogImage?: string; canonical?: string } }).seo ?? {};
+const seoTitle = seo.title?.trim() || `${post.title} | Hike RV Caravans`;
+const seoDescription = seo.description?.trim() || post.description || `Read "${post.title}" on the Hike RV blog.`;
+const seoKeywords = seo.keywords?.trim() || undefined;
+const seoOgImage = seo.ogImage?.trim() || post.heroImage || undefined;
+const seoCanonical = seo.canonical?.trim() || `https://hikervcaravans.com.au/blogs/${post.slug}`;
 ---
 
-<Layout title={`${post.title} | Hike RV Caravans`} description={post.description}>
+<Layout title={seoTitle} description={seoDescription} keywords={seoKeywords} ogImage={seoOgImage} canonical={seoCanonical}>
   <Navbar />
 
   <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">
