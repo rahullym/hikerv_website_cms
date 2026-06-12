@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('gallery');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
@@ -129,9 +130,11 @@ const totalImages = categories.reduce((n, c) => n + c.images.length, 0);
 ---
 
 <Layout
-	title="Caravan Gallery — Off Road, Family & Luxury Caravans | Hike RV"
-	description="Hike RV gallery — interior, exterior and 3D layouts of our off road, family and luxury caravans built in Australia."
-	keywords="off road caravans Australia, family caravans Australia, luxury caravans Australia, Hike RV gallery, caravan interior, caravan layouts, Australian made caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

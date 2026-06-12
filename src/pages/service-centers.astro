@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('service-centers');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
@@ -34,9 +35,11 @@ const states = Array.from(new Set(centers.map(c => c.state))).sort();
 ---
 
 <Layout
-	title="Caravan Service Centres Australia | Hike RV"
-	description="Authorised Hike RV caravan service centres across Australia — repairs, maintenance and warranty work for off road, family and luxury caravans."
-	keywords="caravan service Australia, Hike RV service, caravan repairs Australia, caravan warranty Australia, caravans Melbourne, caravans Victoria, Australian made caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('rover');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import LayoutSection from "../components/LayoutSection.astro";
@@ -14,9 +15,11 @@ import roverSeries from "../assets/rover-series.png";
 ---
 
 <Layout
-	title="Rover Series — Family Caravans Australia | Hike RV"
-	description="The Rover Series — family caravans Australia built for the long haul. Off road touring, triple-bunk layouts and luxury family living."
-	keywords="family caravans Australia, best family caravans Australia, off road caravans Australia, triple bunk caravans Australia, family bunk caravans Australia, Rover caravan, Hike RV Rover, touring caravans Australia"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

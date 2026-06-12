@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('contact');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import { Image } from "astro:assets";
@@ -7,9 +8,11 @@ import model03 from "../assets/elite-series.png";
 ---
 
 <Layout
-	title="Contact Hike RV — Buy a Caravan Australia | Get a Quote"
-	description="Talk to Hike RV about buying an off road, family or luxury caravan. Australian made caravans, Melbourne-based, dealers across Victoria and Australia."
-	keywords="buy caravan Australia, caravan for sale Australia, Hike RV prices, Hike RV contact, caravan EOFY sale, affordable luxury caravans, caravans Melbourne, caravans Victoria, Australian made caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <!-- Force Navbar into 'scrolled' state with dark background via data attribute or class if possible, 
          but we'll handle it with global CSS in the page for better control. -->

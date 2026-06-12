@@ -1,13 +1,16 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('warranty');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 ---
 
 <Layout
-	title="Caravan Warranty Australia | Hike RV Coverage"
-	description="Hike RV warranty — comprehensive coverage on Australian made off road, family and luxury caravans. Peace of mind on every journey."
-	keywords="caravan warranty Australia, Hike RV warranty, Australian made caravans, off road caravans Australia, luxury caravans Australia, caravan service Australia"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

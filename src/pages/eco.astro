@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('eco');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import LayoutSection from "../components/LayoutSection.astro";
@@ -11,9 +12,11 @@ const layoutImages = [
 ---
 
 <Layout
-	title="Eco Series — Off Grid Caravans Australia | Hike RV"
-	description="The Eco Series — off grid caravans Australia. Lightweight, smart layouts and off road capability for sustainable, solar-powered adventures."
-	keywords="off grid caravans, off grid caravan package, off road caravans Australia, solar caravans Australia, lithium battery caravans, caravan with diesel heater, Eco caravan, Hike RV, 12V caravan Australia"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('elite');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import LayoutSection from "../components/LayoutSection.astro";
@@ -12,9 +13,11 @@ import eliteSeries from "../assets/elite-series.png";
 ---
 
 <Layout
-	title="Elite Series — Luxury Caravans Australia | Hike RV"
-	description="The Elite Series — luxury caravans Australia at the pinnacle of engineering. Premium materials, off road capability and cutting-edge technology."
-	keywords="luxury caravans Australia, affordable luxury caravans, off road caravans Australia, best off road caravans, Elite series caravan, Hike RV Elite, Australian made caravans, touring caravans Australia, off grid caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

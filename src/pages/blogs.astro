@@ -1,4 +1,6 @@
 ---
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('blogs');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import { loadPublishedPosts } from "../lib/cms/blog";
@@ -16,9 +18,11 @@ const blogPosts = posts.map((p) => ({
 ---
 
 <Layout
-	title="Caravan Blog — Off Road & Touring Tips Australia | Hike RV"
-	description="Off grid travel tips, caravan buying guides and touring advice for Australia. Product updates from Hike RV — off road, family and luxury caravans."
-	keywords="caravan buying guide Australia, off road caravan tips, caravan towing guide, caravan solar setup guide, best caravan for travelling Australia, best off road caravans, best family caravans Australia, Hike RV blog, off grid caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

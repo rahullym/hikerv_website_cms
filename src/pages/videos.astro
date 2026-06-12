@@ -1,13 +1,16 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('videos');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 ---
 
 <Layout
-	title="Caravan Videos — Off Road & Touring Australia | Hike RV"
-	description="Watch Hike RV off road, family and luxury caravans in action across Australia. Walkthroughs, reviews and off grid touring."
-	keywords="Hike RV videos, off road caravans Australia, caravan reviews Australia, Hike RV reviews, luxury caravans Australia, family caravans Australia"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

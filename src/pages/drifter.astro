@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('drifter');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import LayoutSection from "../components/LayoutSection.astro";
@@ -16,9 +17,11 @@ import drifterSeries from "../assets/drifter-series.png";
 ---
 
 <Layout
-	title="Drifter Series — Couples Caravans Australia | Hike RV"
-	description="The Drifter Series — luxury couples caravans Australia, engineered for off road touring and off grid freedom. Compact, efficient, premium fit-out."
-	keywords="couples caravans Australia, off road caravans Australia, luxury caravans Australia, off grid caravans, Drifter caravan, Hike RV Drifter, hybrid caravans Australia, best off road caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

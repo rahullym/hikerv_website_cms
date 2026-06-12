@@ -1,0 +1,169 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import ImagePicker from '../../../components/admin/ImagePicker.astro';
+import { SITE_PAGE_SEED } from '../../../lib/cms/sitePages';
+
+const session = Astro.locals.session!;
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/admin/pages');
+const seed = SITE_PAGE_SEED.find((p) => p.slug === slug);
+if (!seed) return Astro.redirect('/admin/pages');
+const seedJson = JSON.stringify(seed);
+---
+
+<AdminLayout title={`SEO: ${seed.label}`} active="pages" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem;">
+    <div>
+      <a href="/admin/pages" style="color: rgba(0,0,0,0.5); font-size: 0.8125rem;">← All pages</a>
+      <p style="margin: 0.25rem 0 0; color: rgba(0,0,0,0.45); font-size: 0.8125rem;">
+        Public URL:
+        <a href={seed.canonical.replace('https://hikervcaravans.com.au', '') || '/'} target="_blank"
+           style="color: #E50000; text-decoration: underline; font-family: ui-monospace, monospace;">
+          {seed.canonical.replace('https://hikervcaravans.com.au', '') || '/'}
+        </a>
+      </p>
+    </div>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <span id="status-msg" style="font-size: 0.75rem; color: rgba(0,0,0,0.4);"></span>
+      <button id="reset-btn" type="button"
+        style="padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;">
+        Reset to defaults
+      </button>
+      <button id="save-btn" type="button"
+        style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <form id="seo-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <fieldset class="block-card">
+      <legend>SEO meta tags</legend>
+      <p class="hint">Leave any field blank to use the auto-generated default (shown as placeholder). Saves are live instantly — no rebuild needed.</p>
+
+      <label class="lbl">Page Title
+        <input name="title" type="text" maxlength="70" />
+      </label>
+      <p class="hint" style="margin-top: -0.4rem;">Aim for ~60 characters. Default: <code id="seed-title"></code></p>
+
+      <label class="lbl">Meta Description
+        <textarea name="description" rows="3" maxlength="160"></textarea>
+      </label>
+      <p class="hint" style="margin-top: -0.4rem;">Aim for ~150 characters. Default: <code id="seed-description"></code></p>
+
+      <label class="lbl">Meta Keywords (comma-separated)
+        <textarea name="keywords" rows="2"></textarea>
+      </label>
+      <p class="hint" style="margin-top: -0.4rem;">Default: <code id="seed-keywords"></code></p>
+
+      <div class="row">
+        <label class="lbl" style="flex: 1;">Social Share Image (og:image / twitter:image)
+          <div class="img-input-row">
+            <input id="og-image-input" name="ogImage" type="text" placeholder="Auto: /assets/hero.png" style="flex: 1;" />
+            <button type="button" onclick="window.openImagePicker && window.openImagePicker('og-image-input')" class="browse-btn">Browse…</button>
+          </div>
+        </label>
+      </div>
+      <p class="hint">Recommended size 1200×630 px. Default: <code id="seed-ogimage"></code></p>
+
+      <label class="lbl">Canonical URL
+        <input name="canonical" type="text" />
+      </label>
+      <p class="hint" style="margin-top: -0.4rem;">Default: <code id="seed-canonical"></code></p>
+    </fieldset>
+  </form>
+
+  <ImagePicker />
+
+  <style is:global>
+    .block-card { border: 1px solid rgba(0,0,0,0.08); background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; }
+    .block-card legend { padding: 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: #E50000; font-weight: 800; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.875rem; margin-bottom: 0.875rem; }
+    .lbl { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.875rem; }
+    .lbl input, .lbl textarea { font-family: inherit; font-size: 0.875rem; text-transform: none; letter-spacing: normal; color: #111; }
+    .hint { font-size: 0.75rem; color: rgba(0,0,0,0.5); margin: 0.4rem 0 0.875rem; }
+    .hint code { background: rgba(0,0,0,0.04); padding: 0.1rem 0.4rem; border-radius: 0.3rem; font-size: 0.7rem; word-break: break-word; }
+    .img-input-row { display: flex; gap: 0.4rem; }
+    .browse-btn { padding: 0.4rem 0.75rem; background: #0a0a0a; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+  </style>
+
+  <script is:inline define:vars={{ slug, seedJson }}>
+    const seed = JSON.parse(seedJson);
+    const form = document.getElementById('seo-form');
+    const statusMsg = document.getElementById('status-msg');
+
+    // Show seed defaults as placeholders + in the hint <code> blocks.
+    const placeholders = {
+      title: seed.title, description: seed.description, keywords: seed.keywords,
+      ogImage: seed.ogImage || '/assets/hero.png', canonical: seed.canonical,
+    };
+    document.getElementById('seed-title').textContent = seed.title;
+    document.getElementById('seed-description').textContent = seed.description;
+    document.getElementById('seed-keywords').textContent = seed.keywords;
+    document.getElementById('seed-ogimage').textContent = seed.ogImage || '/assets/hero.png';
+    document.getElementById('seed-canonical').textContent = seed.canonical;
+    for (const [name, ph] of Object.entries(placeholders)) {
+      const el = form.querySelector(`[name="${name}"]`);
+      if (el) el.placeholder = `Default: ${ph}`;
+    }
+
+    // Hydrate from API (Mongo if present, else seed).
+    fetch(`/api/pages/${encodeURIComponent(slug)}`)
+      .then((r) => r.json())
+      .then((body) => {
+        if (!body || !body.page) return;
+        const p = body.page;
+        for (const name of ['title', 'description', 'keywords', 'ogImage', 'canonical']) {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (!el) continue;
+          // Only fill the field if the value differs from the seed default —
+          // an empty field UX-signals "using default".
+          el.value = (p[name] !== seed[name]) ? p[name] : '';
+        }
+      })
+      .catch(() => {});
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const payload = {};
+      for (const name of ['title', 'description', 'keywords', 'ogImage', 'canonical']) {
+        const el = form.querySelector(`[name="${name}"]`);
+        if (el) payload[name] = el.value;
+      }
+      statusMsg.textContent = 'Saving…';
+      const res = await fetch(`/api/pages/${encodeURIComponent(slug)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        statusMsg.textContent = 'Saved · live now';
+        setTimeout(() => (statusMsg.textContent = ''), 3000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        statusMsg.textContent = 'Failed: ' + (body.error || 'unknown');
+      }
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', async () => {
+      if (!confirm('Reset all SEO fields to the seeded defaults?')) return;
+      statusMsg.textContent = 'Resetting…';
+      const res = await fetch(`/api/pages/${encodeURIComponent(slug)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: '', description: '', keywords: '', ogImage: '', canonical: '' }),
+      });
+      if (res.ok) {
+        for (const name of ['title', 'description', 'keywords', 'ogImage', 'canonical']) {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (el) el.value = '';
+        }
+        statusMsg.textContent = 'Reset to defaults';
+        setTimeout(() => (statusMsg.textContent = ''), 3000);
+      } else {
+        statusMsg.textContent = 'Failed to reset';
+      }
+    });
+  </script>
+</AdminLayout>

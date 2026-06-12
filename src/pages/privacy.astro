@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('privacy');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
@@ -98,7 +99,13 @@ const sections = [
 ];
 ---
 
-<Layout title="Privacy Policy | Hike RV Caravans" description="How Hike RV collects, uses, stores, and discloses your personal information in accordance with the Australian Privacy Principles and the Privacy Act 1988 (Cth).">
+<Layout
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
+>
     <Navbar />
 
     <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">

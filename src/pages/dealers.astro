@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('dealers');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Invitation from "../components/Invitation.astro";
@@ -17,9 +18,11 @@ const dealers = [
 ---
 
 <Layout
-	title="Caravan Dealers — Melbourne & Australia | Hike RV"
-	description="Find a Hike RV caravan dealer near you. Showrooms across Melbourne, Victoria and Australia stocking off road, family and luxury caravans."
-	keywords="caravan dealer Melbourne, caravans Melbourne, caravans Victoria, off road caravans Melbourne, buy caravan Australia, Hike RV dealers, Australian caravans VIC"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('home');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Loader from "../components/Loader.astro";
@@ -12,9 +13,11 @@ import Testimonials from "../components/Testimonials.astro";
 import Invitation from "../components/Invitation.astro";
 ---
 <Layout
-	title="Off Road Caravans Australia | Luxury Family & Couples Caravans — Hike RV"
-	description="Hike RV — Australian made off road, off grid and luxury caravans for families and couples. Explore touring, hybrid and semi off road models built for any terrain."
-	keywords="off road caravans Australia, family caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Australian made caravans, hybrid caravans Australia, touring caravans Australia, best off road caravans, affordable luxury caravans, Hike RV, Hike RV Caravans, Hike caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
 	<script is:inline type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",

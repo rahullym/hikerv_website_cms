@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('testimonials');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 
@@ -56,9 +57,11 @@ const reviews = [
 ---
 
 <Layout
-	title="Hike RV Reviews & Testimonials — Caravans Australia"
-	description="Authentic Hike RV reviews from Australian owners — off road, family and luxury caravan stories from the road."
-	keywords="Hike RV reviews, caravan reviews Australia, Hike RV testimonials, off road caravans Australia, family caravans Australia, luxury caravans Australia"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

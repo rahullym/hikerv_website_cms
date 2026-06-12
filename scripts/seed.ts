@@ -15,6 +15,7 @@ import bcrypt from 'bcryptjs';
 import { FAQ_SEED } from '../src/lib/cms/faqSeed';
 import { BLOG_SEED } from '../src/lib/cms/blogSeed';
 import { SERIES_SEED, VARIANT_SEED } from '../src/lib/cms/productSeed';
+import { SITE_PAGE_SEED } from '../src/lib/cms/sitePages';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
@@ -180,6 +181,34 @@ async function seedProducts() {
   console.log(`  · Variants: inserted ${variantInserted}, skipped ${variantSkipped}.`);
 }
 
+async function seedSitePages() {
+  const SitePage = mongoose.model(
+    'SitePage',
+    new mongoose.Schema(
+      {
+        slug: { type: String, unique: true, lowercase: true },
+        label: String,
+        title: String,
+        description: String,
+        keywords: String,
+        ogImage: String,
+        canonical: String,
+      },
+      { timestamps: true, strict: false }
+    )
+  );
+
+  let inserted = 0;
+  let skipped = 0;
+  for (const p of SITE_PAGE_SEED) {
+    const exists = await SitePage.findOne({ slug: p.slug });
+    if (exists) { skipped++; continue; }
+    await SitePage.create(p);
+    inserted++;
+  }
+  console.log(`  · Site pages: inserted ${inserted}, skipped ${skipped} (already present).`);
+}
+
 async function main() {
   console.log('Connecting to Mongo…');
   await mongoose.connect(MONGODB_URI!);
@@ -192,6 +221,8 @@ async function main() {
     await seedBlog();
     console.log('Seeding Products (Series + Variants)…');
     await seedProducts();
+    console.log('Seeding Site Pages SEO…');
+    await seedSitePages();
     console.log('Done.');
   } finally {
     await mongoose.disconnect();

@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+import { loadPageSeo } from "../lib/cms/sitePages";
+const pageSeo = await loadPageSeo('wild-drifter');
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import LayoutSection from "../components/LayoutSection.astro";
@@ -59,9 +60,11 @@ const layoutImages = [
 
 
 <Layout
-	title="Wild Drifter — Off Road Caravans Australia | Hike RV"
-	description="Wild Drifter — luxury off road couples caravan Australia. Off grid ready, all-terrain chassis, premium finish. Style meets freedom on the long haul."
-	keywords="off road caravans Australia, couples caravans Australia, luxury caravans Australia, off grid caravans, Wild Drifter caravan, Wild Drifter 22ft, Hike RV Wild Drifter, hybrid caravans Australia, best off road caravans"
+	title={pageSeo.title}
+	description={pageSeo.description}
+	keywords={pageSeo.keywords}
+	ogImage={pageSeo.ogImage}
+	canonical={pageSeo.canonical}
 >
     <Navbar />
 

@@ -3,7 +3,7 @@ import type { SessionPayload } from '../lib/auth/jwt';
 
 interface Props {
   title: string;
-  active?: 'dashboard' | 'products' | 'blog' | 'faq' | 'images' | 'leads' | 'subscribers' | 'users';
+  active?: 'dashboard' | 'products' | 'blog' | 'faq' | 'pages' | 'images' | 'leads' | 'subscribers' | 'users';
   session: SessionPayload;
 }
 
@@ -15,6 +15,7 @@ const nav: NavItem[] = [
   { href: '/admin/products', label: 'Products', key: 'products' },
   { href: '/admin/blog', label: 'Blog', key: 'blog' },
   { href: '/admin/faq', label: 'FAQ', key: 'faq' },
+  { href: '/admin/pages', label: 'Pages SEO', key: 'pages' },
   { href: '/admin/images', label: 'Images', key: 'images' },
   { href: '/admin/leads', label: 'Enquiries', key: 'leads' },
   { href: '/admin/subscribers', label: 'Subscribers', key: 'subscribers' },

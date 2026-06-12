@@ -1,0 +1,76 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+
+const session = Astro.locals.session!;
+---
+
+<AdminLayout title="Site Pages SEO" active="pages" session={session}>
+  <p style="color: rgba(0,0,0,0.55); margin: 0 0 1.5rem;">
+    Edit the SEO meta (title, description, keywords, social share image, canonical URL) for every non-CMS page on the site. Changes are live instantly — no rebuild needed.
+  </p>
+
+  <div style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 1rem; overflow: hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th>Page</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="pages-rows">
+        <tr><td colspan="4" style="padding: 2rem; text-align: center; color: rgba(0,0,0,0.4);">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    type Page = {
+      slug: string;
+      label: string;
+      title: string;
+      overridden: boolean;
+      updatedAt?: string;
+    };
+    const rows = document.getElementById('pages-rows') as HTMLTableSectionElement;
+
+    function esc(s: string): string {
+      return s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+    }
+
+    async function load() {
+      const res = await fetch('/api/pages');
+      if (!res.ok) {
+        rows.innerHTML = `<tr><td colspan="4" style="padding:2rem;text-align:center;color:#c00">Failed to load (HTTP ${res.status})</td></tr>`;
+        return;
+      }
+      const body = await res.json() as { pages: Page[] };
+      if (!body.pages.length) {
+        rows.innerHTML = `<tr><td colspan="4" style="padding:2rem;text-align:center;color:rgba(0,0,0,0.4)">No pages configured.</td></tr>`;
+        return;
+      }
+      rows.innerHTML = body.pages.map((p) => `
+        <tr>
+          <td>
+            <a href="/admin/pages/${esc(p.slug)}" style="font-weight: 700; color: #0a0a0a; text-decoration: underline;">${esc(p.label)}</a>
+          </td>
+          <td style="color: rgba(0,0,0,0.7); font-size: 0.875rem;">${esc(p.title)}</td>
+          <td>
+            ${p.overridden
+              ? '<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;background:rgba(229,0,0,0.08);color:#E50000;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Custom</span>'
+              : '<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;background:rgba(0,0,0,0.05);color:rgba(0,0,0,0.5);font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;">Default</span>'
+            }
+          </td>
+          <td style="text-align: right;">
+            <a href="/admin/pages/${esc(p.slug)}"
+               style="padding: 0.35rem 0.875rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">Edit SEO</a>
+          </td>
+        </tr>
+      `).join('');
+    }
+    load();
+  </script>
+</AdminLayout>
