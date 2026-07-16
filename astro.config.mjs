@@ -14,6 +14,9 @@ import tailwindcss from '@tailwindcss/vite';
 // cost matters, opt it back into static rendering by adding
 // `export const prerender = true;` to its frontmatter.
 export default defineConfig({
+  // Canonical production origin. Used by the /robots.txt and /sitemap.xml
+  // endpoints to emit absolute URLs, and available anywhere via Astro.site.
+  site: 'https://hikervcaravans.com.au',
   output: 'server',
   adapter: vercel(),
   // Astro's default Origin check (security.checkOrigin) was rejecting
