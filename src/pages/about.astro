@@ -180,27 +180,81 @@ import machineImage from "../assets/machine.png";
                 </div>
 
                 <div class="w-full md:w-1/2">
-                    <form class="flex flex-col gap-8 w-full max-w-xl bg-white p-10 md:p-14 rounded-[3rem] border border-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
-                        
+                    <form id="about-contact-form" class="flex flex-col gap-8 w-full max-w-xl bg-white p-10 md:p-14 rounded-[3rem] border border-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
+
                         <div class="flex flex-col gap-2">
-                            <label for="name" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Name *</label>
-                            <input type="text" id="name" placeholder="Name" required class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
+                            <label for="about-name" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Name *</label>
+                            <input type="text" id="about-name" name="name" placeholder="Name" required class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
                         </div>
 
                         <div class="flex flex-col gap-2">
-                            <label for="email" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Email *</label>
-                            <input type="email" id="email" placeholder="Email *" required class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
+                            <label for="about-email" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Email *</label>
+                            <input type="email" id="about-email" name="email" placeholder="Email *" required class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
                         </div>
 
                         <div class="flex flex-col gap-2 mb-4">
-                            <label for="phone" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Phone</label>
-                            <input type="tel" id="phone" placeholder="Phone" class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
+                            <label for="about-phone" class="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">Phone *</label>
+                            <input type="tel" id="about-phone" name="phone" placeholder="Phone" required class="w-full bg-transparent border-b border-black/10 pb-4 text-black placeholder-black/20 focus:outline-none focus:border-[#E50000] transition-colors font-medium">
                         </div>
 
-                        <button type="submit" class="w-fit px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-[#E50000] transition-colors duration-500 mt-4 rounded-full shadow-lg">
+                        <!-- Honeypot — bots fill it, humans don't see it. Server silently no-ops if filled. -->
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" />
+
+                        <p id="about-status" class="text-xs" style="min-height:1.25em" aria-live="polite"></p>
+
+                        <button type="submit" id="about-submit" class="w-fit px-12 py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-[#E50000] transition-colors duration-500 mt-4 rounded-full shadow-lg">
                             Send Message
                         </button>
                     </form>
+
+                    <script>
+                        // Wire the About-page contact form into /api/contact, which
+                        // persists a Lead in Mongo AND fires an email notification.
+                        const aform = document.getElementById('about-contact-form') as HTMLFormElement | null;
+                        const astatus = document.getElementById('about-status') as HTMLParagraphElement | null;
+                        const abtn = document.getElementById('about-submit') as HTMLButtonElement | null;
+                        aform?.addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            if (!aform || !astatus || !abtn) return;
+                            astatus.style.color = ''; astatus.textContent = '';
+                            const data = new FormData(aform);
+                            const payload = {
+                                name: String(data.get('name') ?? '').trim(),
+                                email: String(data.get('email') ?? '').trim(),
+                                phone: String(data.get('phone') ?? '').trim(),
+                                website: String(data.get('website') ?? ''),
+                                source: 'about_page',
+                            };
+                            if (!payload.name || !payload.email || !payload.phone) {
+                                astatus.style.color = '#c00';
+                                astatus.textContent = 'Please fill in your name, email and phone.';
+                                return;
+                            }
+                            const original = abtn.textContent;
+                            abtn.disabled = true; abtn.textContent = 'Sending…';
+                            try {
+                                const res = await fetch('/api/contact', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(payload),
+                                });
+                                if (res.ok) {
+                                    astatus.style.color = '#0a8a3a';
+                                    astatus.textContent = 'Thanks — we’ll be in touch shortly.';
+                                    aform.reset();
+                                } else {
+                                    const body = await res.json().catch(() => ({} as { error?: string }));
+                                    astatus.style.color = '#c00';
+                                    astatus.textContent = body.error || 'Could not send. Please try again.';
+                                }
+                            } catch {
+                                astatus.style.color = '#c00';
+                                astatus.textContent = 'Network error. Please try again.';
+                            } finally {
+                                abtn.disabled = false; abtn.textContent = original;
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </section>

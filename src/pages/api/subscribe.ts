@@ -47,7 +47,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         <hr/>
         <p style="color:#666;font-size:12px">View all subscribers in the Hike RV CMS at /admin/subscribers</p>
       `,
-    }).catch(() => {});
+    })
+      .then((r) => {
+        if (!r.sent) console.warn('[subscribe] email notification not sent:', r.reason);
+      })
+      .catch((err) => console.warn('[subscribe] email notification error:', (err as Error).message));
 
     return created({ subscribed: true, id: sub._id.toString() });
   } catch (err) {
