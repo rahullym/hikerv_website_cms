@@ -37,11 +37,4 @@ export async function sendNotification({ subject, html, replyTo }: SendArgs): Pr
   }
 }
 
-export function escapeHtml(input: string): string {
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+export { escapeHtml } from './html';

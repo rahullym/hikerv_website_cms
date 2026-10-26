@@ -29,9 +29,10 @@ const session = Astro.locals.session!;
   </div>
 
   <script>
+    import { sourceLabel } from '../../lib/leadSources';
     type Lead = {
       _id: string; name: string; email: string; phone: string;
-      model?: string; size?: string; state?: string; message?: string;
+      model?: string; size?: string; state?: string; message?: string; source?: string;
       status: 'new' | 'contacted' | 'closed'; createdAt: string;
     };
     const grid = document.getElementById('grid') as HTMLDivElement;
@@ -74,6 +75,7 @@ const session = Astro.locals.session!;
                 <a href="mailto:${esc(l.email)}" style="color:#E50000">${esc(l.email)}</a>
                 · <a href="tel:${esc(l.phone)}" style="color:#111">${esc(l.phone)}</a>
                 · ${fmtDate(l.createdAt)}
+                ${l.source ? `· <span style="color:rgba(0,0,0,0.45)">via ${esc(sourceLabel(l.source))}</span>` : ''}
               </p>
             </div>
             <div style="display:flex;gap:0.5rem;align-items:center">

@@ -17,11 +17,11 @@ export const GET: APIRoute = async ({ locals }) => {
   try {
     await connectDB();
     const rows = await Lead.find().sort({ createdAt: -1 }).lean();
-    const header = ['Name', 'Email', 'Phone', 'Model', 'Size', 'State', 'Message', 'Status', 'Submitted at'];
+    const header = ['Name', 'Email', 'Phone', 'Model', 'Size', 'State', 'Message', 'Source', 'Status', 'Submitted at'];
     const csv = [
       header.join(','),
       ...rows.map((r) =>
-        [r.name, r.email, r.phone, r.model, r.size, r.state, r.message, r.status, r.createdAt?.toISOString()]
+        [r.name, r.email, r.phone, r.model, r.size, r.state, r.message, r.source, r.status, r.createdAt?.toISOString()]
           .map(csvCell)
           .join(',')
       ),

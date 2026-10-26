@@ -114,8 +114,8 @@ import model03 from "../assets/elite-series.png";
 
                         <!-- Message -->
                         <div class="flex flex-col gap-3">
-                            <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Message</label>
-                            <textarea name="message" rows="4" placeholder="How can we help?" class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors resize-none"></textarea>
+                            <label class="text-[10px] font-black uppercase tracking-[0.1em] text-black/30 ml-2">Message*</label>
+                            <textarea name="message" required rows="4" placeholder="How can we help?" class="w-full bg-black/[0.02] border border-black/5 rounded-2xl px-6 py-4 text-black placeholder:text-black/20 focus:outline-none focus:border-[#E50000]/50 transition-colors resize-none"></textarea>
                         </div>
 
                         <!-- Honeypot -->
@@ -148,9 +148,26 @@ import model03 from "../assets/elite-series.png";
                                 website: String(data.get('website') ?? ''),
                                 source: 'contact_page',
                             };
-                            if (!payload.name || !payload.email || !payload.phone) {
+                            // Every visible field is mandatory. The form uses novalidate so we
+                            // control the messaging, which means we must check each field here
+                            // (the server enforces the same rule for contact_page submissions).
+                            const required = ['name', 'email', 'phone', 'model', 'size', 'state', 'message'] as const;
+                            const missing = required.filter((key) => !payload[key].trim());
+                            cform.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+                            if (missing.length) {
+                                const fields = missing.map((key) => cform.elements.namedItem(key) as HTMLElement | null);
+                                fields.forEach((el) => el?.setAttribute('aria-invalid', 'true'));
+                                fields[0]?.focus();
                                 cstatus.style.color = '#c00';
-                                cstatus.textContent = 'Please fill in your name, email and phone.';
+                                cstatus.textContent = `Please fill in: ${missing.join(', ')}.`;
+                                return;
+                            }
+                            const emailInput = cform.elements.namedItem('email') as HTMLInputElement | null;
+                            if (emailInput && !emailInput.checkValidity()) {
+                                emailInput.setAttribute('aria-invalid', 'true');
+                                emailInput.focus();
+                                cstatus.style.color = '#c00';
+                                cstatus.textContent = 'Please enter a valid email address.';
                                 return;
                             }
                             const original = cbtn.textContent;
@@ -266,6 +283,10 @@ import model03 from "../assets/elite-series.png";
 </Layout>
 
 <style>
+    #contact-form [aria-invalid="true"] {
+        border-color: #E50000;
+    }
+
     select {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
         background-repeat: no-repeat;
