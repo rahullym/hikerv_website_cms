@@ -82,3 +82,13 @@ test('oversized originals are gone', () => {
     assert.ok(!fs.existsSync(path.join(out, f)), f);
   }
 });
+
+test('drifter page feature image has alt, dimensions and is under 200KB', () => {
+  const html = fs.readFileSync(path.join(out, 'drifter/index.html'), 'utf8');
+  const m = html.match(/<img[^>]*alt="Hike RV Drifter Series Off Road Caravan"[^>]*>/);
+  assert.ok(m, 'feature image missing');
+  assert.match(m[0], /width="\d+"/);
+  assert.match(m[0], /height="\d+"/);
+  assert.match(m[0], /src="[^"]+\.webp/);
+  assert.ok(fs.statSync('src/assets/drifter-series.webp').size < 200 * 1024);
+});

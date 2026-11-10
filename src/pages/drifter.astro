@@ -86,8 +86,8 @@ import drifterSeries from "../assets/drifter-series.webp";
                     <div class="w-full h-px bg-black/10 mb-10 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;"></div>
 
                     <!-- Caravan Image -->
-                    <div class="w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up" style="animation-delay: 900ms; animation-fill-mode: both;">
-                        <Image src={drifterSeries} alt="Drifter Series Caravan" class="w-full h-auto object-cover scale-[1.4] origin-center transition-transform duration-700" />
+                    <div id="drifter-feature-image" class="w-full aspect-square rounded-3xl overflow-hidden bg-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up" style="animation-delay: 900ms; animation-fill-mode: both;">
+                        <Image src={drifterSeries} alt="Hike RV Drifter Series Off Road Caravan" width={1200} height={1200} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" class="w-full h-full object-cover" onerror="this.style.display='none'" />
                     </div>
                 </div>
 
