@@ -92,3 +92,16 @@ test('drifter page feature image has alt, dimensions and is under 200KB', () => 
   assert.match(m[0], /src="[^"]+\.webp/);
   assert.ok(fs.statSync('src/assets/drifter-series.webp').size < 200 * 1024);
 });
+
+import { readFileSync as _rf } from 'node:fs';
+import { test as _t } from 'node:test';
+import _assert from 'node:assert/strict';
+
+_t('drifter intro copy updated and layout classes preserved', () => {
+  const src = _rf(new URL('../src/pages/drifter.astro', import.meta.url), 'utf8');
+  _assert.ok(src.includes("Whether it's a weekend getaway or an extended journey, the Drifter Series is designed for couples who love exploring together. Compact, nimble and thoughtfully equipped with all the essentials, it offers the perfect balance of comfort, practicality and adventure. Wherever the road takes you, enjoy every moment together and chase the horizon without compromise."));
+  _assert.ok(!src.includes('unforgettable escape'));
+  _assert.ok(src.includes('Designed for Two'));
+  _assert.ok(/Chase The<br\/>Horizon\./.test(src));
+  _assert.ok(src.includes('border-l-4 border-[#E50000] pl-6 md:pl-10'));
+});
