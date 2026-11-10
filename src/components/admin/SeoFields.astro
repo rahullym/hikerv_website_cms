@@ -1,0 +1,200 @@
+---
+/**
+ * "SEO & Social Sharing" accordion for CMS editors. Self-initialising: reads its
+ * starting values from `data-seo`, and exposes `window.seoEditor` with
+ * `get()` (current values) and `validate()` (array of error strings) so the host
+ * page's Save handler can include `seo` in its payload.
+ * Requires <ImagePicker /> on the host page for the social image "Browse…" button.
+ */
+import { normalizeSeo, type SeoMetadata } from '../../lib/seo';
+
+interface Props {
+  seo?: Partial<SeoMetadata> | null;
+  /** Fallback title/description shown in counters' previews when fields are empty. */
+  fallbackTitle?: string;
+  fallbackDescription?: string;
+  /** Public URL path of the record, for preview. */
+  path?: string;
+}
+const { seo, fallbackTitle = '', fallbackDescription = '', path = '' } = Astro.props;
+const data = JSON.stringify({ seo: normalizeSeo(seo), fallbackTitle, fallbackDescription, path });
+---
+
+<details id="seo-panel" class="seo-panel" open data-seo={data}>
+  <summary>SEO &amp; Social Sharing</summary>
+  <div class="seo-body">
+    <h4>Search metadata</h4>
+    <label class="seo-lbl">Meta Title <span class="seo-hint">recommended 50–60 characters</span>
+      <input id="seo-title" type="text" />
+      <div class="seo-bar"><div id="seo-title-fill"></div></div>
+      <span id="seo-title-count" class="seo-count" data-testid="seo-title-count"></span>
+    </label>
+    <label class="seo-lbl">Meta Description <span class="seo-hint">recommended 120–160 characters</span>
+      <textarea id="seo-description" rows="3"></textarea>
+      <div class="seo-bar"><div id="seo-description-fill"></div></div>
+      <span id="seo-description-count" class="seo-count" data-testid="seo-description-count"></span>
+    </label>
+    <label class="seo-lbl">URL Slug / Permalink <span class="seo-hint">kebab-case, e.g. my-post-title</span>
+      <input id="seo-slug" type="text" style="font-family: ui-monospace, monospace;" />
+      <span id="seo-slug-error" class="seo-error"></span>
+    </label>
+    <label class="seo-lbl">Canonical URL override
+      <input id="seo-canonical" type="text" placeholder="https://www.hikervcaravans.com.au/…" />
+      <span id="seo-canonical-error" class="seo-error"></span>
+    </label>
+
+    <h4>Open Graph &amp; Twitter</h4>
+    <label class="seo-lbl">OG Title<input id="seo-ogTitle" type="text" /></label>
+    <label class="seo-lbl">OG Description<textarea id="seo-ogDescription" rows="2"></textarea></label>
+    <label class="seo-lbl">Social Share Image (og:image / twitter:image)
+      <div style="display: flex; gap: 0.4rem;">
+        <input id="seo-ogImage" type="text" placeholder="https://… or /path.jpg" style="flex: 1;" />
+        <button type="button" id="seo-ogImage-browse" class="seo-btn">Browse…</button>
+      </div>
+    </label>
+    <label class="seo-lbl">Twitter Card type
+      <select id="seo-twitterCard">
+        <option value="summary_large_image">summary_large_image</option>
+        <option value="summary">summary</option>
+      </select>
+    </label>
+    <div class="seo-preview" id="seo-og-preview" aria-label="Open Graph preview">
+      <div class="seo-preview-img" id="seo-og-preview-img"></div>
+      <div class="seo-preview-text">
+        <small id="seo-og-preview-url"></small>
+        <strong id="seo-og-preview-title"></strong>
+        <span id="seo-og-preview-desc"></span>
+      </div>
+    </div>
+
+    <h4>Robots directives</h4>
+    <div class="seo-robots">
+      <label><input type="checkbox" id="seo-robots-noindex" /> noindex</label>
+      <label><input type="checkbox" id="seo-robots-nofollow" /> nofollow</label>
+      <label><input type="checkbox" id="seo-robots-noarchive" /> noarchive</label>
+      <label><input type="checkbox" id="seo-robots-nosnippet" /> nosnippet</label>
+    </div>
+    <p class="seo-hint" style="margin: 0;">noindex also removes this URL from sitemap.xml on the next publish.</p>
+
+    <h4>Structured data (JSON-LD)</h4>
+    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+      <button type="button" class="seo-btn" id="seo-tpl-article">Article template</button>
+      <button type="button" class="seo-btn" id="seo-tpl-faq">FAQ template</button>
+    </div>
+    <textarea id="seo-customSchema" rows="8" spellcheck="false" style="font-family: ui-monospace, monospace; font-size: 0.8125rem;" placeholder='{"@context":"https://schema.org","@type":"Article", …}'></textarea>
+    <span id="seo-schema-status" class="seo-error"></span>
+  </div>
+</details>
+
+<style>
+  .seo-panel { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 0.75rem; padding: 0.75rem 1.25rem; margin-top: 1.5rem; }
+  .seo-panel summary { cursor: pointer; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8125rem; }
+  .seo-body { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1rem; }
+  .seo-body h4 { margin: 0.5rem 0 0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #E50000; }
+  .seo-lbl { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.55); }
+  .seo-hint { text-transform: none; letter-spacing: 0; color: rgba(0,0,0,0.4); font-size: 0.7rem; }
+  .seo-bar { height: 6px; background: rgba(0,0,0,0.08); border-radius: 9999px; overflow: hidden; }
+  .seo-bar > div { height: 100%; width: 0; background: #bbb; transition: width 0.15s, background 0.15s; }
+  .seo-count { text-transform: none; letter-spacing: 0; font-size: 0.75rem; }
+  .seo-count[data-level="good"] { color: #0a7a2f; }
+  .seo-count[data-level="short"], .seo-count[data-level="long"] { color: #c25a00; }
+  .seo-error { color: #c00; font-size: 0.75rem; text-transform: none; letter-spacing: 0; min-height: 0; }
+  .seo-robots { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.8125rem; }
+  .seo-robots label { display: flex; align-items: center; gap: 0.35rem; }
+  .seo-btn { padding: 0.4rem 0.875rem; background: #0a0a0a; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+  .seo-preview { display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.12); border-radius: 0.5rem; overflow: hidden; max-width: 480px; }
+  .seo-preview[data-card="summary"] { flex-direction: row; }
+  .seo-preview-img { background: #eee center/cover no-repeat; aspect-ratio: 1.91 / 1; }
+  .seo-preview[data-card="summary"] .seo-preview-img { width: 120px; aspect-ratio: 1; flex-shrink: 0; }
+  .seo-preview-text { padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.15rem; background: #f6f6f6; font-size: 0.8125rem; }
+  .seo-preview-text small { color: rgba(0,0,0,0.5); text-transform: uppercase; font-size: 0.65rem; }
+  .seo-preview-text span { color: rgba(0,0,0,0.6); }
+</style>
+
+<script>
+  import { DESCRIPTION_RANGE, TITLE_RANGE, counterLevel, validateCanonical, validateJsonLd, validateSeo, validateSlug, normalizeSeo, SITE_URL, absoluteUrl } from '../../lib/seo';
+
+  const root = document.getElementById('seo-panel') as HTMLElement;
+  const init = JSON.parse(root.dataset.seo || '{}');
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const title = $<HTMLInputElement>('seo-title');
+  const description = $<HTMLTextAreaElement>('seo-description');
+  const slug = $<HTMLInputElement>('seo-slug');
+  const canonical = $<HTMLInputElement>('seo-canonical');
+  const ogTitle = $<HTMLInputElement>('seo-ogTitle');
+  const ogDescription = $<HTMLTextAreaElement>('seo-ogDescription');
+  const ogImage = $<HTMLInputElement>('seo-ogImage');
+  const twitterCard = $<HTMLSelectElement>('seo-twitterCard');
+  const schema = $<HTMLTextAreaElement>('seo-customSchema');
+  const robotKeys = ['noindex', 'nofollow', 'noarchive', 'nosnippet'] as const;
+  const robots = Object.fromEntries(robotKeys.map((k) => [k, $<HTMLInputElement>(`seo-robots-${k}`)])) as Record<(typeof robotKeys)[number], HTMLInputElement>;
+
+  const s = init.seo;
+  title.value = s.title; description.value = s.description; slug.value = s.slug;
+  canonical.value = s.canonical; ogTitle.value = s.ogTitle; ogDescription.value = s.ogDescription;
+  ogImage.value = s.ogImage; twitterCard.value = s.twitterCard; schema.value = s.customSchema;
+  for (const k of robotKeys) robots[k].checked = s.robots[k];
+
+  const COLORS = { empty: '#bbb', short: '#e08a00', good: '#1a9c4a', long: '#d93025' } as const;
+  function counter(input: HTMLInputElement | HTMLTextAreaElement, range: { min: number; max: number }, base: string) {
+    const len = input.value.length;
+    const level = counterLevel(len, range);
+    const fill = $(`${base}-fill`);
+    fill.style.width = Math.min(100, (len / (range.max * 1.25)) * 100) + '%';
+    fill.style.background = COLORS[level];
+    const el = $(`${base}-count`);
+    el.dataset.level = level;
+    const msg = { empty: '', short: ' — too short', good: ' — good length', long: ' — too long, may be truncated' }[level];
+    el.textContent = `${len} characters (recommended ${range.min}–${range.max})${msg}`;
+  }
+
+  function refresh() {
+    counter(title, TITLE_RANGE, 'seo-title');
+    counter(description, DESCRIPTION_RANGE, 'seo-description');
+    $('seo-slug-error').textContent = validateSlug(slug.value) ?? '';
+    $('seo-canonical-error').textContent = validateCanonical(canonical.value) ?? '';
+    const schemaErr = validateJsonLd(schema.value);
+    const st = $('seo-schema-status');
+    st.textContent = schemaErr ?? (schema.value.trim() ? 'Valid JSON-LD' : '');
+    st.style.color = schemaErr ? '#c00' : '#0a7a2f';
+    // OG preview
+    const pTitle = ogTitle.value || title.value || init.fallbackTitle;
+    const pDesc = ogDescription.value || description.value || init.fallbackDescription;
+    $('seo-og-preview-title').textContent = pTitle;
+    $('seo-og-preview-desc').textContent = pDesc;
+    $('seo-og-preview-url').textContent = (canonical.value || absoluteUrl(init.path || '/', SITE_URL)).replace(/^https?:\/\//, '');
+    $('seo-og-preview-img').style.backgroundImage = ogImage.value ? `url("${ogImage.value.replace(/"/g, '%22')}")` : 'none';
+    $('seo-og-preview').dataset.card = twitterCard.value;
+  }
+  root.addEventListener('input', refresh);
+  root.addEventListener('change', refresh);
+
+  $('seo-ogImage-browse').addEventListener('click', () => (window as any).openImagePicker?.('seo-ogImage'));
+
+  $('seo-tpl-article').addEventListener('click', () => {
+    schema.value = JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'Article',
+      headline: title.value || init.fallbackTitle, description: description.value || init.fallbackDescription,
+      image: ogImage.value || undefined, author: { '@type': 'Organization', name: 'Hike RV' },
+    }, null, 2);
+    refresh();
+  });
+  $('seo-tpl-faq').addEventListener('click', () => {
+    schema.value = JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: [{ '@type': 'Question', name: 'Question?', acceptedAnswer: { '@type': 'Answer', text: 'Answer.' } }],
+    }, null, 2);
+    refresh();
+  });
+
+  function get() {
+    return normalizeSeo({
+      title: title.value, description: description.value, slug: slug.value.trim(),
+      canonical: canonical.value.trim(), ogTitle: ogTitle.value, ogDescription: ogDescription.value,
+      ogImage: ogImage.value.trim(), twitterCard: twitterCard.value, customSchema: schema.value,
+      robots: Object.fromEntries(robotKeys.map((k) => [k, robots[k].checked])),
+    });
+  }
+  (window as any).seoEditor = { get, validate: () => validateSeo(get()) };
+  refresh();
+</script>

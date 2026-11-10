@@ -3,10 +3,14 @@ import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import GoogleRatingFloat from '../components/GoogleRatingFloat.astro';
 import RightSidebar from '../components/RightSidebar.astro';
+import { escapeJsonForScript, resolveHead, type SeoMetadata } from '../lib/seo';
+import { loadPageSeo } from '../lib/cms/pageSeo';
 
 interface Props {
 	title: string;
 	description?: string;
+	/** CMS SEO metadata for this record. When omitted, page-level CMS overrides (by path) are used. */
+	seo?: Partial<SeoMetadata> | null;
 }
 
 const localBusiness = {
@@ -43,7 +47,10 @@ const localBusiness = {
 	],
 };
 
-const { title, description = "Hike RV Caravan - Discover the ultimate mobile-first luxury caravan experience. Engineering meets adventure." } = Astro.props;
+const { title: defaultTitle, description: defaultDescription = "Hike RV Caravan - Discover the ultimate mobile-first luxury caravan experience. Engineering meets adventure.", seo: seoProp } = Astro.props;
+const seo = seoProp ?? (await loadPageSeo(Astro.url.pathname));
+const head = resolveHead({ title: defaultTitle, description: defaultDescription, pathname: Astro.url.pathname, seo });
+const { title, description } = head;
 ---
 
 <!DOCTYPE html>
@@ -55,19 +62,23 @@ const { title, description = "Hike RV Caravan - Discover the ultimate mobile-fir
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+		{head.jsonLd.map((j) => <script type="application/ld+json" set:html={escapeJsonForScript(j)} />)}
 		<meta name="description" content={description} />
-		
+		<meta name="robots" content={head.robots} />
+		<link rel="canonical" href={head.canonical} />
+
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content="/assets/hero.png" />
+		<meta property="og:url" content={head.canonical} />
+		<meta property="og:title" content={head.ogTitle} />
+		<meta property="og:description" content={head.ogDescription} />
+		<meta property="og:image" content={head.ogImage} />
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content="/assets/hero.png" />
+		<meta name="twitter:card" content={head.twitterCard} />
+		<meta name="twitter:title" content={head.ogTitle} />
+		<meta name="twitter:description" content={head.ogDescription} />
+		<meta name="twitter:image" content={head.ogImage} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -1,0 +1,67 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import ImagePicker from '../../components/admin/ImagePicker.astro';
+import SeoFields from '../../components/admin/SeoFields.astro';
+import { connectDB } from '../../lib/db';
+import { PageSeo } from '../../lib/db/models/PageSeo';
+import { normalizePath } from '../../lib/cms/pageSeo';
+
+const session = Astro.locals.session!;
+
+// Static site pages (excluding admin/api/dynamic routes)
+const files = Object.keys(import.meta.glob('/src/pages/**/*.astro'));
+const paths = files
+  .map((f) => f.replace('/src/pages', '').replace(/\.astro$/, ''))
+  .filter((p) => !p.startsWith('/admin') && !p.startsWith('/api') && !p.includes('['))
+  .map((p) => normalizePath(p === '/index' ? '/' : p))
+  .sort();
+
+await connectDB();
+const docs = await PageSeo.find().lean();
+const byPath = Object.fromEntries(docs.map((d) => [normalizePath(d.path), d.seo]));
+
+const selected = normalizePath(Astro.url.searchParams.get('path') || '/');
+const current = paths.includes(selected) ? selected : paths[0];
+---
+
+<AdminLayout title="Pages SEO" active="pages" session={session}>
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+    <form method="get" style="display: flex; gap: 0.5rem; align-items: center;">
+      <label style="font-size: 0.8125rem;">Page
+        <select name="path" onchange="this.form.submit()">
+          {paths.map((p) => <option value={p} selected={p === current}>{p}</option>)}
+        </select>
+      </label>
+    </form>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <span id="status-msg" style="font-size: 0.75rem; color: rgba(0,0,0,0.4);"></span>
+      <button id="save-btn" style="padding: 0.5rem 1.25rem; background: #E50000; color: #fff; border: none; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Save</button>
+    </div>
+  </div>
+
+  <SeoFields seo={byPath[current]} path={current} />
+  <ImagePicker />
+
+  <script is:inline define:vars={{ current }}>
+    const statusMsg = document.getElementById('status-msg');
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const errors = window.seoEditor.validate();
+      if (errors.length) { statusMsg.textContent = 'Fix SEO fields: ' + errors[0]; return; }
+      statusMsg.textContent = 'Saving…';
+      const res = await fetch('/api/pages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: current, seo: window.seoEditor.get() }),
+      });
+      if (res.ok) {
+        statusMsg.textContent = 'Saved · publish to push live';
+        setTimeout(() => (statusMsg.textContent = ''), 4000);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        statusMsg.textContent = 'Failed: ' + (body.error || 'unknown');
+      }
+    });
+  </script>
+</AdminLayout>

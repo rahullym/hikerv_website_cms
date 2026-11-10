@@ -1,4 +1,6 @@
 import { mongoose } from '../index';
+import { SeoSchema } from './seoSchema';
+import type { SeoMetadata } from '../../seo';
 
 export interface SpecIcon {
   /** Icon key (maps to a preset SVG in the template) — chassis | inverter | lounge | fridge | frame | suspension | washer | battery | solar | …other */
@@ -70,6 +72,7 @@ export interface VariantDoc {
   };
   order: number;
   status: 'draft' | 'published';
+  seo?: SeoMetadata;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -151,6 +154,7 @@ const VariantSchema = new mongoose.Schema<VariantDoc>(
       interior: { type: [String], default: [] },
     },
     order: { type: Number, default: 0 },
+    seo: { type: SeoSchema, default: () => ({}) },
     status: { type: String, enum: ['draft', 'published'], default: 'published' },
   },
   { timestamps: true }

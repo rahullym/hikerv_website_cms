@@ -9,7 +9,7 @@ import { hasRole } from '../../../lib/auth/session';
 import { badRequest, forbidden, notFound, ok, serverError } from '../../../lib/api/respond';
 
 const PatchBody = z.object({
-  alt: z.string().optional(),
+  alt: z.string().trim().min(1, 'Alt text cannot be empty').optional(),
   tags: z.array(z.string()).optional(),
 });
 
@@ -24,7 +24,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     return badRequest('Invalid JSON body');
   }
   const parsed = PatchBody.safeParse(body);
-  if (!parsed.success) return badRequest('Invalid input');
+  if (!parsed.success) return badRequest(parsed.error.issues[0]?.message ?? 'Invalid input');
   try {
     await connectDB();
     const image = await ImageAsset.findByIdAndUpdate(id, parsed.data, { new: true }).lean();

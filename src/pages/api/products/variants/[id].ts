@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import { connectDB } from '../../../../lib/db';
 import { Variant } from '../../../../lib/db/models/Variant';
+import { SeoBody } from '../../../../lib/seo/schema';
 import { hasRole } from '../../../../lib/auth/session';
 import { badRequest, forbidden, notFound, ok, serverError } from '../../../../lib/api/respond';
 
@@ -21,6 +22,7 @@ const PatchBody = z.object({
   slug: z.string().min(1).optional(),
   status: z.enum(['draft', 'published']).optional(),
   order: z.number().int().optional(),
+  seo: SeoBody.optional(),
   hero: z.object({
     kicker: z.string().optional(),
     title: z.string().optional(),

@@ -1,13 +1,14 @@
+import { normalizeSeo, type SeoMetadata } from '../seo';
 import { SERIES_SEED, VARIANT_SEED, type SeriesSeed, type VariantSeed } from './productSeed';
 
 export interface SeriesPublic extends SeriesSeed {}
 
 // Public-facing shape: identical to VariantSeed but without the seriesSlug
 // helper (callers get series info separately if they need it).
-export type VariantPublic = Omit<VariantSeed, 'seriesSlug'> & { seriesSlug: string };
+export type VariantPublic = Omit<VariantSeed, 'seriesSlug'> & { seriesSlug: string; seo: SeoMetadata };
 
 function withFallback(variant: VariantSeed): VariantPublic {
-  return variant;
+  return { ...variant, seo: normalizeSeo(null) };
 }
 
 export async function loadVariantBySlug(slug: string): Promise<VariantPublic | null> {
@@ -33,6 +34,7 @@ export async function loadVariantBySlug(slug: string): Promise<VariantPublic | n
           cta: doc.cta,
           gallery: doc.gallery,
           seriesSlug: series?.slug ?? '',
+          seo: normalizeSeo(doc.seo),
         };
       }
     } catch (err) {
@@ -41,6 +43,27 @@ export async function loadVariantBySlug(slug: string): Promise<VariantPublic | n
   }
   const seed = VARIANT_SEED.find((v) => v.slug === slug);
   return seed ? withFallback(seed) : null;
+}
+
+/** SEO metadata for every published variant (used by the sitemap). Keyed by slug. */
+export async function loadVariantSeoMap(): Promise<Record<string, SeoMetadata>> {
+  const map: Record<string, SeoMetadata> = {};
+  if (!import.meta.env.MONGODB_URI) return map;
+  try {
+    const { connectDB } = await import('../db');
+    const { Variant } = await import('../db/models/Variant');
+    await connectDB();
+    const docs = await Variant.find({}).select('slug seo status').lean();
+    for (const d of docs) {
+      // Drafts are not rendered: treat as noindex so they never leak into the sitemap.
+      const seo = normalizeSeo(d.seo);
+      if (d.status !== 'published') seo.robots.noindex = true;
+      map[d.slug] = seo;
+    }
+  } catch (err) {
+    console.warn('[products] Mongo unavailable for SEO map:', (err as Error).message);
+  }
+  return map;
 }
 
 export async function listSeries(): Promise<SeriesPublic[]> {

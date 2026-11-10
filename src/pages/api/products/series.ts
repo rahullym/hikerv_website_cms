@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import { connectDB } from '../../../lib/db';
 import { Series } from '../../../lib/db/models/Series';
+import { SeoBody } from '../../../lib/seo/schema';
 import { hasRole } from '../../../lib/auth/session';
 import { badRequest, created, forbidden, ok, serverError } from '../../../lib/api/respond';
 
@@ -12,6 +13,7 @@ const CreateBody = z.object({
   name: z.string().min(1),
   accentColor: z.string().optional(),
   order: z.number().int().optional(),
+  seo: SeoBody.optional(),
 });
 
 export const GET: APIRoute = async ({ locals }) => {

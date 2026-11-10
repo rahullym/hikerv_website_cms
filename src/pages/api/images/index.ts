@@ -15,7 +15,7 @@ const CreateBody = z.object({
   size: z.number().int().nonnegative(),
   width: z.number().int().positive().optional(),
   height: z.number().int().positive().optional(),
-  alt: z.string().optional(),
+  alt: z.string().trim().min(1, 'Alt text is required for accessibility and SEO'),
   tags: z.array(z.string()).optional(),
 });
 

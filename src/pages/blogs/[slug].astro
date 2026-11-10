@@ -19,7 +19,7 @@ const publishedFormatted = new Date(post.publishedAt).toLocaleDateString('en-AU'
 });
 ---
 
-<Layout title={`${post.title} | Hike RV Caravans`} description={post.description}>
+<Layout title={`${post.title} | Hike RV Caravans`} description={post.description} seo={{ ...post.seo, ogImage: post.seo.ogImage || post.heroImage }}>
   <Navbar />
 
   <main class="w-full bg-white text-black min-h-screen relative font-sans overflow-hidden">

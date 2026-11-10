@@ -1,4 +1,6 @@
 import { mongoose } from '../index';
+import { SeoSchema } from './seoSchema';
+import type { SeoMetadata } from '../../seo';
 
 export interface SeriesDoc {
   _id: mongoose.Types.ObjectId;
@@ -6,6 +8,7 @@ export interface SeriesDoc {
   name: string;
   accentColor: string; // hex, e.g. #E50000
   order: number;
+  seo?: SeoMetadata;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,6 +19,7 @@ const SeriesSchema = new mongoose.Schema<SeriesDoc>(
     name: { type: String, required: true },
     accentColor: { type: String, default: '#E50000' },
     order: { type: Number, default: 0 },
+    seo: { type: SeoSchema, default: () => ({}) },
   },
   { timestamps: true }
 );

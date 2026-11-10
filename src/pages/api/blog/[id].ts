@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import { connectDB } from '../../../lib/db';
 import { Post } from '../../../lib/db/models/Post';
+import { SeoBody } from '../../../lib/seo/schema';
 import { hasRole } from '../../../lib/auth/session';
 import { badRequest, forbidden, notFound, ok, serverError } from '../../../lib/api/respond';
 
@@ -17,6 +18,7 @@ const PatchBody = z.object({
   readTime: z.string().optional(),
   heroImage: z.string().optional(),
   status: z.enum(['draft', 'published']).optional(),
+  seo: SeoBody.optional(),
 });
 
 export const GET: APIRoute = async ({ params, locals }) => {

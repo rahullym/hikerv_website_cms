@@ -4,6 +4,7 @@ export const prerender = false;
 import AdminLayout from '../../../layouts/AdminLayout.astro';
 import ImagePicker from '../../../components/admin/ImagePicker.astro';
 import { connectDB } from '../../../lib/db';
+import SeoFields from '../../../components/admin/SeoFields.astro';
 import { Variant } from '../../../lib/db/models/Variant';
 import { Series } from '../../../lib/db/models/Series';
 
@@ -29,6 +30,7 @@ const dataJson = JSON.stringify({
   floorplans: variant.floorplans,
   cta: variant.cta,
   gallery: variant.gallery,
+  seo: variant.seo ?? {},
 });
 const iconOptions = ['inverter', 'lounge', 'fridge', 'frame', 'suspension', 'washer', 'battery', 'solar'];
 const iconOptionsJson = JSON.stringify(iconOptions);
@@ -129,6 +131,8 @@ const iconOptionsJson = JSON.stringify(iconOptions);
       <label class="lbl">Body<textarea data-bind="cta.body" rows="2"></textarea></label>
     </fieldset>
   </form>
+
+  <SeoFields seo={variant.seo} fallbackTitle={`${variant.name} | Hike RV Caravans`} fallbackDescription={variant.hero?.body ?? ''} path={`/${variant.slug}`} />
 
   <ImagePicker />
 
@@ -348,8 +352,14 @@ const iconOptionsJson = JSON.stringify(iconOptions);
 
     // ── Save / Delete ─────────────────────────────────────────
     document.getElementById('save-btn').addEventListener('click', async () => {
+      const seoErrors = window.seoEditor ? window.seoEditor.validate() : [];
+      if (seoErrors.length) {
+        statusMsg.textContent = 'Fix SEO fields: ' + seoErrors[0];
+        return;
+      }
       statusMsg.textContent = 'Saving…';
       const payload = {
+        seo: window.seoEditor ? window.seoEditor.get() : undefined,
         name: state.name,
         slug: state.slug,
         status: state.status,

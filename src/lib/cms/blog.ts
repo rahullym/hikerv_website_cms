@@ -1,3 +1,4 @@
+import { normalizeSeo, type SeoMetadata } from '../seo';
 import { BLOG_SEED, type SeedPost } from './blogSeed';
 
 export interface PublicPost {
@@ -10,6 +11,7 @@ export interface PublicPost {
   readTime: string;
   heroImage: string;
   publishedAt: string; // ISO
+  seo: SeoMetadata;
 }
 
 function seedToPublic(s: SeedPost): PublicPost {
@@ -23,6 +25,7 @@ function seedToPublic(s: SeedPost): PublicPost {
     readTime: s.readTime,
     heroImage: s.heroImage,
     publishedAt: s.publishedAt,
+    seo: normalizeSeo(null),
   };
 }
 
@@ -39,7 +42,8 @@ export async function loadPublishedPosts(): Promise<PublicPost[]> {
       .lean();
     if (!docs.length) return seedPublished;
     return docs.map((d) => ({
-      slug: d.slug,
+      // CMS permalink override (SEO tab) wins over the record slug
+      slug: d.seo?.slug || d.slug,
       title: d.title,
       subtitle: d.subtitle ?? '',
       description: d.description ?? '',
@@ -48,6 +52,7 @@ export async function loadPublishedPosts(): Promise<PublicPost[]> {
       readTime: d.readTime ?? '',
       heroImage: d.heroImage ?? '',
       publishedAt: (d.publishedAt ?? d.createdAt).toISOString(),
+      seo: normalizeSeo(d.seo),
     }));
   } catch (err) {
     console.warn('[blog] Mongo unavailable, using seed:', (err as Error).message);

@@ -4,6 +4,7 @@ export const prerender = false;
 import AdminLayout from '../../../layouts/AdminLayout.astro';
 import ImagePicker from '../../../components/admin/ImagePicker.astro';
 import { connectDB } from '../../../lib/db';
+import SeoFields from '../../../components/admin/SeoFields.astro';
 import { Post } from '../../../lib/db/models/Post';
 
 const session = Astro.locals.session!;
@@ -30,6 +31,7 @@ const dataJson = JSON.stringify({
   readTime: post.readTime,
   heroImage: post.heroImage,
   status: post.status,
+  seo: post.seo ?? {},
 });
 ---
 
@@ -95,6 +97,8 @@ const dataJson = JSON.stringify({
     </aside>
   </form>
 
+  <SeoFields seo={post.seo} fallbackTitle={post.title} fallbackDescription={post.description} path={`/blogs/${post.slug}`} />
+
   <ImagePicker />
 
   <script is:inline define:vars={{ dataJson }}>
@@ -127,6 +131,12 @@ const dataJson = JSON.stringify({
         const el = form.querySelector(`[name="${name}"]`);
         if (el) payload[name] = el.value;
       }
+      const seoErrors = window.seoEditor ? window.seoEditor.validate() : [];
+      if (seoErrors.length) {
+        statusMsg.textContent = 'Fix SEO fields: ' + seoErrors[0];
+        return;
+      }
+      if (window.seoEditor) payload.seo = window.seoEditor.get();
       statusMsg.textContent = 'Saving…';
       const res = await fetch(`/api/blog/${data._id}`, {
         method: 'PATCH',

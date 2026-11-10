@@ -1,4 +1,6 @@
 import { mongoose } from '../index';
+import { SeoSchema } from './seoSchema';
+import type { SeoMetadata } from '../../seo';
 
 export type PostStatus = 'draft' | 'published';
 
@@ -14,6 +16,7 @@ export interface PostDoc {
   heroImage: string; // public URL (CloudFront or /local path)
   status: PostStatus;
   publishedAt?: Date;
+  seo?: SeoMetadata;
   authorId?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -31,6 +34,7 @@ const PostSchema = new mongoose.Schema<PostDoc>(
     heroImage: { type: String, default: '' },
     status: { type: String, enum: ['draft', 'published'], default: 'draft' },
     publishedAt: { type: Date },
+    seo: { type: SeoSchema, default: () => ({}) },
     authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
