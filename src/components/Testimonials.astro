@@ -38,16 +38,16 @@ const overall = { score: "5.0", count: "Verified", platform: "Google Reviews" };
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-10">
             <div class="max-w-2xl">
                 <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up">Verified On Google</span>
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-black animate-fade-up" style="animation-delay: 200ms;">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-black animate-fade-up anim-delay-200">
                     What Our<br/><span class="text-[#E50000]">Customers Say.</span>
                 </h2>
-                <p class="text-black/50 font-medium md:text-lg mt-8 leading-relaxed max-w-xl animate-fade-up" style="animation-delay: 400ms;">
+                <p class="text-black/50 font-medium md:text-lg mt-8 leading-relaxed max-w-xl animate-fade-up anim-delay-400">
                     A decade of building caravans worth talking about — and over a thousand owners who do.
                 </p>
             </div>
 
             <!-- Rating Summary Card -->
-            <div class="bg-white border border-black/5 rounded-[2rem] p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] flex items-center gap-6 animate-fade-up" style="animation-delay: 500ms;">
+            <div class="bg-white border border-black/5 rounded-[2rem] p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] flex items-center gap-6 animate-fade-up anim-delay-500">
                 <!-- Google G -->
                 <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-white border border-black/5 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
                     <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 48 48">
@@ -72,11 +72,10 @@ const overall = { score: "5.0", count: "Verified", platform: "Google Reviews" };
         </div>
 
         <!-- Reviews Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div class="stagger-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {reviews.map((review, i) => (
                 <article
                     class="group relative flex flex-col bg-white rounded-[2rem] border border-black/5 p-8 md:p-10 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] hover:border-[#E50000]/20 animate-fade-up"
-                    style={`animation-delay: ${600 + (i * 100)}ms;`}
                 >
                     <!-- Top Row: Stars + Google Glyph -->
                     <div class="flex items-center justify-between mb-6">

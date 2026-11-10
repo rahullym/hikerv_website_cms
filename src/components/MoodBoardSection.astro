@@ -17,10 +17,10 @@ const moodBoards = [
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8">
             <div class="max-w-2xl">
                 <span class="text-[#E50000] font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block animate-fade-up">Personalization</span>
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-black animate-fade-up" style="animation-delay: 200ms;">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-black animate-fade-up anim-delay-200">
                     Interior <br/><span class="text-[#E50000]">Styling.</span>
                 </h2>
-                <p class="text-black/50 font-medium md:text-lg mt-8 leading-relaxed max-w-xl animate-fade-up" style="animation-delay: 400ms;">
+                <p class="text-black/50 font-medium md:text-lg mt-8 leading-relaxed max-w-xl animate-fade-up anim-delay-400">
                     Your RV is an extension of your lifestyle. Choose from our curated selection of interior mood boards to define your sanctuary on the road.
                 </p>
             </div>
@@ -33,17 +33,17 @@ const moodBoards = [
         </div>
 
         <!-- Mood Board Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div class="stagger-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {moodBoards.map((board, i) => (
                 <div 
                     class="group relative flex flex-col bg-[#f8f8f8] rounded-[2rem] overflow-hidden border border-black/5 transition-all duration-700 hover:shadow-[0_30px_60px_rgba(0,0,0,0.1)] hover:-translate-y-2 animate-fade-up"
-                    style={`animation-delay: ${600 + (i * 100)}ms;`}
                 >
                     <!-- Image Container -->
                     <div class="relative aspect-[4/5] overflow-hidden">
                         <img 
                             src={board.image} 
-                            alt={board.name} 
+                            alt={`${board.name} mood board`} 
+                            width="800" height="1000" loading="lazy"
                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -81,7 +81,7 @@ const moodBoards = [
     <div class="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center">
         <h4 id="modal-board-name" class="text-white font-black uppercase tracking-[0.5em] text-xs md:text-sm mb-6 opacity-0 translate-y-4 transition-all duration-700"></h4>
         <div class="relative overflow-hidden rounded-2xl shadow-2xl scale-95 opacity-0 transition-all duration-700" id="modal-img-container">
-            <img id="modal-mood-img" src="" alt="Mood Board Preview" class="max-w-full max-h-[75vh] object-contain shadow-2xl" />
+            <img id="modal-mood-img" src="" alt="Mood board preview" width="1200" height="900" class="max-w-full max-h-[75vh] object-contain shadow-2xl" />
         </div>
     </div>
 </div>

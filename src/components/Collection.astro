@@ -37,7 +37,8 @@ const models = [
             <div id={`zoom-slide-${index}`} class="absolute inset-0 w-full h-full will-change-transform flex items-center justify-center opacity-0">
                 <img
                     src={typeof model.image === 'string' ? model.image : model.image.src}
-                    alt={model.name}
+                    alt={`${model.name} – Hike RV off-road caravan`}
+                    width="1920" height="1080" loading="lazy"
                     class="absolute inset-0 w-full h-full object-cover z-0 scale-100 md:scale-[1.4] object-center"
                 />
 

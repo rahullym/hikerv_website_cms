@@ -59,7 +59,7 @@ const pillars = [
             <div class="md:w-[50%] relative h-[400px] md:h-[600px] flex items-center w-full z-10">
                 
                 <!-- View 1: Stats Grid -->
-                <div class="absolute inset-x-0 w-full will-change-transform will-change-opacity" id="wcu-stats-slide" style="opacity: 1; transform: translateY(0);">
+                <div class="absolute inset-x-0 w-full opacity-100 translate-y-0 will-change-transform will-change-opacity" id="wcu-stats-slide">
                     <div class="grid grid-cols-2 gap-x-8 md:gap-x-16 gap-y-16 md:gap-y-24">
                         {stats.map((stat) => (
                             <div class="flex flex-col items-start">
@@ -75,7 +75,7 @@ const pillars = [
                 </div>
 
                 <!-- View 2: Trust Factors -->
-                <div class="absolute inset-x-0 w-full will-change-transform will-change-opacity pointer-events-none" id="wcu-trust-slide" style="opacity: 0; transform: translateY(40px);">
+                <div class="absolute inset-x-0 w-full opacity-0 translate-y-10 will-change-transform will-change-opacity pointer-events-none" id="wcu-trust-slide">
                     <div class="flex flex-col gap-12 lg:gap-16 relative">
                         
                         <!-- Timeline track -->
