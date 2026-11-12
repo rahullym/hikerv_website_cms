@@ -10,7 +10,6 @@ const drifterLayouts = [
     { title: "Tanzanite 21", desc: "Grand Touring Excellence", src: "/3D LAYOUTS 2024/TANZANITE 21FT.webp" },
     { title: "Atom 17.6", desc: "The Ultimate Couple's Compact", src: "/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GTH ATOM 17.6.webp" }
 ];
-import { Image } from "astro:assets";
 import drifterSeries from "../assets/drifter-series.webp";
 ---
 
@@ -85,9 +84,18 @@ import drifterSeries from "../assets/drifter-series.webp";
 
                     <div class="w-full h-px bg-black/10 mb-10 animate-fade-up" style="animation-delay: 800ms; animation-fill-mode: both;"></div>
 
-                    <!-- Caravan Image -->
+                    <!-- Caravan Image — static /_astro asset (not /_image) so Amplify can serve it -->
                     <div id="drifter-feature-image" class="w-full aspect-square rounded-3xl overflow-hidden bg-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-fade-up" style="animation-delay: 900ms; animation-fill-mode: both;">
-                        <Image src={drifterSeries} alt="Hike RV Drifter Series Off Road Caravan" width={1200} height={1200} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+                        <img
+                            src={drifterSeries.src}
+                            alt="Hike RV Drifter Series Off Road Caravan"
+                            width={drifterSeries.width}
+                            height={drifterSeries.height}
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                            loading="eager"
+                            decoding="async"
+                            class="w-full h-full object-cover"
+                        />
                     </div>
                 </div>
 
