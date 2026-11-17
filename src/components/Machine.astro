@@ -1,17 +1,17 @@
 ---
 const features = [
-    { title: "100% Australian-Built", desc: "Forged in Victoria. Engineered exclusively with premium local steel to dominate the harsh, demanding outback climate.", image: "/chasis1.png" },
-    { title: "Off-Grid Energy Systems", desc: "High-capacity solar arrays and advanced lithium battery management allow for total self-sufficiency in remote locations.", image: "/solar.png" },
-    { title: "Heavy-Duty Suspension", desc: "Rugged, independent trailing arm suspension with dual shock absorbers to conquer extreme off-road corrugations.", image: "/suspenison.png" },
-    { title: "Precision Craftsmanship", desc: "Impeccably handcrafted by a specialised team, offering absolute flexibility in structural layout and weight distribution.", image: "/craft.png" },
-    { title: "Factory-Backed Warranty", desc: "A 2-year manufacturer’s structural warranty stands behind the immense durability of our CNC-cut, interlocking frames.", image: "/approved.png" }
+    { title: "100% Australian-Built", desc: "Forged in Victoria. Engineered exclusively with premium local steel to dominate the harsh, demanding outback climate.", image: "/chasis1.webp" },
+    { title: "Off-Grid Energy Systems", desc: "High-capacity solar arrays and advanced lithium battery management allow for total self-sufficiency in remote locations.", image: "/solar.webp" },
+    { title: "Heavy-Duty Suspension", desc: "Rugged, independent trailing arm suspension with dual shock absorbers to conquer extreme off-road corrugations.", image: "/suspenison.webp" },
+    { title: "Precision Craftsmanship", desc: "Impeccably handcrafted by a specialised team, offering absolute flexibility in structural layout and weight distribution.", image: "/craft.webp" },
+    { title: "Factory-Backed Warranty", desc: "A 2-year manufacturer’s structural warranty stands behind the immense durability of our CNC-cut, interlocking frames.", image: "/approved.webp" }
 ];
 ---
 
 <section id="machine" class="relative bg-[#fdfdfd] text-black h-[400vh] border-t border-black/5 z-10">
     
     <!-- Blueprint Grid Background Pattern -->
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-[0.02]" style="background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px); background-size: 60px 60px;"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-[0.02] blueprint-grid"></div>
 
     <!-- The Sticky Viewport Container -->
     <div class="sticky top-0 h-screen w-full flex flex-col justify-center pb-20 overflow-hidden z-10 gap-8 md:gap-12 pt-24 md:pt-32">
@@ -41,7 +41,8 @@ const features = [
                         {feature.image && (
                             <img 
                                 src={feature.image} 
-                                alt={feature.title} 
+                                alt={`${feature.title} – Hike RV off-road caravan feature`} 
+                                width="1280" height="720" loading="lazy"
                                 class="w-full h-full object-cover p-2 scale-[1.01] group-hover:scale-105 transition-transform duration-[2s] ease-[cubic-bezier(0.16,1,0.3,1)]" 
                             />
                         )}

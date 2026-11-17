@@ -1,4 +1,5 @@
 ---
+import ObfuscatedEmail from "./ObfuscatedEmail.astro";
 ---
 
 <footer class="bg-black pt-24 pb-12 px-6 sm:px-10 lg:px-14 border-t border-white/5 relative z-10">
@@ -7,7 +8,7 @@
         <!-- ░░ TOP SECTION: NEWSLETTER & SOCIALS ░░ -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 pb-20 border-b border-white/5">
             <div class="flex flex-col gap-6">
-                <h3 class="text-white text-4xl md:text-5xl font-black uppercase tracking-tighter">Know more <br/><span class="text-[#E50000]">about us!</span></h3>
+                <h2 class="text-white text-4xl md:text-5xl font-black uppercase tracking-tighter">Know more <br/><span class="text-[#E50000]">about us!</span></h2>
                 <p class="text-white/40 text-sm md:text-base leading-relaxed max-w-md">
                     Look no further! Our newsletter is your key to staying informed and ahead of the curve.
                 </p>
@@ -53,7 +54,7 @@
             
             <!-- col 1: quick links -->
             <div class="flex flex-col gap-8">
-                <h4 class="text-white text-xs font-black uppercase tracking-[0.3em]">Quick Links</h4>
+                <h3 class="text-white text-xs font-black uppercase tracking-[0.3em]">Quick Links</h3>
                 <div class="flex flex-col gap-4">
                     <a href="/" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">Home</a>
                     <a href="/about" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">About Us</a>
@@ -68,7 +69,7 @@
 
             <!-- col 2: our models -->
             <div class="flex flex-col gap-8">
-                <h4 class="text-white text-xs font-black uppercase tracking-[0.3em]">Our Models</h4>
+                <h3 class="text-white text-xs font-black uppercase tracking-[0.3em]">Our Models</h3>
                 <div class="flex flex-col gap-4">
                     <a href="/grand-rover" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">GRAND ROVER</a>
                     <a href="/eco" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">ECO</a>
@@ -83,7 +84,7 @@
 
             <!-- col 3: contact us -->
             <div class="flex flex-col gap-8">
-                <h4 class="text-white text-xs font-black uppercase tracking-[0.3em]">Contact Us</h4>
+                <h3 class="text-white text-xs font-black uppercase tracking-[0.3em]">Contact Us</h3>
                 <div class="flex flex-col gap-4">
                     <a href="/dealers" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold uppercase">Dealership</a>
                     <a href="/service-centers" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold uppercase">Service Centres</a>
@@ -93,11 +94,11 @@
 
             <!-- col 4: quick connect -->
             <div class="flex flex-col gap-8">
-                <h4 class="text-white text-xs font-black uppercase tracking-[0.3em]">Quick Connect</h4>
+                <h3 class="text-white text-xs font-black uppercase tracking-[0.3em]">Quick Connect</h3>
                 <div class="flex flex-col gap-6">
                     <div class="flex flex-col gap-2">
                         <span class="text-white/20 text-[9px] font-black uppercase tracking-widest">Phone</span>
-                        <a href="tel:0393223562" class="text-white hover:text-[#E50000] transition-colors text-lg font-black tracking-tight">03 9322 3562</a>
+                        <a href="tel:+61402940008" class="text-white hover:text-[#E50000] transition-colors text-lg font-black tracking-tight">+61 402 940 008</a>
                     </div>
                     <div class="flex flex-col gap-2">
                         <span class="text-white/20 text-[9px] font-black uppercase tracking-widest">Showroom</span>
@@ -109,8 +110,8 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <span class="text-white/20 text-[9px] font-black uppercase tracking-widest">Contact Directly</span>
-                        <a href="mailto:info@hikerv.com.au" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">info@hikerv.com.au</a>
-                        <a href="mailto:explore@hikerv.com.au" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold">explore@hikerv.com.au</a>
+                        <ObfuscatedEmail user="info" domain="hikerv.com.au" reveal={true} label="Email our team" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold" />
+                        <ObfuscatedEmail user="explore" domain="hikerv.com.au" reveal={true} label="Email our explore team" class="text-white/40 hover:text-[#E50000] transition-colors text-[13px] font-semibold" />
                     </div>
                 </div>
             </div>
@@ -120,7 +121,7 @@
         <!-- ░░ BOTTOM SECTION: COPYRIGHT ░░ -->
         <div class="flex flex-col md:flex-row justify-between items-center py-12 gap-10">
             <a href="/" class="flex items-center group transition-transform duration-500 hover:scale-105">
-                <img src="/hikerv.png" alt="Hike RV Logo" class="h-14 sm:h-16 md:h-20 w-auto object-contain brightness-100" />
+                <img src="/hikerv.webp" alt="Hike RV Logo" width="800" height="185" loading="lazy" class="h-14 sm:h-16 md:h-20 w-auto object-contain brightness-100" />
             </a>
             <span class="text-white/20 text-[10px] font-black uppercase tracking-[0.4em] md:mt-2">All rights reserved © 2026</span>
             <div class="flex gap-8">

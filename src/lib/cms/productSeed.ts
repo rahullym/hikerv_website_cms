@@ -86,7 +86,7 @@ export const VARIANT_SEED: VariantSeed[] = [
       title: 'Family.',
       subtitle: 'Grand Rover 19.6ft',
       body: 'The compact Grand Rover, sized for easier towing and tighter sites — without losing the bunk beds, ensuite, or kitchen the family relies on.',
-      heroImage: '/assets/GRANDROVER 19.6.jpg',
+      heroImage: '/assets/GRANDROVER 19.6.webp',
       brochureUrl: '/brochures/GRANDROVER.pdf',
       quickStats: [],
     },
@@ -105,14 +105,14 @@ export const VARIANT_SEED: VariantSeed[] = [
       heading: 'Family-First Layout.',
       body: 'Two dedicated bunks for the kids, an island queen for the parents, and a swing-around dinette that converts to extra sleeping when needed — the 19.6 carries four (or five) without ever feeling cramped. The full kitchen runs a 188-litre fridge, recessed mini-grill, microwave, and proper benchtop space. The fully separate shower and toilet keeps the morning routine flowing — and the L-shape lounge is the after-dark headquarters when the kids are down.',
       images: [
-        '/rover/grandrover/19.6 Family First/1.jpg',
-        '/rover/grandrover/19.6 Family First/2.jpg',
-        '/rover/grandrover/19.6 Family First/3.jpg',
+        '/rover/grandrover/19.6 Family First/1.webp',
+        '/rover/grandrover/19.6 Family First/2.webp',
+        '/rover/grandrover/19.6 Family First/3.webp',
       ],
       chips: ['Bunk beds', 'Full ensuite', 'L-Lounge', 'Front kitchen'],
     },
     floorplans: [
-      { title: 'Grand Rover 19.6 · 2 Bunk', desc: 'Family-Ready Floorplan', src: '/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 19.6 2 BUNK.png' },
+      { title: 'Grand Rover 19.6 · 2 Bunk', desc: 'Family-Ready Floorplan', src: '/3D LAYOUTS 2024/3D LAYOUT NEW UPDATED AUG 2025/GRAND ROVER 19.6 2 BUNK.webp' },
     ],
     cta: {
       kicker: 'Your Family Adventure Starts Here',

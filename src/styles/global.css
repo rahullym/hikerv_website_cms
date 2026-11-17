@@ -46,3 +46,26 @@
         background-color: var(--color-brand-gold);
     }
 }
+/* Extracted from former inline styles */
+.logo-invert { filter: invert(1) brightness(1.5); }
+.blueprint-grid {
+    background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+.anim-fill-both { animation-fill-mode: both; }
+.anim-delay-200 { animation-delay: 200ms; }
+.anim-delay-400 { animation-delay: 400ms; }
+.anim-delay-500 { animation-delay: 500ms; }
+.anim-delay-600 { animation-delay: 600ms; }
+.anim-delay-800 { animation-delay: 800ms; }
+.anim-delay-1200 { animation-delay: 1200ms; }
+/* Staggered entrance for card grids (replaces per-index inline animation-delay) */
+.stagger-grid > :nth-child(1) { animation-delay: 600ms; }
+.stagger-grid > :nth-child(2) { animation-delay: 700ms; }
+.stagger-grid > :nth-child(3) { animation-delay: 800ms; }
+.stagger-grid > :nth-child(4) { animation-delay: 900ms; }
+.stagger-grid > :nth-child(5) { animation-delay: 1000ms; }
+.stagger-grid > :nth-child(6) { animation-delay: 1100ms; }
+.stagger-grid > :nth-child(7) { animation-delay: 1200ms; }
+.stagger-grid > :nth-child(8) { animation-delay: 1300ms; }
+.stagger-grid > :nth-child(n+9) { animation-delay: 1400ms; }

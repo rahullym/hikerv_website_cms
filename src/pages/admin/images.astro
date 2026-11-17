@@ -45,6 +45,11 @@ const s3Configured = Boolean(import.meta.env.S3_BUCKET);
             {img.width && img.height && ' · '}
             {Math.round(img.size / 1024)} KB
           </p>
+          <label style="display: block; margin-top: 0.5rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5);">
+            Alt text
+            <input class="alt-input" type="text" value={img.alt} data-image-id={img._id.toString()} placeholder="Describe this image" style="width: 100%; margin-top: 0.2rem; font-size: 0.75rem; text-transform: none; letter-spacing: 0;" />
+          </label>
+          <span class="alt-status" style="font-size: 0.65rem; color: rgba(0,0,0,0.45);">{img.alt ? '' : 'Missing alt text'}</span>
           <div style="display: flex; gap: 0.35rem; margin-top: 0.5rem;">
             <button class="copy-url-btn" data-url={img.url}
               style="flex: 1; padding: 0.3rem 0.5rem; background: transparent; border: 1px solid rgba(0,0,0,0.12); border-radius: 9999px; font-size: 0.7rem; font-weight: 700;">Copy URL</button>
@@ -93,6 +98,14 @@ const s3Configured = Boolean(import.meta.env.S3_BUCKET);
         im.src = url;
       });
 
+      // Alt text is required: prompt for it (defaults to a cleaned-up filename)
+      const suggested = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
+      let alt = '';
+      while (!alt) {
+        alt = (window.prompt(`Describe "${file.name}" (alt text, required)`, suggested) ?? '').trim();
+        if (!alt && !window.confirm('Alt text is required. Try again?')) throw new Error('Alt text required');
+      }
+
       // Save metadata in Mongo
       const metaRes = await fetch('/api/images', {
         method: 'POST',
@@ -103,6 +116,7 @@ const s3Configured = Boolean(import.meta.env.S3_BUCKET);
           filename: file.name,
           mime: file.type,
           size: file.size,
+          alt,
           width,
           height,
         }),
@@ -129,6 +143,21 @@ const s3Configured = Boolean(import.meta.env.S3_BUCKET);
       }
       statusEl.textContent = `Uploaded ${done} file(s). Refreshing…`;
       setTimeout(() => window.location.reload(), 800);
+    });
+
+    document.querySelectorAll<HTMLInputElement>('.alt-input').forEach((inp) => {
+      inp.addEventListener('change', async () => {
+        const status = inp.closest('div')?.querySelector('.alt-status') as HTMLElement | null;
+        const alt = inp.value.trim();
+        if (!alt) { if (status) status.textContent = 'Alt text cannot be empty'; return; }
+        if (status) status.textContent = 'Saving…';
+        const res = await fetch(`/api/images/${inp.dataset.imageId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ alt }),
+        });
+        if (status) status.textContent = res.ok ? 'Saved' : 'Save failed';
+      });
     });
 
     document.querySelectorAll<HTMLButtonElement>('.copy-url-btn').forEach((btn) => {

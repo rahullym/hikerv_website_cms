@@ -1,0 +1,26 @@
+---
+// Renders an email link without the address appearing anywhere in the served HTML.
+// The address is assembled client-side from data attributes; without JavaScript the
+// link falls back to the contact page.
+interface Props {
+	user: string;
+	domain: string;
+	class?: string;
+	label?: string;
+	reveal?: boolean; // show the address as the link text once assembled
+}
+const { user, domain, class: className = "", label = "Email us", reveal = false } = Astro.props;
+---
+<a
+	href="/contact"
+	class={className}
+	data-obf-email
+	data-u={user.split("").reverse().join("")}
+	data-d={domain.split("").reverse().join("")}
+	data-reveal={reveal ? "true" : "false"}
+	rel="nofollow"
+><slot>{label}</slot></a>
+
+<script>
+	import "../scripts/obfuscated-email";
+</script>

@@ -18,6 +18,8 @@ export default defineConfig({
   // endpoints to emit absolute URLs, and available anywhere via Astro.site.
   site: 'https://hikervcaravans.com.au',
   output: 'server',
+  // Inline CSS into the HTML so no external stylesheet blocks first paint.
+  build: { inlineStylesheets: 'always' },
   adapter: vercel(),
   // Astro's default Origin check (security.checkOrigin) was rejecting
   // same-origin admin PATCH/DELETE/POST requests behind Vercel's edge with
