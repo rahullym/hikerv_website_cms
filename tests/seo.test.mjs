@@ -51,7 +51,7 @@ test('LocalBusiness JSON-LD is valid and complete', () => {
   assert.equal(data['@type'], 'LocalBusiness');
   assert.equal(data.address.addressLocality, 'Campbellfield');
   assert.equal(data.address.addressRegion, 'VIC');
-  assert.equal(data.telephone, '+61-402-940-008');
+  assert.equal(data.telephone, '+61 402 940 008');
   assert.ok(data.openingHoursSpecification.length > 0);
 });
 
@@ -92,6 +92,7 @@ test('drifter page feature image has alt, dimensions and is under 200KB', () => 
   assert.match(m[0], /height="\d+"/);
   assert.match(m[0], /src="[^"]+\.webp"/);
   assert.doesNotMatch(m[0], /\/_image\?/);
+  assert.match(m[0], /onerror=/);
   const src = m[0].match(/src="([^"]+)"/)[1];
   assert.ok(fs.existsSync(path.join(out, decodeURI(src).replace(/^\//, ''))), `missing built asset ${src}`);
   assert.ok(fs.statSync('src/assets/drifter-series.webp').size < 200 * 1024);
